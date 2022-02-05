@@ -13,6 +13,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+
+        <a href="/api/auth/login" style={{color: 'silver'}}>Login</a>
+
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
