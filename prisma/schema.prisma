@@ -17,3 +17,11 @@ model User {
   rating        Int
   @@map(name: "users")
 }
+
+model Game {
+  id            Int       @default(autoincrement()) @id
+  white         Int
+  black         Int
+  winner        Int
+  @@map(name: "games")
+}
