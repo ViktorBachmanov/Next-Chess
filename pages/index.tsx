@@ -1,11 +1,29 @@
-import type { NextPage } from 'next'
+import type { NextPage, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+import prisma from '../lib/prisma';
 
 
-const Home: NextPage = () => {
+export const getStaticProps: GetStaticProps = async () => {
+  const users = await prisma.user.findMany();
+  
+  return { props: { users } };
+};
+
+interface User {
+  id: number;
+  name: string;
+  rating: number;
+}
+
+type Props = {
+  users: User[]
+}
+
+
+const Home: React.FC<Props> = (props: Props) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -19,6 +37,13 @@ const Home: NextPage = () => {
         <Link href='/api/auth/login'>
           <a style={{color: 'silver'}}>Login</a>
         </Link>
+
+        {props.users.map(user => (
+            <div key={user.id}>
+              <span>{user.name}</span>
+            </div>
+          )
+        )}
 
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
@@ -77,3 +102,6 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+
+
