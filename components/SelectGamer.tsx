@@ -24,7 +24,7 @@ export default function SelectGamer(props: Props) {
     }
 
     return (
-        <FormControl style={{marginTop: '2rem', width: '15rem'}}>
+        <FormControl style={{marginTop: '2rem', width: '12rem'}}>
         <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
         <Select
           labelId="demo-simple-select-label"

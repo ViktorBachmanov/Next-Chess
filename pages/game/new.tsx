@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import SelectGamer from '../../components/SelectGamer'
+import SelectWinner from '../../components/SelectWinner'
 
 import type { GetStaticProps } from 'next'
 import prisma from '../../lib/prisma';
@@ -41,6 +42,8 @@ export default function NewGame(props: Props) {
                 label='Чёрные'
                 users={props.users}
             />
+
+            <SelectWinner />
         </div>
         </ThemeProvider>
     )
