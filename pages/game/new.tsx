@@ -1,11 +1,15 @@
 import type { NextPage } from 'next'
 import SelectGamer from '../../components/SelectGamer'
 
-import type { GetServerSideProps } from 'next'
+import type { GetStaticProps } from 'next'
 import prisma from '../../lib/prisma';
+import createMainTheme, { LightStatus } from '../../lib/muiTheme';
+
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const users = await prisma.user.findMany();
   
   return { props: { users } };
@@ -21,11 +25,15 @@ type Props = {
   users: User[]
 }
 
+const mainTheme = createMainTheme(LightStatus.DARK);
 
 export default function NewGame(props: Props) {
     return (
+        <ThemeProvider theme={mainTheme}>
+        <CssBaseline />
         <div>
             <SelectGamer users={props.users}/>
         </div>
+        </ThemeProvider>
     )
 }
