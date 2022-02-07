@@ -34,8 +34,13 @@ const Home: React.FC<Props> = (props: Props) => {
       
 
       <main className={styles.main}>
+
         <Link href='/api/auth/login'>
           <a style={{color: 'silver'}}>Login</a>
+        </Link>
+
+        <Link href='/game/new'>
+          <a style={{color: 'silver'}}>Create</a>
         </Link>
 
         {props.users.map(user => (
