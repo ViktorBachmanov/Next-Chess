@@ -1,10 +1,31 @@
 import type { NextPage } from 'next'
+import SelectGamer from '../../components/SelectGamer'
+
+import type { GetServerSideProps } from 'next'
+import prisma from '../../lib/prisma';
 
 
-export default function NewGame() {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const users = await prisma.user.findMany();
+  
+  return { props: { users } };
+};
+
+interface User {
+  id: number;
+  name: string;
+  rating: number;
+}
+
+type Props = {
+  users: User[]
+}
+
+
+export default function NewGame(props: Props) {
     return (
         <div>
-            <h2>Game action page</h2>
+            <SelectGamer users={props.users}/>
         </div>
     )
 }
