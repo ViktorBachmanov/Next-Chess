@@ -32,7 +32,15 @@ export default function NewGame(props: Props) {
         <ThemeProvider theme={mainTheme}>
         <CssBaseline />
         <div>
-            <SelectGamer users={props.users}/>
+            <SelectGamer
+                label='Белые'
+                users={props.users}
+            />
+
+            <SelectGamer
+                label='Чёрные'
+                users={props.users}
+            />
         </div>
         </ThemeProvider>
     )
