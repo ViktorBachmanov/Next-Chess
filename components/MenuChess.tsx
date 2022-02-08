@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,14 +10,20 @@ import { useRouter } from 'next/router'
 
 import { useUser } from '@auth0/nextjs-auth0';
 
+import GameDialog from './GameDialog'
+
 
 export default function MenuChess() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const router = useRouter();
 
   const { user, error, isLoading } = useUser();
+
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState('');
+
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -30,6 +36,13 @@ export default function MenuChess() {
     router.push('/api/auth/login');
   }
 
+  function openDialogAddGame() {
+    setDialogTitle('Новая партия');
+    setDialogOpen(true);
+    handleClose();
+  }
+
+  
   return (
     <div>
       {/*<Button
@@ -75,7 +88,7 @@ export default function MenuChess() {
             Войти
         </MenuItem>
         <MenuItem 
-            onClick={handleClose}
+            onClick={openDialogAddGame}
             disabled={user === undefined}
         >
             Добавить партию
@@ -87,6 +100,12 @@ export default function MenuChess() {
             Удалить последнюю
         </MenuItem>
       </Menu>
+
+      <GameDialog 
+        isDialogOpen={isDialogOpen}
+        setDialogOpen={setDialogOpen}
+        title={dialogTitle}
+      />
     </div>
   );
 }
