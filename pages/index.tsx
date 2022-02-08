@@ -5,6 +5,7 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import prisma from '../lib/prisma';
 
+import AppBarChess from '../components/AppBarChess'
 
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -52,6 +53,8 @@ const Home: React.FC<Props> = (props: Props) => {
       
 
       <main className={styles.main}>
+
+        <AppBarChess />
 
         <Link href='/api/auth/login'>
           <a style={{color: 'silver', marginBottom: '2rem'}}>Login</a>
