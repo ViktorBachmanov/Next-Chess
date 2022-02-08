@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 
 export enum LightStatus {
@@ -38,5 +38,5 @@ export default function createMainTheme(lightMode: LightStatus) {
     },
   });
 
-  return mainTheme;
+  return responsiveFontSizes(mainTheme);
 }
