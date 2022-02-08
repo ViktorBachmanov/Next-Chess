@@ -1,4 +1,4 @@
-import type { GetServerSideProps } from 'next'
+import type { GetStaticProps, GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -6,10 +6,12 @@ import styles from '../styles/Home.module.css'
 import prisma from '../lib/prisma';
 
 
+
 export const getServerSideProps: GetServerSideProps = async () => {
-  const users = await prisma.user.findMany();
+  const [users, games] = await Promise.all([prisma.user.findMany({ orderBy: {name: 'asc'}}), 
+                                          prisma.game.findMany()]);
   
-  return { props: { users } };
+  return { props: { users, games } };
 };
 
 interface User {
@@ -18,12 +20,28 @@ interface User {
   rating: number;
 }
 
+interface Game {
+  id: number;
+  white: number;
+  black: number;
+  winner: number;
+}
+
 type Props = {
   users: User[]
+  games: Game[]
 }
 
 
 const Home: React.FC<Props> = (props: Props) => {
+  function handleNewGame() {
+    fetch('/api/game/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -39,13 +57,24 @@ const Home: React.FC<Props> = (props: Props) => {
           <a style={{color: 'silver', marginBottom: '2rem'}}>Login</a>
         </Link>
 
-        <Link href='/game/new'>
+        {/*<Link href='/game/new'>
           <a style={{color: 'silver'}}>Create</a>
-        </Link>
+  </Link>*/}
+
+        <button onClick={handleNewGame}>Add game</button>
 
         {props.users.map(user => (
             <div key={user.id}>
               <span>{user.name}</span>
+            </div>
+          )
+        )}
+
+        {props.games.map(game => (
+            <div key={game.id}>
+              <span>{game.white}</span>
+              <span>{game.black}</span>
+              <span>{game.winner}</span>
             </div>
           )
         )}
