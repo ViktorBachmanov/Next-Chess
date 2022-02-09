@@ -1,17 +1,42 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-import { User, Game } from './types'
+
+import { User, Game, RequestStatus } from './types'
 
 interface DbState {
   users: User[]
   games: Game[]
+  requestStatus: RequestStatus
 }
 
 const initialState: DbState = {
   users: [{id: 1, name: '', rating: 0}],
   games: [{id: 1, white: 1, black: 2, winner: 2}],
+  requestStatus: RequestStatus.IDLE,
 };
+
+// The function below is called a thunk and allows us to perform async logic. It
+// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
+// will call the thunk with the `dispatch` function as the first argument. Async
+// code can then be executed and other actions can be dispatched. Thunks are
+// typically used to make async requests.
+
+export const fetchTables = createAsyncThunk(
+    "db/fetchTables",
+    async () => {
+        let users: any;
+        let games: any;
+        const response = await fetch('/api/db/fetch');
+            
+        const body = response.json();
+        console.log('AsyncThunk', body);
+        return body;        
+      
+        // The value we return becomes the `fulfilled` action payload
+        
+    }
+  );
 
 export const dbSlice = createSlice({
   name: "db",
@@ -27,6 +52,17 @@ export const dbSlice = createSlice({
       //state.title = action.payload;
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchTables.pending, (state) => {
+        state.requestStatus = RequestStatus.LOADING;
+      })
+      .addCase(fetchTables.fulfilled, (state, action) => {
+        const obj: any = action.payload;
+        state.users = obj;
+        state.requestStatus = RequestStatus.IDLE;
+      })
+    }
 });
 
 export const { setTitle } = dbSlice.actions;

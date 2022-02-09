@@ -3,10 +3,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
-import prisma from '../lib/prisma';
+
+import { useEffect } from 'react'
 
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
+import { fetchTables as fetchTablesAction } from '../features/db/dbSlice'
+import { RequestStatus } from '../features/db/types'
 
 import AppBarChess from '../components/AppBarChess'
 
@@ -14,23 +17,37 @@ import AppBarChess from '../components/AppBarChess'
 function mapStateToProps(state: RootState) {
   return {
     users: state.db.users,
+    requestStatus: state.db.requestStatus,
   };
 }
 
+const mapDispatchToProps = {
+  fetchTables: fetchTablesAction,
+};
 
-const connector = connect(mapStateToProps);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 
 
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
+
+  useEffect(() => {
+    props.fetchTables();
+  }, [])
+
   function handleNewGame() {
     fetch('/api/game/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     });
 
+  }
+
+  if(props.requestStatus === RequestStatus.LOADING) {
+    return <h2>Loading...</h2>
   }
 
   return (
@@ -46,7 +63,12 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 
         <AppBarChess />
 
-        <div>{props.users[0].id}</div>
+        {/*props.users.map(user => (
+          <div key={user.id}>
+            {user.name}
+          </div>
+        ))*/}
+        {console.log(props.users)}
 
         <Link href='/api/auth/login'>
           <a style={{color: 'silver', marginBottom: '2rem'}}>Login</a>

@@ -5,6 +5,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import GameForm from './GameForm';
+
+
 interface Props {
     isDialogOpen: boolean
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -28,7 +31,7 @@ export default function GameDialog(props: Props) {
       <Dialog open={props.isDialogOpen} onClose={handleClose}>
         <DialogTitle>{props.title}</DialogTitle>
         <DialogContent>
-         
+          <GameForm />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

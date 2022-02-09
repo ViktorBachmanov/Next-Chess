@@ -3,6 +3,21 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import SelectGamer from './SelectGamer'
 import SelectWinner from './SelectWinner'
 
+import { connect, ConnectedProps } from "react-redux";
+import { RootState } from "../app/store";
+
+
+function mapStateToProps(state: RootState) {
+  return {
+    users: state.db.users,
+  };
+}
+
+
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 
 
@@ -10,7 +25,7 @@ interface IFormInputs {
   WhiteUserId: string
 }
 
-export default function GameForm(props: any) {
+function GameForm(props: PropsFromRedux) {
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: {
         WhiteUserId: '',
@@ -40,3 +55,6 @@ export default function GameForm(props: any) {
     </form>
   );
 }
+
+
+export default connector(GameForm);

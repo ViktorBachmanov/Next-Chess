@@ -10,3 +10,9 @@ export interface Game {
     black: number;
     winner: number;
 }
+
+export enum RequestStatus {
+    IDLE,
+    LOADING,
+    FAILED,
+}
