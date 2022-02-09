@@ -16,7 +16,7 @@ interface User {
     users: User[]
   }
 
-export default function SelectGamer(props: Props) {
+const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
     const [gamerId, setGamer] = useState('');
 
     function handleChange(event: SelectChangeEvent) {
@@ -32,6 +32,7 @@ export default function SelectGamer(props: Props) {
           label={props.label}
           value={gamerId}
           onChange={handleChange}
+          ref={ref}
         >
          
           {props.users.map(user => (
@@ -41,4 +42,6 @@ export default function SelectGamer(props: Props) {
         </Select>
       </FormControl>
     )
-}
+});
+
+export default SelectGamer;

@@ -51,7 +51,7 @@ function GameForm(props: PropsFromRedux) {
             )
         }
       />
-      <input type="submit" />
+      
     </form>
   );
 }
