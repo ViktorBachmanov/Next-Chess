@@ -1,40 +1,30 @@
-import type { GetStaticProps, GetServerSideProps } from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import prisma from '../lib/prisma';
 
+import { connect, ConnectedProps } from "react-redux";
+import { RootState } from "../app/store";
+
 import AppBarChess from '../components/AppBarChess'
 
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const [users, games] = await Promise.all([prisma.user.findMany({ orderBy: {name: 'asc'}}), 
-                                          prisma.game.findMany()]);
-  
-  return { props: { users, games } };
-};
-
-interface User {
-  id: number;
-  name: string;
-  rating: number;
-}
-
-interface Game {
-  id: number;
-  white: number;
-  black: number;
-  winner: number;
-}
-
-type Props = {
-  users: User[]
-  games: Game[]
+function mapStateToProps(state: RootState) {
+  return {
+    users: state.db.users,
+  };
 }
 
 
-const Home: React.FC<Props> = (props: Props) => {
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+
+
+const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
   function handleNewGame() {
     fetch('/api/game/create', {
       method: 'POST',
@@ -56,6 +46,8 @@ const Home: React.FC<Props> = (props: Props) => {
 
         <AppBarChess />
 
+        <div>{props.users[0].id}</div>
+
         <Link href='/api/auth/login'>
           <a style={{color: 'silver', marginBottom: '2rem'}}>Login</a>
         </Link>
@@ -66,21 +58,7 @@ const Home: React.FC<Props> = (props: Props) => {
 
         <button onClick={handleNewGame}>Add game</button>
 
-        {props.users.map(user => (
-            <div key={user.id}>
-              <span>{user.name}</span>
-            </div>
-          )
-        )}
-
-        {props.games.map(game => (
-            <div key={game.id}>
-              <span>{game.white}</span>
-              <span>{game.black}</span>
-              <span>{game.winner}</span>
-            </div>
-          )
-        )}
+        
 
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
@@ -138,7 +116,7 @@ const Home: React.FC<Props> = (props: Props) => {
   )
 }
 
-export default Home
+export default connector(Home)
 
 
 

@@ -1,0 +1,12 @@
+export interface User {
+    id: number;
+    name: string;
+    rating: number;
+}
+  
+export interface Game {
+    id: number;
+    white: number;
+    black: number;
+    winner: number;
+}
