@@ -14,6 +14,7 @@ import { RequestStatus } from '../features/db/types'
 import AppBarChess from '../components/AppBarChess'
 
 
+
 function mapStateToProps(state: RootState) {
   return {
     users: state.db.users,
@@ -34,6 +35,8 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 
   useEffect(() => {
     console.log('index useEffect()');
+    console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+
     fetchTables();
   }, [fetchTables])
 
