@@ -1,5 +1,5 @@
-import React from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import React, { BaseSyntheticEvent } from "react";
+import { useForm, Controller, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
 import SelectGamer from './SelectGamer'
 import SelectWinner from './SelectWinner'
 
@@ -19,29 +19,37 @@ const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-
+type Props = PropsFromRedux & {
+  formId: string
+  handleClose: () => void
+}
 
 interface IFormInputs {
   WhiteUserId: string
 }
 
-function GameForm(props: PropsFromRedux) {
+function GameForm(props: Props) {
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: {
         WhiteUserId: '',
     },
   });
 
-  const onSubmit: SubmitHandler<IFormInputs> = data => console.log(data);
+  const onSubmit: SubmitHandler<IFormInputs> = data => {
+    console.log('submit');
+    console.log(data);
+    props.handleClose();
+  }
 
+  const onError: SubmitErrorHandler<IFormInputs> = 
+    (errors: Object, e?: BaseSyntheticEvent) => console.log(errors, e);
   
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit, onError)} id={props.formId}>
       <Controller
         name="WhiteUserId"
         control={control}
-        rules={{ required: true }}
         render={({ field }) => (
                 <SelectGamer 
                     {...field}
@@ -51,7 +59,6 @@ function GameForm(props: PropsFromRedux) {
             )
         }
       />
-      
     </form>
   );
 }

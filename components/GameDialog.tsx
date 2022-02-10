@@ -25,17 +25,19 @@ export default function GameDialog(props: Props) {
     props.setDialogOpen(false);
   };
 
+  const formId = 'createForm'
+
   return (
     <div>
    
       <Dialog open={props.isDialogOpen} onClose={handleClose}>
         <DialogTitle>{props.title}</DialogTitle>
         <DialogContent>
-          <GameForm />
+          <GameForm formId={formId} handleClose={handleClose}/>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button onClick={handleClose}>Отмена</Button>
+          <Button  type='submit' form={formId}>Добавить</Button>
         </DialogActions>
       </Dialog>
     </div>

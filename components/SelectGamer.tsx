@@ -14,25 +14,24 @@ interface User {
   type Props = {
     label: string
     users: User[]
+    onChange: (value: any) => void
   }
 
 const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
-    const [gamerId, setGamer] = useState('');
+    /*const [gamerId, setGamer] = useState('');
 
     function handleChange(event: SelectChangeEvent) {
         setGamer(event.target.value);
-    }
+    }*/
 
     return (
         <FormControl style={{marginTop: '2rem', width: '12rem'}}>
-        <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
+        <InputLabel>{props.label}</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
           label={props.label}
-          value={gamerId}
-          onChange={handleChange}
           ref={ref}
+          defaultValue=''
+          onChange={props.onChange}
         >
          
           {props.users.map(user => (
