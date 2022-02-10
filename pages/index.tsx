@@ -31,7 +31,6 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 
-
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
   const {users, requestStatus, fetchTables} = props;
 
