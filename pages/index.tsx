@@ -25,7 +25,6 @@ const mapDispatchToProps = {
   fetchTables: fetchTablesAction,
 };
 
-
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
