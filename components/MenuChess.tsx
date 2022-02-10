@@ -23,6 +23,7 @@ export default function MenuChess() {
 
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogSubmitLabel, setDialogSubmitLabel] = useState('');
 
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -38,6 +39,14 @@ export default function MenuChess() {
 
   function openDialogAddGame() {
     setDialogTitle('Новая партия');
+    setDialogSubmitLabel('Добавить');
+    setDialogOpen(true);
+    handleClose();
+  }
+
+  function openDialogDeleteGame() {
+    setDialogTitle('Последняя партия');
+    setDialogSubmitLabel('Удалить');
     setDialogOpen(true);
     handleClose();
   }
@@ -54,6 +63,8 @@ export default function MenuChess() {
       >
         Dashboard
       </Button>*/}
+
+      {console.log('MenuChess return')}
 
       <IconButton
             size="large"
@@ -94,7 +105,7 @@ export default function MenuChess() {
             Добавить партию
         </MenuItem>
         <MenuItem 
-            onClick={handleClose}
+            onClick={openDialogDeleteGame}
             disabled={user === undefined}
         >
             Удалить последнюю
@@ -105,6 +116,7 @@ export default function MenuChess() {
         isDialogOpen={isDialogOpen}
         setDialogOpen={setDialogOpen}
         title={dialogTitle}
+        submitButtonLabel={dialogSubmitLabel}
       />
     </div>
   );

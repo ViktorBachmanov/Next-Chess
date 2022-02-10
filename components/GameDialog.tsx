@@ -12,6 +12,7 @@ interface Props {
     isDialogOpen: boolean
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
     title: string
+    submitButtonLabel: string
 }
 
 export default function GameDialog(props: Props) {
@@ -25,7 +26,7 @@ export default function GameDialog(props: Props) {
     props.setDialogOpen(false);
   };
 
-  const formId = 'createForm'
+  const formId = props.title === 'Новая партия' ? 'createForm' : 'deleteForm';
 
   return (
     <div>
@@ -37,7 +38,7 @@ export default function GameDialog(props: Props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>
-          <Button  type='submit' form={formId}>Добавить</Button>
+          <Button  type='submit' form={formId}>{props.submitButtonLabel}</Button>
         </DialogActions>
       </Dialog>
     </div>

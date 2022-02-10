@@ -15,6 +15,7 @@ interface User {
     label: string
     users: User[]
     onChange: (value: any) => void
+    disabled: boolean
   }
 
 const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
@@ -30,8 +31,9 @@ const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
         <Select
           label={props.label}
           ref={ref}
-          defaultValue=''
           onChange={props.onChange}
+          disabled={props.disabled}
+          defaultValue={props.disabled ? '1' : ''}
         >
          
           {props.users.map(user => (

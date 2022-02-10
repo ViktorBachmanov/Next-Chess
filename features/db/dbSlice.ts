@@ -29,9 +29,9 @@ export const fetchTables = createAsyncThunk(
         let games: any;
         const response = await fetch('/api/db/fetch');
             
-        const body = response.json();
-        console.log('AsyncThunk', body);
-        return body;        
+        const tables = response.json();
+        console.log('AsyncThunk', tables);
+        return tables;        
       
         // The value we return becomes the `fulfilled` action payload
         
@@ -58,8 +58,9 @@ export const dbSlice = createSlice({
         state.requestStatus = RequestStatus.LOADING;
       })
       .addCase(fetchTables.fulfilled, (state, action) => {
-        const obj: any = action.payload;
-        state.users = obj;
+        const tables: any = action.payload;
+        state.users = tables[0];
+        state.games = tables[1];
         state.requestStatus = RequestStatus.IDLE;
       })
     }

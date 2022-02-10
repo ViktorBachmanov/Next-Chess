@@ -29,11 +29,9 @@ interface IFormInputs {
 }
 
 function GameForm(props: Props) {
-  const { handleSubmit, control, reset } = useForm<IFormInputs>({
-    defaultValues: {
-        WhiteUserId: '',
-    },
-  });
+  const isDeleteForm = props.formId === 'deleteForm';
+
+  const { handleSubmit, control, reset } = useForm<IFormInputs>();
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     console.log('submit');
@@ -55,6 +53,7 @@ function GameForm(props: Props) {
                     {...field}
                     label='Белые'
                     users={props.users}
+                    disabled={isDeleteForm}
                 />
             )
         }
