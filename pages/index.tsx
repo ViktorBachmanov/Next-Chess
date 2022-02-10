@@ -33,11 +33,12 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
+  const {users, requestStatus, fetchTables} = props;
 
   useEffect(() => {
     console.log('index useEffect()');
-    props.fetchTables();
-  }, [])
+    fetchTables();
+  }, [fetchTables])
 
   function handleNewGame() {
     fetch('/api/game/create', {
@@ -47,7 +48,7 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 
   }
 
-  if(props.requestStatus === RequestStatus.LOADING) {
+  if(requestStatus === RequestStatus.LOADING) {
     return <h2>Loading...</h2>
   }
 
@@ -69,7 +70,7 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
             {user.name}
           </div>
         ))*/}
-        {console.log(props.users)}
+        {console.log(users)}
 
         <Link href='/api/auth/login'>
           <a style={{color: 'silver', marginBottom: '2rem'}}>Login</a>
