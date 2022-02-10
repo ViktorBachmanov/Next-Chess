@@ -13,7 +13,7 @@ interface DbState {
 const initialState: DbState = {
   users: [{id: 1, name: '', rating: 0}],
   games: [{id: 1, white: 1, black: 2, winner: 2}],
-  requestStatus: RequestStatus.IDLE,
+  requestStatus: RequestStatus.LOADING,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It

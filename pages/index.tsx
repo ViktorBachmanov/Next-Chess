@@ -35,6 +35,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 
   useEffect(() => {
+    console.log('index useEffect()');
     props.fetchTables();
   }, [])
 
