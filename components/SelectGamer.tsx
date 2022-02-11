@@ -5,6 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { User } from '../features/db/types'
+import IconKing from './IconKing';
 
 
   
@@ -15,6 +16,8 @@ import { User } from '../features/db/types'
     disabled: boolean
     defaultValue: string | number
     error: any
+    color: string
+    transform: string | null
   }
 
 const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
@@ -25,8 +28,17 @@ const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
     }*/
 
     return (
+      <div style={{display: 'flex'}}>
+        <IconKing 
+          color={props.color}
+          transform={props.transform}
+        />
+      
         <FormControl 
-          style={{marginTop: '2rem', width: '12rem'}}
+          style={{
+            width: '12rem',
+            margin: '1rem 0',
+          }}
           error={Boolean(props.error)}
         >
         <InputLabel>{props.label}</InputLabel>
@@ -47,7 +59,8 @@ const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
         {props.error &&
           <FormHelperText>Выберите игрока</FormHelperText>
         }
-      </FormControl>
+        </FormControl>
+      </div>
     )
 });
 

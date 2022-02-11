@@ -7,6 +7,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 
 
+
 function mapStateToProps(state: RootState) {
   return {
     users: state.db.users,
@@ -58,18 +59,6 @@ function GameForm(props: Props) {
     lastGameWinner = 'draw';
   }
 
-  let bgWhite: string;
-  switch(watchWinner) {
-    case 'white':
-      bgWhite = '#388e3c';
-      break;
-    case 'black':
-      bgWhite = '#d32f2f';
-      break;
-    default:
-      bgWhite = 'auto';
-      break;
-  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} id={props.formId}>
@@ -78,14 +67,17 @@ function GameForm(props: Props) {
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error } }) => (
-                <SelectGamer 
-                    {...field}
-                    label='Белые'
-                    users={props.users}
-                    disabled={isDeleteForm}
-                    defaultValue={isDeleteForm ? lastGame.white : ''}
-                    error={error}
-                />
+
+                  <SelectGamer 
+                      {...field}
+                      label='Белые'
+                      users={props.users}
+                      disabled={isDeleteForm}
+                      defaultValue={isDeleteForm ? lastGame.white : ''}
+                      error={error}
+                      color={'silver'}
+                      transform={watchWinner === 'black' ? 'rotate(-100deg)' : null}
+                  />
             )
         }
       />
@@ -102,6 +94,8 @@ function GameForm(props: Props) {
                     disabled={isDeleteForm}
                     defaultValue={isDeleteForm ? lastGame.black : ''}
                     error={error}
+                    color={'black'}
+                    transform={watchWinner === 'white' ? 'rotate(-97deg)' : null}
                 />
             )
         }
