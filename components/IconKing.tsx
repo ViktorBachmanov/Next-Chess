@@ -1,5 +1,5 @@
 import React from 'react';
-import SvgIconKing from './icon-king.svg';
+import SvgIconKing from './pics/icon-king.svg';
 
 
 type Props = {
