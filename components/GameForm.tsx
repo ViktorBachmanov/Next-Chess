@@ -10,6 +10,7 @@ import { RootState } from "../app/store";
 function mapStateToProps(state: RootState) {
   return {
     users: state.db.users,
+    games: state.db.games,
   };
 }
 
@@ -25,13 +26,18 @@ type Props = PropsFromRedux & {
 }
 
 interface IFormInputs {
-  WhiteUserId: string
+  WhiteUser: string
+  BlackUser: string
+  Winner: string
 }
 
 function GameForm(props: Props) {
+  const { games } = props;
   const isDeleteForm = props.formId === 'deleteForm';
 
-  const { handleSubmit, control, reset } = useForm<IFormInputs>();
+  const { handleSubmit, control, watch } = useForm<IFormInputs>();
+
+  const watchWinner = watch('Winner');
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     console.log('submit');
@@ -41,19 +47,78 @@ function GameForm(props: Props) {
 
   const onError: SubmitErrorHandler<IFormInputs> = 
     (errors: Object, e?: BaseSyntheticEvent) => console.log(errors, e);
-  
+
+  const lastGame = games[games.length - 1];
+  let lastGameWinner: string;
+  if(lastGame.winner === lastGame.white) {
+    lastGameWinner = 'white';
+  } else if(lastGame.winner === lastGame.black) {
+    lastGameWinner = 'black';
+  } else {
+    lastGameWinner = 'draw';
+  }
+
+  let bgWhite: string;
+  switch(watchWinner) {
+    case 'white':
+      bgWhite = '#388e3c';
+      break;
+    case 'black':
+      bgWhite = '#d32f2f';
+      break;
+    default:
+      bgWhite = 'auto';
+      break;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} id={props.formId}>
       <Controller
-        name="WhiteUserId"
+        name="WhiteUser"
         control={control}
-        render={({ field }) => (
+        rules={{ required: true }}
+        render={({ field, fieldState: { error } }) => (
                 <SelectGamer 
                     {...field}
                     label='Белые'
                     users={props.users}
                     disabled={isDeleteForm}
+                    defaultValue={isDeleteForm ? lastGame.white : ''}
+                    error={error}
+                />
+            )
+        }
+      />
+
+      <Controller
+        name="BlackUser"
+        control={control}
+        rules={{ required: true }}
+        render={({ field, fieldState: { error }  }) => (
+                <SelectGamer 
+                    {...field}
+                    label='Чёрные'
+                    users={props.users}
+                    disabled={isDeleteForm}
+                    defaultValue={isDeleteForm ? lastGame.black : ''}
+                    error={error}
+                />
+            )
+        }
+      />
+
+      <Controller
+        name="Winner"
+        control={control}
+        rules={{ required: true }}
+        render={({ field, fieldState: { error }  }) => (
+                <SelectWinner 
+                    {...field}
+                    label='Кто выиграл'
+                    users={props.users}
+                    disabled={isDeleteForm}
+                    defaultValue={isDeleteForm ? lastGameWinner : ''}
+                    error={error}
                 />
             )
         }
