@@ -6,6 +6,8 @@ import SelectWinner from './SelectWinner'
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 
+import { UserData, SendData } from "../types"
+
 
 
 function mapStateToProps(state: RootState) {
@@ -14,8 +16,6 @@ function mapStateToProps(state: RootState) {
     games: state.db.games,
   };
 }
-
-
 
 const connector = connect(mapStateToProps);
 
@@ -33,7 +33,7 @@ interface IFormInputs {
 }
 
 function GameForm(props: Props) {
-  const { games } = props;
+  const { users, games } = props;
   const isDeleteForm = props.formId === 'deleteForm';
 
   const { handleSubmit, control, watch } = useForm<IFormInputs>();
@@ -46,22 +46,27 @@ function GameForm(props: Props) {
     if(isDeleteForm) {
 
     } else {
-      let winner: string | null;
+      let sendData = new SendData(new UserData(parseInt(data.whiteUser), users),
+                                  new UserData(parseInt(data.blackUser), users));
       switch(data.winner) {
         case 'white':
-          winner = data.whiteUser;
+          sendData.white.increaseScore(1);
+          sendData.winner = parseInt(data.whiteUser);
           break;
         case 'black':
-          winner = data.whiteUser;
+          sendData.black.increaseScore(1);
+          sendData.winner = parseInt(data.blackUser);
           break;
         default:
-          winner = null;
+          sendData.white.increaseScore(0.5);
+          sendData.black.increaseScore(0.5);
+          sendData.winner = null;
           break;
       }
       fetch('/api/game/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, winner }),
+        body: JSON.stringify(sendData),
       });
     }
     props.handleClose();
@@ -92,7 +97,7 @@ function GameForm(props: Props) {
                   <SelectGamer 
                       {...field}
                       label='Белые'
-                      users={props.users}
+                      users={users}
                       disabled={isDeleteForm}
                       defaultValue={isDeleteForm ? lastGame.white : ''}
                       error={error}
@@ -111,7 +116,7 @@ function GameForm(props: Props) {
                 <SelectGamer 
                     {...field}
                     label='Чёрные'
-                    users={props.users}
+                    users={users}
                     disabled={isDeleteForm}
                     defaultValue={isDeleteForm ? lastGame.black : ''}
                     error={error}
@@ -130,7 +135,7 @@ function GameForm(props: Props) {
                 <SelectWinner 
                     {...field}
                     label='Кто выиграл'
-                    users={props.users}
+                    users={users}
                     disabled={isDeleteForm}
                     defaultValue={isDeleteForm ? lastGameWinner : ''}
                     error={error}

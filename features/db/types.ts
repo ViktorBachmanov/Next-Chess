@@ -2,6 +2,7 @@ export interface User {
     id: number;
     name: string;
     rating: number;
+    score: number;
 }
   
 export interface Game {

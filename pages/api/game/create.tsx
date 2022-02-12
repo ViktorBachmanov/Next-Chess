@@ -1,17 +1,53 @@
 import prisma from '../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { SendData } from "../../../types"
+import { User } from "../../../features/db/types"
+
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const { whiteUser, blackUser, winner } = req.body;
+  const sendData: SendData = req.body;
 
-  const result = await prisma.game.create({
+  const gameAddRslt = await prisma.game.create({
     data: {
-      white: whiteUser,
-      black: blackUser,
-      winner: winner,
+      white: sendData.white.id,
+      black: sendData.black.id,
+      winner: sendData.winner,
     },
   });
 
-  res.json(result);
+  let whiteNewScore = sendData.white.score;
+  if(whiteNewScore !== undefined) {
+    await updateScore(sendData.white.id, whiteNewScore);
+  }
+
+  let blackNewScore = sendData.black.score;
+  if(blackNewScore !== undefined) {
+    await updateScore(sendData.black.id, blackNewScore);
+  }
+  /*
+  await prisma.user.update({
+    where: {
+      id: sendData.white.id
+    },
+    data: {
+      score: sendData.white.score
+    }
+  });*/
+
+  res.json(gameAddRslt);
+}
+
+
+// helper functions
+
+function updateScore(userId: number, newVal: number) {
+  return prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      score: newVal
+    }
+  });
 }
