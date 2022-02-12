@@ -27,9 +27,9 @@ type Props = PropsFromRedux & {
 }
 
 interface IFormInputs {
-  WhiteUser: string
-  BlackUser: string
-  Winner: string
+  whiteUser: string
+  blackUser: string
+  winner: string
 }
 
 function GameForm(props: Props) {
@@ -38,11 +38,32 @@ function GameForm(props: Props) {
 
   const { handleSubmit, control, watch } = useForm<IFormInputs>();
 
-  const watchWinner = watch('Winner');
+  const watchWinner = watch('winner');
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     console.log('submit');
     console.log(data);
+    if(isDeleteForm) {
+
+    } else {
+      let winner: string | null;
+      switch(data.winner) {
+        case 'white':
+          winner = data.whiteUser;
+          break;
+        case 'black':
+          winner = data.whiteUser;
+          break;
+        default:
+          winner = null;
+          break;
+      }
+      fetch('/api/game/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, winner }),
+      });
+    }
     props.handleClose();
   }
 
@@ -63,7 +84,7 @@ function GameForm(props: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} id={props.formId}>
       <Controller
-        name="WhiteUser"
+        name="whiteUser"
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error } }) => (
@@ -83,7 +104,7 @@ function GameForm(props: Props) {
       />
 
       <Controller
-        name="BlackUser"
+        name="blackUser"
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error }  }) => (
@@ -102,7 +123,7 @@ function GameForm(props: Props) {
       />
 
       <Controller
-        name="Winner"
+        name="winner"
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error }  }) => (

@@ -15,6 +15,7 @@ model User {
   id            Int       @default(autoincrement()) @id
   name          String
   rating        Int
+  score         Float     @default(0)
   @@map(name: "users")
 }
 
@@ -22,6 +23,6 @@ model Game {
   id            Int       @default(autoincrement()) @id
   white         Int
   black         Int
-  winner        Int
+  winner        Int?
   @@map(name: "games")
 }

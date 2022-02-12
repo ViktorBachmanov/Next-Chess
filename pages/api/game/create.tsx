@@ -3,12 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+  const { whiteUser, blackUser, winner } = req.body;
 
   const result = await prisma.game.create({
     data: {
-      white: 5,
-      black: 6,
-      winner: 6,
+      white: whiteUser,
+      black: blackUser,
+      winner: winner,
     },
   });
 
