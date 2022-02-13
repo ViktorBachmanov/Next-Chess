@@ -21,8 +21,11 @@ export class UserData {
 }
   
 export class SendData {
-    public winner: number | null | undefined;
+    public winner: number | null;
   
     constructor(public readonly white: UserData,
-                public readonly black: UserData) { }
+                public readonly black: UserData)
+    { 
+        this.winner = null;
+    }
 }
