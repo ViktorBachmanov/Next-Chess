@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-
 import { User, Game, RequestStatus } from './types'
+
+import { SendData } from "../../types"
+
 
 interface DbState {
   users: User[]
@@ -11,7 +13,7 @@ interface DbState {
 }
 
 const initialState: DbState = {
-  users: [{id: 1, name: '', rating: 0}],
+  users: [{id: 1, name: '', rating: 0, score: 0}],
   games: [{id: 1, white: 1, black: 2, winner: 2}],
   requestStatus: RequestStatus.LOADING,
 };
@@ -25,8 +27,6 @@ const initialState: DbState = {
 export const fetchTables = createAsyncThunk(
     "db/fetchTables",
     async () => {
-        let users: any;
-        let games: any;
         const response = await fetch('/api/db/fetch');
             
         const tables = response.json();
@@ -37,6 +37,28 @@ export const fetchTables = createAsyncThunk(
         
     }
   );
+
+export const createGame = createAsyncThunk(
+  "db/createGame",
+  async (sendData: SendData, { dispatch }) => {
+      const response = await fetch('/api/game/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sendData),
+      });
+
+      dispatch(fetchTables());
+
+      //await fetch('/api/db/fetch');
+          
+      //const tables = response.json();
+      //console.log('AsyncThunk', tables);
+      //return tables;        
+    
+      // The value we return becomes the `fulfilled` action payload
+      
+  }
+);
 
 export const dbSlice = createSlice({
   name: "db",
@@ -61,6 +83,12 @@ export const dbSlice = createSlice({
         const tables: any = action.payload;
         state.users = tables[0];
         state.games = tables[1];
+        state.requestStatus = RequestStatus.IDLE;
+      })
+      .addCase(createGame.pending, (state) => {
+        state.requestStatus = RequestStatus.LOADING;
+      })
+      .addCase(createGame.fulfilled, (state) => {
         state.requestStatus = RequestStatus.IDLE;
       })
     }

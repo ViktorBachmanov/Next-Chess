@@ -6,6 +6,8 @@ import SelectWinner from './SelectWinner'
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 
+import { createGame as createGameAction } from "../features/db/dbSlice"
+
 import { UserData, SendData } from "../types"
 
 
@@ -17,7 +19,11 @@ function mapStateToProps(state: RootState) {
   };
 }
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = {
+  createGame: createGameAction,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -33,7 +39,7 @@ interface IFormInputs {
 }
 
 function GameForm(props: Props) {
-  const { users, games } = props;
+  const { users, games, createGame } = props;
   const isDeleteForm = props.formId === 'deleteForm';
 
   const { handleSubmit, control, watch } = useForm<IFormInputs>();
@@ -63,11 +69,8 @@ function GameForm(props: Props) {
           sendData.winner = null;
           break;
       }
-      fetch('/api/game/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sendData),
-      });
+      
+      createGame(sendData)
     }
     props.handleClose();
   }

@@ -40,18 +40,9 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
     fetchTables();
   }, [fetchTables])
 
-  function handleNewGame() {
-    fetch('/api/game/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
+  
 
-  }
-
-  if(requestStatus === RequestStatus.LOADING) {
-    return <h2>Loading...</h2>
-  }
-
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -65,25 +56,12 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 
         <AppBarChess />
 
-        {/*props.users.map(user => (
-          <div key={user.id}>
-            {user.name}
-          </div>
-        ))*/}
-        {console.log(users)}
-
-        <Link href='/api/auth/login'>
-          <a style={{color: 'silver', marginBottom: '2rem'}}>Login</a>
-        </Link>
-
-        {/*<Link href='/game/new'>
-          <a style={{color: 'silver'}}>Create</a>
-  </Link>*/}
-
-        <button onClick={handleNewGame}>Add game</button>
-
         
 
+        {requestStatus === RequestStatus.LOADING ?
+           <h2>Loading...</h2>
+            :      
+          <>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -122,6 +100,8 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
             </p>
           </a>
         </div>
+        </>
+      }
       </main>
 
       <footer className={styles.footer}>
