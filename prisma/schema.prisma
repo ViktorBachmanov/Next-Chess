@@ -24,5 +24,7 @@ model Game {
   white         Int
   black         Int
   winner        Int?
+  date          DateTime  @db.Date
+  time          DateTime  @db.Time()
   @@map(name: "games")
 }
