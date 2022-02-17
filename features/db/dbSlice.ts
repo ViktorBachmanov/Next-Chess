@@ -1,20 +1,19 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-import { User, Game, RequestStatus } from './types'
+import { User, Game, RequestStatus } from "./types";
 
-import { SendData } from "../../types"
-
+import { SendData } from "../../types";
 
 interface DbState {
-  users: User[]
-  games: Game[]
-  requestStatus: RequestStatus
+  users: User[];
+  games: Game[];
+  requestStatus: RequestStatus;
 }
 
 const initialState: DbState = {
-  users: [{id: 1, name: '', rating: 0, score: 0}],
-  games: [{id: 1, white: 1, black: 2, winner: 2}],
+  users: [{ id: 1, name: "", rating: 0, score: 0 }],
+  games: [{ id: 1, white: 1, black: 2, winner: 2 }],
   requestStatus: RequestStatus.LOADING,
 };
 
@@ -24,39 +23,43 @@ const initialState: DbState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 
-export const fetchTables = createAsyncThunk(
-    "db/fetchTables",
-    async () => {
-        const response = await fetch('/api/db/fetch');
-            
-        const tables = response.json();
-        console.log('AsyncThunk', tables);
-        return tables;        
-      
-        // The value we return becomes the `fulfilled` action payload
-        
-    }
-  );
+export const fetchTables = createAsyncThunk("db/fetchTables", async () => {
+  const response = await fetch("/api/db/fetch");
+
+  const tables = response.json();
+  console.log("AsyncThunk", tables);
+  return tables;
+
+  // The value we return becomes the `fulfilled` action payload
+});
 
 export const createGame = createAsyncThunk(
   "db/createGame",
   async (sendData: SendData, { dispatch }) => {
-      const response = await fetch('/api/game/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sendData),
-      });
+    const response = await fetch("/api/game/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(sendData),
+    });
 
-      dispatch(fetchTables());
+    dispatch(fetchTables());
 
-      //await fetch('/api/db/fetch');
-          
-      //const tables = response.json();
-      //console.log('AsyncThunk', tables);
-      //return tables;        
-    
-      // The value we return becomes the `fulfilled` action payload
-      
+    //await fetch('/api/db/fetch');
+
+    //const tables = response.json();
+    //console.log('AsyncThunk', tables);
+    //return tables;
+
+    // The value we return becomes the `fulfilled` action payload
+  }
+);
+
+export const deleteGame = createAsyncThunk(
+  "db/deleteGame",
+  async (gameId: number, { dispatch }) => {
+    dispatch(fetchTables());
+
+    // The value we return becomes the `fulfilled` action payload
   }
 );
 
@@ -70,7 +73,6 @@ export const dbSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-
       //state.title = action.payload;
     },
   },
@@ -90,8 +92,8 @@ export const dbSlice = createSlice({
       })
       .addCase(createGame.fulfilled, (state) => {
         state.requestStatus = RequestStatus.IDLE;
-      })
-    }
+      });
+  },
 });
 
 export const { setTitle } = dbSlice.actions;
@@ -102,7 +104,6 @@ export const { setTitle } = dbSlice.actions;
 //export const selectTitle = (state: RootState) => state.appbar.title;
 
 export default dbSlice.reducer;
-
 
 /*
 
