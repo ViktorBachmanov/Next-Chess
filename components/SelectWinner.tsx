@@ -4,7 +4,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { User } from "../features/db/types";
 
 export enum Won {
   WHITE,
@@ -15,7 +14,7 @@ export enum Won {
 type Props = {
   label: string;
   defaultValue: string | number;
-  users: User[];
+  users: Array<any>;
   disabled: boolean;
   onChange?: (value: any) => void;
   error?: any;

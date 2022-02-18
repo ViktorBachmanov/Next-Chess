@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-import { User, Game, RequestStatus } from "./types";
+import { RequestStatus } from "./types";
 
 import { SendData } from "../../types";
 
 interface DbState {
-  users: User[];
-  games: Game[];
+  users: Array<any>;
+  games: Array<any>;
   requestStatus: RequestStatus;
 }
 
 const initialState: DbState = {
-  users: [{ id: 1, name: "", rating: 0, score: 0 }],
-  games: [{ id: 1, white: 1, black: 2, winner: 2 }],
+  users: [],
+  games: [],
   requestStatus: RequestStatus.LOADING,
 };
 
