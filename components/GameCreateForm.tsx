@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 import SelectGamer from "./SelectGamer";
 import SelectWinner from "./SelectWinner";
+import LocalizedDatePicker from "./LocalizedDatePicker";
 
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
@@ -39,12 +40,17 @@ interface IFormInputs {
   whiteUser: string;
   blackUser: string;
   winner: string;
+  day: Date;
 }
 
 function GameCreateForm(props: Props) {
   const { users, games, createGame } = props;
 
-  const { handleSubmit, control, watch } = useForm<IFormInputs>();
+  const { handleSubmit, control, watch } = useForm<IFormInputs>({
+    defaultValues: {
+      day: new Date(),
+    },
+  });
 
   const watchWinner = watch("winner");
 
@@ -72,6 +78,10 @@ function GameCreateForm(props: Props) {
         break;
     }
 
+    if (data.day) {
+      sendData.day = data.day;
+    }
+
     createGame(sendData);
 
     props.handleClose();
@@ -80,7 +90,7 @@ function GameCreateForm(props: Props) {
   const onError: SubmitErrorHandler<IFormInputs> = (
     errors: Object,
     e?: BaseSyntheticEvent
-  ) => console.log(errors, e);
+  ) => console.log("Error", errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} id={props.formId}>
@@ -133,6 +143,14 @@ function GameCreateForm(props: Props) {
             defaultValue=""
             error={error}
           />
+        )}
+      />
+
+      <Controller
+        name="day"
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <LocalizedDatePicker {...field} disabled={false} error={error} />
         )}
       />
     </form>
