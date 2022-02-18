@@ -24,7 +24,7 @@ model Game {
   white         Int
   black         Int
   winner        Int?
-  date          DateTime  @db.Date
-  time          DateTime  @db.Time()
+  day           DateTime  @db.Date
+  createdAt     DateTime  @default(now())
   @@map(name: "games")
 }
