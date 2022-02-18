@@ -6,7 +6,7 @@ import {
   SubmitErrorHandler,
 } from "react-hook-form";
 import SelectGamer from "./SelectGamer";
-import SelectWinner from "./SelectWinner";
+import SelectWinner, { Won } from "./SelectWinner";
 import LocalizedDatePicker from "./LocalizedDatePicker";
 
 import { connect, ConnectedProps } from "react-redux";
@@ -37,9 +37,9 @@ type Props = PropsFromRedux & {
 };
 
 interface IFormInputs {
-  whiteUser: string;
-  blackUser: string;
-  winner: string;
+  whiteUser: number;
+  blackUser: number;
+  winner: number;
   day: Date;
 }
 
@@ -59,18 +59,19 @@ function GameCreateForm(props: Props) {
     console.log(data);
 
     let sendData = new SendData(
-      new UserData(parseInt(data.whiteUser), users),
-      new UserData(parseInt(data.blackUser), users)
+      new UserData(data.whiteUser, users),
+      new UserData(data.blackUser, users)
     );
     switch (data.winner) {
-      case "white":
+      case Won.WHITE:
         sendData.white.increaseScore(1);
-        sendData.winner = parseInt(data.whiteUser);
+        sendData.winner = data.whiteUser;
         break;
-      case "black":
+      case Won.BLACK:
         sendData.black.increaseScore(1);
-        sendData.winner = parseInt(data.blackUser);
+        sendData.winner = data.blackUser;
         break;
+      case Won.DRAW:
       default:
         sendData.white.increaseScore(0.5);
         sendData.black.increaseScore(0.5);
@@ -107,7 +108,7 @@ function GameCreateForm(props: Props) {
             defaultValue=""
             error={error}
             color={"silver"}
-            transform={watchWinner === "black" ? "rotate(-100deg)" : null}
+            transform={watchWinner === Won.BLACK ? "rotate(-100deg)" : null}
           />
         )}
       />
@@ -125,7 +126,7 @@ function GameCreateForm(props: Props) {
             defaultValue=""
             error={error}
             color={"black"}
-            transform={watchWinner === "white" ? "rotate(-97deg)" : null}
+            transform={watchWinner === Won.WHITE ? "rotate(-97deg)" : null}
           />
         )}
       />

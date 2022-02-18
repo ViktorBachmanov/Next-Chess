@@ -6,6 +6,12 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { User } from "../features/db/types";
 
+export enum Won {
+  WHITE,
+  BLACK,
+  DRAW,
+}
+
 type Props = {
   label: string;
   defaultValue: string | number;
@@ -35,9 +41,9 @@ const SelectWinner = React.forwardRef(function SelectWinner(props: Props, ref) {
         ref={ref}
         onChange={props.onChange}
       >
-        <MenuItem value="white">Белые</MenuItem>
-        <MenuItem value="black">Чёрные</MenuItem>
-        <MenuItem value="draw">Ничья</MenuItem>
+        <MenuItem value={Won.WHITE}>Белые</MenuItem>
+        <MenuItem value={Won.BLACK}>Чёрные</MenuItem>
+        <MenuItem value={Won.DRAW}>Ничья</MenuItem>
       </Select>
 
       {props.error && <FormHelperText>Выберите результат</FormHelperText>}
