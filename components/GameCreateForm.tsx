@@ -33,7 +33,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   formId: string;
-  handleClose: () => void;
+  //handleClose: () => void;
 };
 
 interface IFormInputs {
@@ -82,9 +82,9 @@ function GameCreateForm(props: Props) {
       sendData.day = data.day;
     }
 
-    createGame(sendData);
+    //props.handleClose();
 
-    props.handleClose();
+    createGame(sendData);
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (

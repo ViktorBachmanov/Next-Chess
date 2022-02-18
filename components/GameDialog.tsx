@@ -29,14 +29,14 @@ export default function GameDialog(props: Props) {
 
   return (
     <div>
-      <Dialog open={props.isDialogOpen} onClose={handleClose}>
+      <Dialog open={props.isDialogOpen}>
         <DialogTitle>{props.title}</DialogTitle>
         <DialogContent>
-          <GameCreateForm formId={formId} handleClose={handleClose} />
+          <GameCreateForm formId={formId} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>
-          <Button type="submit" form={formId}>
+          <Button onClick={handleClose} type="submit" form={formId}>
             {props.submitButtonLabel}
           </Button>
         </DialogActions>
