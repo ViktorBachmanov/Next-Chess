@@ -22,13 +22,12 @@ export class UserData {
 
 export class SendData {
   public winner: number | null;
-  public day: Date;
 
   constructor(
     public readonly white: UserData,
-    public readonly black: UserData
+    public readonly black: UserData,
+    public day: Date = new Date()
   ) {
     this.winner = null;
-    this.day = new Date();
   }
 }
