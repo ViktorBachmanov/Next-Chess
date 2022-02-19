@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import GameCreateForm from "./GameCreateForm";
+import GameDeleteForm from "./GameDeleteForm";
 
 interface Props {
   isDialogOpen: boolean;
@@ -25,15 +26,20 @@ export default function GameDialog(props: Props) {
     props.setDialogOpen(false);
   };
 
-  const formId = props.title === "Новая партия" ? "createForm" : "deleteForm";
+  //const formId = props.title === "Новая партия" ? "createForm" : "deleteForm";
+  const formId = "gameForm";
+  const formEl =
+    props.title === "Новая партия" ? (
+      <GameCreateForm formId={formId} />
+    ) : (
+      <GameDeleteForm formId={formId} />
+    );
 
   return (
     <div>
       <Dialog open={props.isDialogOpen}>
         <DialogTitle>{props.title}</DialogTitle>
-        <DialogContent>
-          <GameCreateForm formId={formId} />
-        </DialogContent>
+        <DialogContent>{formEl}</DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>
           <Button onClick={handleClose} type="submit" form={formId}>

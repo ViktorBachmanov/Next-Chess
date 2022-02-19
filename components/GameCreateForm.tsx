@@ -39,7 +39,7 @@ type Props = PropsFromRedux & {
 interface IFormInputs {
   whiteUser: number;
   blackUser: number;
-  winner: number;
+  winner: Won;
   day: Date;
 }
 

@@ -57,6 +57,12 @@ export const createGame = createAsyncThunk(
 export const deleteGame = createAsyncThunk(
   "db/deleteGame",
   async (gameId: number, { dispatch }) => {
+    const response = await fetch("/api/game/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(gameId),
+    });
+
     dispatch(fetchTables());
 
     // The value we return becomes the `fulfilled` action payload
@@ -91,6 +97,12 @@ export const dbSlice = createSlice({
         state.requestStatus = RequestStatus.LOADING;
       })
       .addCase(createGame.fulfilled, (state) => {
+        state.requestStatus = RequestStatus.IDLE;
+      })
+      .addCase(deleteGame.pending, (state) => {
+        state.requestStatus = RequestStatus.LOADING;
+      })
+      .addCase(deleteGame.fulfilled, (state) => {
         state.requestStatus = RequestStatus.IDLE;
       });
   },

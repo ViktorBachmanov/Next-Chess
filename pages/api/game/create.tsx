@@ -2,7 +2,6 @@ import prisma from "../../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { SendData } from "../../../types";
-import { User } from "../../../features/db/types";
 
 export default async function handle(
   req: NextApiRequest,

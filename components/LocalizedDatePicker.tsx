@@ -8,7 +8,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 interface Props {
   disabled: boolean;
   error?: any;
-  onChange: (value: any) => void;
+  onChange?: (value: any) => void;
   value: Date;
 }
 
@@ -26,7 +26,7 @@ const LocalizedDatePicker = React.forwardRef(function LocalizedDatePicker(
         <DatePicker
           mask={"__.__.____"}
           value={props.value}
-          onChange={(newValue) => props.onChange(newValue)}
+          onChange={(newValue) => props.onChange!(newValue)}
           inputRef={() => ref}
           renderInput={(params) => <TextField {...params} />}
           disabled={props.disabled}

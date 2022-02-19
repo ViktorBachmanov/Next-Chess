@@ -1,6 +1,7 @@
 import React, { BaseSyntheticEvent } from "react";
 import SelectGamer from "./SelectGamer";
-import SelectWinner from "./SelectWinner";
+import SelectWinner, { Won } from "./SelectWinner";
+import LocalizedDatePicker from "./LocalizedDatePicker";
 
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
@@ -24,34 +25,25 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   formId: string;
-  handleClose: () => void;
 };
-
-interface IFormInputs {
-  whiteUser: string;
-  blackUser: string;
-  winner: string;
-}
 
 function GameDeleteForm(props: Props) {
   const { users, games, deleteGame } = props;
   //const isDeleteForm = props.formId === 'deleteForm';
 
-  const onSubmit = () => {
-    //deleteGame();
-
-    props.handleClose();
-  };
-
   const lastGame = games[games.length - 1];
-  let lastGameWinner: string;
+  let lastGameWinner: Won;
   if (lastGame.winner === lastGame.white) {
-    lastGameWinner = "white";
+    lastGameWinner = Won.WHITE;
   } else if (lastGame.winner === lastGame.black) {
-    lastGameWinner = "black";
+    lastGameWinner = Won.BLACK;
   } else {
-    lastGameWinner = "draw";
+    lastGameWinner = Won.DRAW;
   }
+
+  const onSubmit = () => {
+    deleteGame(lastGame.id);
+  };
 
   return (
     <form onSubmit={onSubmit} id={props.formId}>
@@ -61,7 +53,7 @@ function GameDeleteForm(props: Props) {
         disabled={true}
         defaultValue={lastGame.white}
         color={"silver"}
-        transform={lastGameWinner === "black" ? "rotate(-100deg)" : null}
+        transform={lastGameWinner === Won.BLACK ? "rotate(-100deg)" : null}
       />
 
       <SelectGamer
@@ -70,7 +62,7 @@ function GameDeleteForm(props: Props) {
         disabled={true}
         defaultValue={lastGame.black}
         color={"black"}
-        transform={lastGameWinner === "white" ? "rotate(-97deg)" : null}
+        transform={lastGameWinner === Won.WHITE ? "rotate(-97deg)" : null}
       />
 
       <SelectWinner
@@ -79,6 +71,8 @@ function GameDeleteForm(props: Props) {
         disabled={true}
         defaultValue={lastGameWinner}
       />
+
+      <LocalizedDatePicker disabled={true} value={lastGame.day} />
     </form>
   );
 }

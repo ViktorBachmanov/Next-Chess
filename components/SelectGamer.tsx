@@ -4,12 +4,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { User } from "../features/db/types";
 import IconKing from "./IconKing";
 
 type Props = {
   label: string;
-  users: User[];
+  users: Array<any>;
   onChange?: (value: any) => void;
   disabled: boolean;
   defaultValue: string | number;
