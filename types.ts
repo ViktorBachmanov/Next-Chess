@@ -1,11 +1,9 @@
-import { User } from "./features/db/types";
-
 export class UserData {
-  private userRecord: User | undefined;
+  private userRecord: any;
 
   constructor(
     public readonly id: number,
-    users: Array<User>,
+    users: Array<any>,
     public score?: number
   ) {
     this.userRecord = users.find((user) => user.id == this.id);
