@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
@@ -13,6 +13,7 @@ import { RequestStatus } from "../features/db/types";
 
 import AppBarChess from "../components/AppBarChess";
 import MainTable from "../components/MainTable";
+import SelectDay from "../components/SelectDay";
 
 function mapStateToProps(state: RootState) {
   return {
@@ -33,6 +34,8 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
   const { users, games, requestStatus, fetchTables } = props;
 
+  const [day, setDay] = useState("all");
+
   useEffect(() => {
     console.log("index useEffect()");
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
@@ -50,6 +53,8 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 
       <main className={styles.main}>
         <AppBarChess />
+
+        <SelectDay days={getDistinctDays(games)} onChange={setDay} />
 
         {requestStatus === RequestStatus.LOADING ? (
           <h2>Loading...</h2>
@@ -75,3 +80,11 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 };
 
 export default connector(Home);
+
+// helper functions
+
+function getDistinctDays(games: Array<any>): Array<string> {
+  const dayArray = games.map((game) => game.day);
+
+  return [...new Set(dayArray)];
+}

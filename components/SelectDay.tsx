@@ -7,23 +7,28 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 type Props = {
-  days: Array<Date>;
-  onChange: (value: any) => void;
+  days: Array<string>;
+  onChange: (value: string) => void;
 };
 
 function SelectDay(props: Props) {
   const label = "Игровой день";
 
+  const handleChange = (e: SelectChangeEvent<string>) => {
+    props.onChange(e.target.value);
+  };
+
   return (
-    <Box>
-      <FormControl>
+    <Box style={{ width: "9rem" }}>
+      <FormControl fullWidth>
         <InputLabel>{label}</InputLabel>
-        <Select label={label} onChange={props.onChange} defaultValue="Все">
-          {/*props.days.map((day, index) => (
-            <MenuItem key={index} value={day}>
-              {day}
+        <Select label={label} onChange={handleChange} defaultValue="all">
+          <MenuItem value="all">Все</MenuItem>
+          {props.days.map((day) => (
+            <MenuItem key={day} value={day}>
+              {new Date(day).toLocaleDateString("ru-RU")}
             </MenuItem>
-          ))*/}
+          ))}
         </Select>
       </FormControl>
     </Box>
