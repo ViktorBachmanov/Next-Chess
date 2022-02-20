@@ -43,6 +43,15 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
     fetchTables();
   }, [fetchTables]);
 
+  /*const filteredGames = games.filter((game) => game.day === day);
+  console.log("filteredGames: ", filteredGames);*/
+
+  const { filteredGames, filteredUsers } = filterGamesAndUsersByDay(
+    games,
+    users,
+    day
+  );
+
   return (
     <div className={styles.container}>
       <Head>
@@ -59,7 +68,10 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
         {requestStatus === RequestStatus.LOADING ? (
           <h2>Loading...</h2>
         ) : (
-          <MainTable users={users} games={games} />
+          <MainTable
+            users={filteredUsers || users}
+            games={filteredGames || games}
+          />
         )}
       </main>
 
@@ -88,3 +100,28 @@ function getDistinctDays(games: Array<any>): Array<string> {
 
   return [...new Set(dayArray)];
 }
+
+function filterGamesAndUsersByDay(
+  games: Array<any>,
+  users: Array<any>,
+  day: string
+) {
+  //let filteredGames, filteredUsers
+  if (day === "all") {
+    return { games, users };
+  }
+
+  const filteredGames = games.filter((game) => game.day === day);
+
+  const filteredUsers = users.filter((user) => {
+    return filteredGames.some((game) => {
+      return game.white === user.id || game.black === user.id;
+    });
+  });
+
+  return { filteredGames, filteredUsers };
+}
+/*
+function isUserInGame(userId: number, game: any): boolean {
+  return game.white === userId || game.black === userId;
+}*/

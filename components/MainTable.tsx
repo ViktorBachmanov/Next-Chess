@@ -36,3 +36,5 @@ export default function MainTable(props: Props) {
     </table>
   );
 }
+
+// helper functions
