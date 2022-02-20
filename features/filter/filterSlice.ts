@@ -8,6 +8,7 @@ export interface FilterState {
   //status: "idle" | "loading" | "failed";
   mainTable: Array<Array<any>>;
   isReady: boolean;
+  orderBy: "score" | "rating";
 }
 
 const initialState: FilterState = {
@@ -16,6 +17,7 @@ const initialState: FilterState = {
   users: [],
   mainTable: [],
   isReady: false,
+  orderBy: "rating",
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -51,6 +53,9 @@ export const filterSlice = createSlice({
       state.users = users!;
 
       state.mainTable = generateMainTable(games, users);
+      /*state.mainTable.sort((a, b) => {
+        return b.score - a.score;
+      });*/
 
       state.isReady = true;
     },
@@ -116,9 +121,12 @@ function generateMainTable(games: Array<any>, users: Array<any>) {
       mainTable[i][j] = 0;
     }
 
+    mainTable[i].name = users[i].name;
     mainTable[i].score = 0;
     mainTable[i].games = 0;
   }
+
+  console.log("userIdToTableIndex: ", userIdToTableIndex);
 
   games.forEach((game) => {
     const whiteId = game.white;
@@ -133,6 +141,8 @@ function generateMainTable(games: Array<any>, users: Array<any>) {
     if (game.winner === null) {
       mainTable[whiteIndex].score += 0.5;
       mainTable[blackIndex].score += 0.5;
+      mainTable[whiteIndex][blackIndex] += 0.5;
+      mainTable[blackIndex][whiteIndex] += 0.5;
     } else if (game.winner === whiteId) {
       mainTable[whiteIndex].score++;
       mainTable[whiteIndex][blackIndex]++;
