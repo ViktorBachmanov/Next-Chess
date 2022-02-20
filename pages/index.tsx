@@ -10,6 +10,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 import { fetchTables as fetchTablesAction } from "../features/db/dbSlice";
 import { RequestStatus } from "../features/db/types";
+import { setDayFilter as setDayFilterAction } from "../features/filter/filterSlice";
 
 import AppBarChess from "../components/AppBarChess";
 import MainTable from "../components/MainTable";
@@ -17,14 +18,17 @@ import SelectDay from "../components/SelectDay";
 
 function mapStateToProps(state: RootState) {
   return {
-    users: state.db.users,
-    games: state.db.games,
-    requestStatus: state.db.requestStatus,
+    allGames: state.db.games,
+    users: state.filter.users,
+    games: state.filter.games,
+    //requestStatus: state.filter.status,
+    isFilterReady: state.filter.isReady,
   };
 }
 
 const mapDispatchToProps = {
   fetchTables: fetchTablesAction,
+  setDayFilter: setDayFilterAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -32,25 +36,18 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
-  const { users, games, requestStatus, fetchTables } = props;
+  const { allGames, users, games, isFilterReady, fetchTables } = props;
 
-  const [day, setDay] = useState("all");
+  //const [day, setDay] = useState("all");
 
   useEffect(() => {
     console.log("index useEffect()");
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
-    fetchTables();
+    fetchTables()
+      .unwrap()
+      .then(() => props.setDayFilter("all"));
   }, [fetchTables]);
-
-  /*const filteredGames = games.filter((game) => game.day === day);
-  console.log("filteredGames: ", filteredGames);*/
-
-  const { filteredGames, filteredUsers } = filterGamesAndUsersByDay(
-    games,
-    users,
-    day
-  );
 
   return (
     <div className={styles.container}>
@@ -63,15 +60,16 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
       <main className={styles.main}>
         <AppBarChess />
 
-        <SelectDay days={getDistinctDays(games)} onChange={setDay} />
-
-        {requestStatus === RequestStatus.LOADING ? (
+        {!isFilterReady ? (
           <h2>Loading...</h2>
         ) : (
-          <MainTable
-            users={filteredUsers || users}
-            games={filteredGames || games}
-          />
+          <>
+            <SelectDay
+              days={getDistinctDays(allGames)}
+              onChange={props.setDayFilter}
+            />
+            <MainTable users={users} games={games} />
+          </>
         )}
       </main>
 
@@ -100,28 +98,3 @@ function getDistinctDays(games: Array<any>): Array<string> {
 
   return [...new Set(dayArray)];
 }
-
-function filterGamesAndUsersByDay(
-  games: Array<any>,
-  users: Array<any>,
-  day: string
-) {
-  //let filteredGames, filteredUsers
-  if (day === "all") {
-    return { games, users };
-  }
-
-  const filteredGames = games.filter((game) => game.day === day);
-
-  const filteredUsers = users.filter((user) => {
-    return filteredGames.some((game) => {
-      return game.white === user.id || game.black === user.id;
-    });
-  });
-
-  return { filteredGames, filteredUsers };
-}
-/*
-function isUserInGame(userId: number, game: any): boolean {
-  return game.white === userId || game.black === userId;
-}*/

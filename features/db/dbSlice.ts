@@ -4,6 +4,7 @@ import { RootState } from "../../app/store";
 import { RequestStatus } from "./types";
 
 import { SendData } from "../../types";
+import { setPending } from "../filter/filterSlice";
 
 interface DbState {
   users: Array<any>;
@@ -23,15 +24,20 @@ const initialState: DbState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 
-export const fetchTables = createAsyncThunk("db/fetchTables", async () => {
-  const response = await fetch("/api/db/fetch");
+export const fetchTables = createAsyncThunk(
+  "db/fetchTables",
+  async (_payload, { dispatch }) => {
+    //getState().filter.setPending();
+    dispatch(setPending());
+    const response = await fetch("/api/db/fetch");
 
-  const tables = response.json();
-  console.log("AsyncThunk", tables);
-  return tables;
+    const tables = response.json();
+    console.log("AsyncThunk", tables);
+    return tables;
 
-  // The value we return becomes the `fulfilled` action payload
-});
+    // The value we return becomes the `fulfilled` action payload
+  }
+);
 
 export const createGame = createAsyncThunk(
   "db/createGame",
