@@ -6,6 +6,7 @@ export interface FilterState {
   games: Array<any>;
   users: Array<any>;
   //status: "idle" | "loading" | "failed";
+  mainTable: Array<Array<any>>;
   isReady: boolean;
 }
 
@@ -13,7 +14,7 @@ const initialState: FilterState = {
   day: "all",
   games: [],
   users: [],
-  //status: "loading",
+  mainTable: [],
   isReady: false,
 };
 
@@ -48,7 +49,9 @@ export const filterSlice = createSlice({
       );
       state.games = games!;
       state.users = users!;
-      //state.status = "idle";
+
+      state.mainTable = generateMainTable(games, users);
+
       state.isReady = true;
     },
     setPending: (state) => {
@@ -97,4 +100,47 @@ function filterGamesAndUsersByDay(
   });
 
   return { games: filteredGames, users: filteredUsers };
+}
+
+function generateMainTable(games: Array<any>, users: Array<any>) {
+  const mainTable: Array<any> = [];
+
+  const userIdToTableIndex = new Map();
+
+  for (let i = 0; i < users.length; i++) {
+    userIdToTableIndex.set(users[i].id, i);
+
+    mainTable[i] = [];
+
+    for (let j = 0; j < users.length; j++) {
+      mainTable[i][j] = 0;
+    }
+
+    mainTable[i].score = 0;
+    mainTable[i].games = 0;
+  }
+
+  games.forEach((game) => {
+    const whiteId = game.white;
+    const blackId = game.black;
+
+    const whiteIndex = userIdToTableIndex.get(whiteId);
+    const blackIndex = userIdToTableIndex.get(blackId);
+
+    mainTable[whiteIndex].games++;
+    mainTable[blackIndex].games++;
+
+    if (game.winner === null) {
+      mainTable[whiteIndex].score += 0.5;
+      mainTable[blackIndex].score += 0.5;
+    } else if (game.winner === whiteId) {
+      mainTable[whiteIndex].score++;
+      mainTable[whiteIndex][blackIndex]++;
+    } else {
+      mainTable[blackIndex].score++;
+      mainTable[blackIndex][whiteIndex]++;
+    }
+  });
+
+  return mainTable;
 }

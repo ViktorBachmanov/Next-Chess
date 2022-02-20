@@ -3,10 +3,11 @@ import React from "react";
 interface Props {
   users: Array<any>;
   games: Array<any>;
+  mainTable: Array<Array<any>>;
 }
 
 export default function MainTable(props: Props) {
-  const { users, games } = props;
+  const { users, games, mainTable } = props;
 
   return (
     <table>

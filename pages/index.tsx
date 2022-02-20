@@ -23,6 +23,7 @@ function mapStateToProps(state: RootState) {
     games: state.filter.games,
     //requestStatus: state.filter.status,
     isFilterReady: state.filter.isReady,
+    mainTable: state.filter.mainTable,
   };
 }
 
@@ -36,7 +37,8 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
-  const { allGames, users, games, isFilterReady, fetchTables } = props;
+  const { allGames, users, games, mainTable, isFilterReady, fetchTables } =
+    props;
 
   //const [day, setDay] = useState("all");
 
@@ -68,7 +70,7 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
               days={getDistinctDays(allGames)}
               onChange={props.setDayFilter}
             />
-            <MainTable users={users} games={games} />
+            <MainTable users={users} games={games} mainTable={mainTable} />
           </>
         )}
       </main>
