@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-import { RequestStatus } from "./types";
+import { RequestStatus } from "../types";
 
 import { SendData } from "../../types";
-import { setPending } from "../filter/filterSlice";
+//import { setPending } from "../filter/filterSlice";
 
 interface DbState {
   users: Array<any>;
@@ -28,7 +28,7 @@ export const fetchTables = createAsyncThunk(
   "db/fetchTables",
   async (_payload, { dispatch }) => {
     //getState().filter.setPending();
-    dispatch(setPending());
+    //dispatch(setPending());
     const response = await fetch("/api/db/fetch");
 
     const tables = response.json();

@@ -9,10 +9,11 @@ import { useEffect, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 import { fetchTables as fetchTablesAction } from "../features/db/dbSlice";
-import { RequestStatus } from "../features/db/types";
+import { RequestStatus } from "../features/types";
 import {
   setDayFilter as setDayFilterAction,
   setOrder as setOrderAction,
+  synchronizeMainTable as synchronizeMainTableAction,
 } from "../features/filter/filterSlice";
 
 import AppBarChess from "../components/AppBarChess";
@@ -24,17 +25,18 @@ function mapStateToProps(state: RootState) {
     allGames: state.db.games,
     //users: state.filter.users,
     games: state.filter.games,
-    //requestStatus: state.filter.status,
-    isFilterReady: state.filter.isReady,
+    requestStatus: state.filter.requestStatus,
+    //isFilterReady: state.filter.isReady,
     mainTable: state.filter.mainTable,
     orderBy: state.filter.orderBy,
   };
 }
 
 const mapDispatchToProps = {
-  fetchTables: fetchTablesAction,
+  //fetchTables: fetchTablesAction,
   setDayFilter: setDayFilterAction,
   setOrder: setOrderAction,
+  synchronizeMainTable: synchronizeMainTableAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -46,11 +48,13 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
     allGames,
     games,
     mainTable,
-    isFilterReady,
-    fetchTables,
+    //isFilterReady,
+    //fetchTables,
     setDayFilter,
     orderBy,
     setOrder,
+    requestStatus,
+    synchronizeMainTable,
   } = props;
 
   //const [day, setDay] = useState("all");
@@ -59,10 +63,12 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
     console.log("index useEffect()");
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
-    fetchTables()
+    /*fetchTables()
       .unwrap()
-      .then(() => setDayFilter("all"));
-  }, [fetchTables, setDayFilter]);
+      .then(() => setDayFilter("all"));*/
+
+    synchronizeMainTable();
+  }, [synchronizeMainTable]);
 
   return (
     <div className={styles.container}>
@@ -75,7 +81,7 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
       <main className={styles.main}>
         <AppBarChess />
 
-        {!isFilterReady ? (
+        {requestStatus === RequestStatus.LOADING ? (
           <h2>Loading...</h2>
         ) : (
           <>
