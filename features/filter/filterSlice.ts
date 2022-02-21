@@ -1,23 +1,24 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
+import MainTable, { MainTableRow } from "./MainTable";
 
 export interface FilterState {
   day: string;
+  orderBy: "score" | "rating";
   games: Array<any>;
   users: Array<any>;
   //status: "idle" | "loading" | "failed";
-  mainTable: Array<Array<any>>;
+  mainTable: Array<MainTableRow>;
   isReady: boolean;
-  orderBy: "score" | "rating";
 }
 
 const initialState: FilterState = {
   day: "all",
+  orderBy: "rating",
   games: [],
   users: [],
   mainTable: [],
   isReady: false,
-  orderBy: "rating",
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -35,13 +36,15 @@ export const incrementAsync = createAsyncThunk(
   }
 );*/
 
+const mainTableObject = new MainTable();
+
 export const filterSlice = createSlice({
   name: "filter",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setState: (state, action: PayloadAction<any>) => {
+    setDay: (state, action: PayloadAction<any>) => {
       state.day = action.payload.day;
 
       const { games, users } = filterGamesAndUsersByDay(
@@ -52,20 +55,24 @@ export const filterSlice = createSlice({
       state.games = games!;
       state.users = users!;
 
-      state.mainTable = generateMainTable(games, users);
+      //state.mainTable = generateMainTable(games, users);
       /*state.mainTable.sort((a, b) => {
         return b.score - a.score;
       });*/
+      mainTableObject.regenerate(state.games, state.users);
+      state.mainTable = mainTableObject.getOrderedByScore();
+      //state.mainTable = mainTableObject.getOrderedByRating();
 
       state.isReady = true;
     },
+    setOrder: (state, action: PayloadAction<any>) => {},
     setPending: (state) => {
       state.isReady = false;
     },
   },
 });
 
-export const { setState, setPending } = filterSlice.actions;
+export const { setDay, setPending } = filterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -80,7 +87,7 @@ export const setDayFilter =
     const allUsers = getState().db.users;
     const allGames = getState().db.games;
 
-    dispatch(setState({ day, allUsers, allGames }));
+    dispatch(setDay({ day, allUsers, allGames }));
   };
 
 export default filterSlice.reducer;
@@ -105,52 +112,4 @@ function filterGamesAndUsersByDay(
   });
 
   return { games: filteredGames, users: filteredUsers };
-}
-
-function generateMainTable(games: Array<any>, users: Array<any>) {
-  const mainTable: Array<any> = [];
-
-  const userIdToTableIndex = new Map();
-
-  for (let i = 0; i < users.length; i++) {
-    userIdToTableIndex.set(users[i].id, i);
-
-    mainTable[i] = [];
-
-    for (let j = 0; j < users.length; j++) {
-      mainTable[i][j] = 0;
-    }
-
-    mainTable[i].name = users[i].name;
-    mainTable[i].score = 0;
-    mainTable[i].games = 0;
-  }
-
-  console.log("userIdToTableIndex: ", userIdToTableIndex);
-
-  games.forEach((game) => {
-    const whiteId = game.white;
-    const blackId = game.black;
-
-    const whiteIndex = userIdToTableIndex.get(whiteId);
-    const blackIndex = userIdToTableIndex.get(blackId);
-
-    mainTable[whiteIndex].games++;
-    mainTable[blackIndex].games++;
-
-    if (game.winner === null) {
-      mainTable[whiteIndex].score += 0.5;
-      mainTable[blackIndex].score += 0.5;
-      mainTable[whiteIndex][blackIndex] += 0.5;
-      mainTable[blackIndex][whiteIndex] += 0.5;
-    } else if (game.winner === whiteId) {
-      mainTable[whiteIndex].score++;
-      mainTable[whiteIndex][blackIndex]++;
-    } else {
-      mainTable[blackIndex].score++;
-      mainTable[blackIndex][whiteIndex]++;
-    }
-  });
-
-  return mainTable;
 }

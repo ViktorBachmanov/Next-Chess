@@ -1,9 +1,10 @@
 import React from "react";
+import { MainTableRow } from "../features/filter/MainTable";
 
 interface Props {
   users: Array<any>;
   games: Array<any>;
-  mainTable: any;
+  mainTable: Array<MainTableRow>;
 }
 
 export default function MainTable(props: Props) {
@@ -15,8 +16,8 @@ export default function MainTable(props: Props) {
         <tr>
           <th>№</th>
           <th>ФИО</th>
-          {mainTable.map((row: any, rowNo: number) => {
-            return <th key={row.name}>{rowNo + 1}</th>;
+          {mainTable.map((row: MainTableRow, rowNo: number) => {
+            return <th key={row.userId}>{rowNo + 1}</th>;
           })}
           <th>Очки</th>
           <th>Игры</th>
@@ -35,13 +36,13 @@ export default function MainTable(props: Props) {
             </tr>
           );
         })*/}
-        {mainTable.map((row: any, rowNo: number, table: any) => {
+        {mainTable.map((row: MainTableRow, rowNo: number) => {
           return (
-            <tr key={row.name}>
+            <tr key={row.userId}>
               <td>{rowNo + 1}</td>
-              <td style={{ whiteSpace: "nowrap" }}>{row.name}</td>
-              {row.map((col: any, colNo: number) => {
-                return <td key={row.name + colNo}>{table[rowNo][colNo]}</td>;
+              <td style={{ whiteSpace: "nowrap" }}>{row.userName}</td>
+              {row.cells.map((cell: number, colNo: number) => {
+                return <td key={row.userName + colNo}>{cell}</td>;
               })}
               <td>{row.score}</td>
               <td>{row.games}</td>
