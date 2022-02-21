@@ -10,7 +10,10 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 import { fetchTables as fetchTablesAction } from "../features/db/dbSlice";
 import { RequestStatus } from "../features/db/types";
-import { setDayFilter as setDayFilterAction } from "../features/filter/filterSlice";
+import {
+  setDayFilter as setDayFilterAction,
+  setOrder as setOrderAction,
+} from "../features/filter/filterSlice";
 
 import AppBarChess from "../components/AppBarChess";
 import MainTable from "../components/MainTable";
@@ -19,17 +22,19 @@ import SelectDay from "../components/SelectDay";
 function mapStateToProps(state: RootState) {
   return {
     allGames: state.db.games,
-    users: state.filter.users,
+    //users: state.filter.users,
     games: state.filter.games,
     //requestStatus: state.filter.status,
     isFilterReady: state.filter.isReady,
     mainTable: state.filter.mainTable,
+    orderBy: state.filter.orderBy,
   };
 }
 
 const mapDispatchToProps = {
   fetchTables: fetchTablesAction,
   setDayFilter: setDayFilterAction,
+  setOrder: setOrderAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -37,8 +42,16 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
-  const { allGames, users, games, mainTable, isFilterReady, fetchTables } =
-    props;
+  const {
+    allGames,
+    games,
+    mainTable,
+    isFilterReady,
+    fetchTables,
+    setDayFilter,
+    orderBy,
+    setOrder,
+  } = props;
 
   //const [day, setDay] = useState("all");
 
@@ -48,8 +61,8 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
 
     fetchTables()
       .unwrap()
-      .then(() => props.setDayFilter("all"));
-  }, [fetchTables]);
+      .then(() => setDayFilter("all"));
+  }, [fetchTables, setDayFilter]);
 
   return (
     <div className={styles.container}>
@@ -70,7 +83,11 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
               days={getDistinctDays(allGames)}
               onChange={props.setDayFilter}
             />
-            <MainTable users={users} games={games} mainTable={mainTable} />
+            <MainTable
+              mainTable={mainTable}
+              orderBy={orderBy}
+              setOrder={setOrder}
+            />
           </>
         )}
       </main>

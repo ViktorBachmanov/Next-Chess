@@ -1,15 +1,16 @@
-export class MainTableRow {
-  public cells: Array<number> = [];
-  public userId: number = 0;
-  public userName: string = "";
-  public score: number = 0;
-  public games: number = 0;
-  public rating: number = 0;
-}
+import { MainTableRow, Order } from "./types";
 
 export default class MainTable {
   private orderedByRating: Array<MainTableRow> = [];
   private userIdToByRatingIndex = new Map();
+
+  public getTableOrderedBy(order: Order) {
+    if (order === Order.RATING) {
+      return this.getOrderedByRating();
+    } else {
+      return this.getOrderedByScore();
+    }
+  }
 
   public regenerate(games: Array<any>, users: Array<any>) {
     //const mainTable: Array<any> = [];
@@ -60,13 +61,13 @@ export default class MainTable {
     });
   }
 
-  public getOrderedByRating() {
+  private getOrderedByRating() {
     console.log("this.orderedByRating: ", this.orderedByRating);
 
     return this.orderedByRating;
   }
 
-  public getOrderedByScore() {
+  private getOrderedByScore() {
     const orderedByScore = this.orderedByRating.map((row) => {
       return {
         ...row,

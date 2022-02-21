@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
-import MainTable, { MainTableRow } from "./MainTable";
+import MainTable from "./MainTable";
+import { MainTableRow, Order } from "./types";
 
 export interface FilterState {
   day: string;
-  orderBy: "score" | "rating";
+  orderBy: Order;
   games: Array<any>;
   users: Array<any>;
   //status: "idle" | "loading" | "failed";
@@ -14,7 +15,7 @@ export interface FilterState {
 
 const initialState: FilterState = {
   day: "all",
-  orderBy: "rating",
+  orderBy: Order.RATING,
   games: [],
   users: [],
   mainTable: [],
@@ -60,19 +61,21 @@ export const filterSlice = createSlice({
         return b.score - a.score;
       });*/
       mainTableObject.regenerate(state.games, state.users);
-      state.mainTable = mainTableObject.getOrderedByScore();
-      //state.mainTable = mainTableObject.getOrderedByRating();
+      state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
 
       state.isReady = true;
     },
-    setOrder: (state, action: PayloadAction<any>) => {},
+    setOrder: (state, action: PayloadAction<Order>) => {
+      state.orderBy = action.payload;
+      state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
+    },
     setPending: (state) => {
       state.isReady = false;
     },
   },
 });
 
-export const { setDay, setPending } = filterSlice.actions;
+export const { setDay, setOrder, setPending } = filterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

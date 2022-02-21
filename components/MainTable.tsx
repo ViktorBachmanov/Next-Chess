@@ -1,14 +1,22 @@
 import React from "react";
-import { MainTableRow } from "../features/filter/MainTable";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import Radio from "@mui/material/Radio";
+import { MainTableRow, Order } from "../features/filter/types";
 
 interface Props {
-  users: Array<any>;
-  games: Array<any>;
+  //users: Array<any>;
+  //games: Array<any>;
   mainTable: Array<MainTableRow>;
+  orderBy: Order;
+  setOrder: ActionCreatorWithPayload<Order>;
 }
 
 export default function MainTable(props: Props) {
-  const { users, games, mainTable } = props;
+  const { mainTable, orderBy, setOrder } = props;
+
+  const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOrder(parseInt(e.target.value));
+  };
 
   return (
     <table>
@@ -19,8 +27,27 @@ export default function MainTable(props: Props) {
           {mainTable.map((row: MainTableRow, rowNo: number) => {
             return <th key={row.userId}>{rowNo + 1}</th>;
           })}
-          <th>Очки</th>
+          <th>
+            Очки
+            <Radio
+              checked={orderBy === Order.SCORE}
+              onChange={handleChangeOrder}
+              value={Order.SCORE}
+              name="orderBy"
+              size="small"
+            />
+          </th>
           <th>Игры</th>
+          <th>
+            Рейтинг
+            <Radio
+              checked={orderBy === Order.RATING}
+              onChange={handleChangeOrder}
+              value={Order.RATING}
+              name="orderBy"
+              size="small"
+            />
+          </th>
         </tr>
       </thead>
 
@@ -46,6 +73,7 @@ export default function MainTable(props: Props) {
               })}
               <td>{row.score}</td>
               <td>{row.games}</td>
+              <td></td>
             </tr>
           );
         })}
