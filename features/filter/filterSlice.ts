@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
 import MainTable from "./MainTable";
 import { MainTableRow, Order } from "./types";
-import { fetchTables } from "../db/dbSlice";
+//import { fetchTables } from "../db/dbSlice";
 import { RequestStatus } from "../types";
 
 export interface FilterState {
@@ -32,25 +32,25 @@ const initialState: FilterState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 
-export const synchronizeMainTable = createAsyncThunk(
-  "filter/synchronizeMainTable",
-  async (_payload, { dispatch, getState }) => {
-    await dispatch(fetchTables());
+// export const synchronizeMainTable = createAsyncThunk(
+//   "filter/synchronizeMainTable",
+//   async (_payload, { dispatch, getState }) => {
+//     await dispatch(fetchTables());
 
-    const rootState = getState() as RootState;
-    const filterState = rootState.filter;
+//     const rootState = getState() as RootState;
+//     const filterState = rootState.filter;
 
-    const allUsers = rootState.db.users;
-    const allGames = rootState.db.games;
+//     const allUsers = rootState.db.users;
+//     const allGames = rootState.db.games;
 
-    dispatch(setDay({ day: filterState.day, allUsers, allGames }));
+//     dispatch(setDay({ day: filterState.day, allUsers, allGames }));
 
-    dispatch(setOrder(filterState.orderBy));
+//     dispatch(setOrder(filterState.orderBy));
 
-    // The value we return becomes the `fulfilled` action payload
-    return;
-  }
-);
+//     // The value we return becomes the `fulfilled` action payload
+//     return;
+//   }
+// );
 
 const mainTableObject = new MainTable();
 
@@ -88,15 +88,15 @@ export const filterSlice = createSlice({
     //state.isReady = false;
     //},
   },
-  extraReducers(builder) {
-    builder
-      .addCase(synchronizeMainTable.pending, (state) => {
-        state.requestStatus = RequestStatus.LOADING;
-      })
-      .addCase(synchronizeMainTable.fulfilled, (state, action) => {
-        state.requestStatus = RequestStatus.IDLE;
-      });
-  },
+  // extraReducers(builder) {
+  //   builder
+  //     .addCase(synchronizeMainTable.pending, (state) => {
+  //       state.requestStatus = RequestStatus.LOADING;
+  //     })
+  //     .addCase(synchronizeMainTable.fulfilled, (state, action) => {
+  //       state.requestStatus = RequestStatus.IDLE;
+  //     });
+  // },
 });
 
 export const { setDay, setOrder } = filterSlice.actions;

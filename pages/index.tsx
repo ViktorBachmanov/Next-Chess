@@ -11,40 +11,11 @@ import prisma from "../lib/prisma";
 import { RootState } from "../app/store";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { assignTables } from "../features/db/dbSlice";
-import { RequestStatus } from "../features/types";
-import {
-  synchronizeMainTable,
-  setDayFilter,
-} from "../features/filter/filterSlice";
+import { setDayFilter } from "../features/filter/filterSlice";
 
 import AppBarChess from "../components/AppBarChess";
 import MainTable from "../components/MainTable";
 import SelectDay from "../components/SelectDay";
-
-// function mapStateToProps(state: RootState) {
-//   return {
-//     allGames: state.db.games,
-//     games: state.filter.games,
-//     requestStatus: state.filter.requestStatus,
-//     mainTable: state.filter.mainTable,
-//     orderBy: state.filter.orderBy,
-//   };
-// }
-
-// const mapDispatchToProps = {
-//   setDayFilter: setDayFilterAction,
-//   setOrder: setOrderAction,
-//   synchronizeMainTable: synchronizeMainTableAction,
-// };
-
-// const connector = connect(mapStateToProps, mapDispatchToProps);
-
-// type PropsFromRedux = ConnectedProps<typeof connector>;
-
-// interface Props {
-//   users: Array<any>;
-//   games: Array<any>;
-// }
 
 function Home({
   users,
@@ -60,7 +31,6 @@ function Home({
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
     dispatch(assignTables({ users: allUsers, games: allGames }));
-    //dispatch(synchronizeMainTable());
     dispatch(setDayFilter("all"));
   }, [allUsers, allGames, dispatch]);
 
@@ -110,12 +80,6 @@ export async function getStaticProps() {
     prisma.user.findMany({ orderBy: { name: "asc" } }),
     prisma.game.findMany(),
   ]);
-
-  //console.log("games: ", games);
-
-  // let users: any;
-  // let games: any;
-  //[users, games] = tables;
 
   // By returning { props: { users, games } }, the Home component
   // will receive `posts` as a prop at build time
