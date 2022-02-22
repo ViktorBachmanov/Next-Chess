@@ -80,12 +80,13 @@ export const dbSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    setTitle: (state, action: PayloadAction<string>) => {
+    assignTables: (state, action: PayloadAction<any>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      //state.title = action.payload;
+      state.users = action.payload.users;
+      state.games = action.payload.games;
     },
   },
   extraReducers(builder) {
@@ -114,7 +115,7 @@ export const dbSlice = createSlice({
   },
 });
 
-export const { setTitle } = dbSlice.actions;
+export const { assignTables } = dbSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

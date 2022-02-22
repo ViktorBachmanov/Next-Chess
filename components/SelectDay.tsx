@@ -1,21 +1,25 @@
 import React, { useState } from "react";
+import { useAppDispatch } from "../app/hooks";
+
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { setDayFilter } from "../features/filter/filterSlice";
 
 type Props = {
   days: Array<string>;
-  onChange: (value: string) => void;
 };
 
 function SelectDay(props: Props) {
   const label = "Игровой день";
 
+  const dispatch = useAppDispatch();
+
   const handleChange = (e: SelectChangeEvent<string>) => {
-    props.onChange(e.target.value);
+    dispatch(setDayFilter(e.target.value));
   };
 
   return (
