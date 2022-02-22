@@ -6,7 +6,10 @@ import LocalizedDatePicker from "./LocalizedDatePicker";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 
+import toast from "react-hot-toast";
+
 import { deleteGame as deleteGameAction } from "../features/db/dbSlice";
+import { gameDeletingMessages } from "../features/db/constants";
 
 function mapStateToProps(state: RootState) {
   return {
@@ -43,7 +46,8 @@ function GameDeleteForm(props: Props) {
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    deleteGame(lastGame.id);
+    const rslt = deleteGame(lastGame.id).unwrap();
+    toast.promise(rslt, gameDeletingMessages);
   };
 
   return (

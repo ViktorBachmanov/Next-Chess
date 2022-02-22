@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 
 import prisma from "../lib/prisma";
 
+import { Toaster } from "react-hot-toast";
+
 import { RootState } from "../app/store";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { assignTables } from "../features/db/dbSlice";
@@ -50,7 +52,10 @@ function Home({
         <AppBarChess />
 
         <SelectDay allGames={allGames} />
+
         <MainTable />
+
+        <Toaster />
       </main>
 
       <footer className={styles.footer}>

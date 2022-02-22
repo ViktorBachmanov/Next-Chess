@@ -12,9 +12,12 @@ import LocalizedDatePicker from "./LocalizedDatePicker";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../app/store";
 
+import toast from "react-hot-toast";
+
 import { createGame as createGameAction } from "../features/db/dbSlice";
 
 import { UserData, SendData } from "../types";
+import { gameCreatingMessages } from "../features/db/constants";
 
 function mapStateToProps(state: RootState) {
   return {
@@ -85,7 +88,8 @@ function GameCreateForm(props: Props) {
 
     //props.handleClose();
 
-    createGame(sendData);
+    const rslt = createGame(sendData).unwrap();
+    toast.promise(rslt, gameCreatingMessages);
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (
