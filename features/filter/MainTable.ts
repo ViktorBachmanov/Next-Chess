@@ -20,7 +20,7 @@ export default class MainTable {
     for (let i = 0; i < users.length; i++) {
       this.userIdToByRatingIndex.set(users[i].id, i);
 
-      this.orderedByRating[i] = new MainTableRow();
+      this.orderedByRating[i] = {} as MainTableRow;
 
       this.orderedByRating[i].cells = [];
 
@@ -33,8 +33,6 @@ export default class MainTable {
       this.orderedByRating[i].score = 0;
       this.orderedByRating[i].games = 0;
     }
-
-    console.log("userIdToByRatingIndex: ", this.userIdToByRatingIndex);
 
     games.forEach((game) => {
       const whiteId = game.white;
@@ -59,11 +57,15 @@ export default class MainTable {
         this.orderedByRating[blackIndex].cells[whiteIndex]++;
       }
     });
+
+    console.log("orderedByRating: )", this.orderedByRating);
+    console.log(
+      "JSON.stringify(orderedByRating: )",
+      JSON.stringify(this.orderedByRating)
+    );
   }
 
   private getOrderedByRating() {
-    console.log("this.orderedByRating: ", this.orderedByRating);
-
     return this.orderedByRating;
   }
 
