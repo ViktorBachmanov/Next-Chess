@@ -58,7 +58,7 @@ function Home({
 
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(synchronizeMainTable());
-  }, [assignTables, synchronizeMainTable]);
+  }, [assignTables, synchronizeMainTable, allUsers, allGames, dispatch]);
 
   return (
     <div className={styles.container}>
