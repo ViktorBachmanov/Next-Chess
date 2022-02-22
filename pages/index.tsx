@@ -71,7 +71,7 @@ function Home({
       <main className={styles.main}>
         <AppBarChess />
 
-        <SelectDay days={getDistinctDays(allGames)} />
+        <SelectDay allGames={allGames} />
         <MainTable />
       </main>
 
@@ -120,11 +120,3 @@ export async function getStaticProps() {
 }
 
 export default Home;
-
-// helper functions
-
-function getDistinctDays(games: Array<any>): Array<string> {
-  const dayArray = games.map((game) => game.day);
-
-  return [...new Set(dayArray)];
-}

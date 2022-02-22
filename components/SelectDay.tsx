@@ -10,7 +10,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { setDayFilter } from "../features/filter/filterSlice";
 
 type Props = {
-  days: Array<string>;
+  allGames: Array<any>;
 };
 
 function SelectDay(props: Props) {
@@ -22,13 +22,15 @@ function SelectDay(props: Props) {
     dispatch(setDayFilter(e.target.value));
   };
 
+  const days = getDistinctDays(props.allGames);
+
   return (
     <Box style={{ width: "9rem" }}>
       <FormControl fullWidth>
         <InputLabel>{label}</InputLabel>
         <Select label={label} onChange={handleChange} defaultValue="all">
           <MenuItem value="all">Все</MenuItem>
-          {props.days.map((day) => (
+          {days.map((day) => (
             <MenuItem key={day} value={day}>
               {new Date(day).toLocaleDateString("ru-RU")}
             </MenuItem>
@@ -40,3 +42,11 @@ function SelectDay(props: Props) {
 }
 
 export default SelectDay;
+
+// helper functions
+
+function getDistinctDays(games: Array<any>): Array<string> {
+  const dayArray = games.map((game) => game.day);
+
+  return [...new Set(dayArray)];
+}
