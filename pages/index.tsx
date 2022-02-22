@@ -64,6 +64,10 @@ function Home({
     dispatch(setDayFilter("all"));
   }, [allUsers, allGames, dispatch]);
 
+  const requestStatus = useAppSelector(
+    (state: RootState) => state.db.requestStatus
+  );
+
   return (
     <div className={styles.container}>
       <Head>

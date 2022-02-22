@@ -41,7 +41,8 @@ function GameDeleteForm(props: Props) {
     lastGameWinner = Won.DRAW;
   }
 
-  const onSubmit = () => {
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     deleteGame(lastGame.id);
   };
 
