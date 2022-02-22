@@ -48,7 +48,7 @@ export const createGame = createAsyncThunk(
       body: JSON.stringify(sendData),
     });
 
-    dispatch(fetchTables());
+    //dispatch(fetchTables());
 
     //await fetch('/api/db/fetch');
 
@@ -57,6 +57,7 @@ export const createGame = createAsyncThunk(
     //return tables;
 
     // The value we return becomes the `fulfilled` action payload
+    return;
   }
 );
 
@@ -69,9 +70,10 @@ export const deleteGame = createAsyncThunk(
       body: JSON.stringify(gameId),
     });
 
-    dispatch(fetchTables());
+    //dispatch(fetchTables());
 
     // The value we return becomes the `fulfilled` action payload
+    return;
   }
 );
 
@@ -105,14 +107,14 @@ export const dbSlice = createSlice({
       })
       .addCase(createGame.fulfilled, (state) => {
         state.requestStatus = RequestStatus.IDLE;
-        window.location.reload();
+        //window.location.reload();
       })
       .addCase(deleteGame.pending, (state) => {
         state.requestStatus = RequestStatus.LOADING;
       })
       .addCase(deleteGame.fulfilled, (state) => {
         state.requestStatus = RequestStatus.IDLE;
-        window.location.reload();
+        //window.location.reload();
       });
   },
 });

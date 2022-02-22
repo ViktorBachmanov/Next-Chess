@@ -12,7 +12,10 @@ import { RootState } from "../app/store";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { assignTables } from "../features/db/dbSlice";
 import { RequestStatus } from "../features/types";
-import { synchronizeMainTable } from "../features/filter/filterSlice";
+import {
+  synchronizeMainTable,
+  setDayFilter,
+} from "../features/filter/filterSlice";
 
 import AppBarChess from "../components/AppBarChess";
 import MainTable from "../components/MainTable";
@@ -57,7 +60,8 @@ function Home({
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
     dispatch(assignTables({ users: allUsers, games: allGames }));
-    dispatch(synchronizeMainTable());
+    //dispatch(synchronizeMainTable());
+    dispatch(setDayFilter("all"));
   }, [allUsers, allGames, dispatch]);
 
   return (
