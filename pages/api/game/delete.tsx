@@ -13,5 +13,7 @@ export default async function handle(
     },
   });
 
+  await res.unstable_revalidate("/");
+
   res.json(rslt);
 }

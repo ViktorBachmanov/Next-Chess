@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { NextPage, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,69 +6,59 @@ import styles from "../styles/Home.module.css";
 
 import { useEffect, useState } from "react";
 
-import { connect, ConnectedProps } from "react-redux";
+import prisma from "../lib/prisma";
+
 import { RootState } from "../app/store";
-import { fetchTables as fetchTablesAction } from "../features/db/dbSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { assignTables } from "../features/db/dbSlice";
 import { RequestStatus } from "../features/types";
-import {
-  setDayFilter as setDayFilterAction,
-  setOrder as setOrderAction,
-  synchronizeMainTable as synchronizeMainTableAction,
-} from "../features/filter/filterSlice";
+import { synchronizeMainTable } from "../features/filter/filterSlice";
 
 import AppBarChess from "../components/AppBarChess";
 import MainTable from "../components/MainTable";
 import SelectDay from "../components/SelectDay";
 
-function mapStateToProps(state: RootState) {
-  return {
-    allGames: state.db.games,
-    //users: state.filter.users,
-    games: state.filter.games,
-    requestStatus: state.filter.requestStatus,
-    //isFilterReady: state.filter.isReady,
-    mainTable: state.filter.mainTable,
-    orderBy: state.filter.orderBy,
-  };
-}
+// function mapStateToProps(state: RootState) {
+//   return {
+//     allGames: state.db.games,
+//     games: state.filter.games,
+//     requestStatus: state.filter.requestStatus,
+//     mainTable: state.filter.mainTable,
+//     orderBy: state.filter.orderBy,
+//   };
+// }
 
-const mapDispatchToProps = {
-  //fetchTables: fetchTablesAction,
-  setDayFilter: setDayFilterAction,
-  setOrder: setOrderAction,
-  synchronizeMainTable: synchronizeMainTableAction,
-};
+// const mapDispatchToProps = {
+//   setDayFilter: setDayFilterAction,
+//   setOrder: setOrderAction,
+//   synchronizeMainTable: synchronizeMainTableAction,
+// };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+// const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+// type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
-  const {
-    allGames,
-    games,
-    mainTable,
-    //isFilterReady,
-    //fetchTables,
-    setDayFilter,
-    orderBy,
-    setOrder,
-    requestStatus,
-    synchronizeMainTable,
-  } = props;
+// interface Props {
+//   users: Array<any>;
+//   games: Array<any>;
+// }
 
-  //const [day, setDay] = useState("all");
+function Home({
+  users,
+  games,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const allUsers = JSON.parse(users) as Array<any>;
+  const allGames = JSON.parse(games) as Array<any>;
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     console.log("index useEffect()");
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
-    /*fetchTables()
-      .unwrap()
-      .then(() => setDayFilter("all"));*/
-
-    synchronizeMainTable();
-  }, [synchronizeMainTable]);
+    dispatch(assignTables({ users: allUsers, games: allGames }));
+    dispatch(synchronizeMainTable());
+  }, [allUsers, allGames, dispatch]);
 
   return (
     <div className={styles.container}>
@@ -81,21 +71,8 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
       <main className={styles.main}>
         <AppBarChess />
 
-        {requestStatus === RequestStatus.LOADING ? (
-          <h2>Loading...</h2>
-        ) : (
-          <>
-            <SelectDay
-              days={getDistinctDays(allGames)}
-              onChange={props.setDayFilter}
-            />
-            <MainTable
-              mainTable={mainTable}
-              orderBy={orderBy}
-              setOrder={setOrder}
-            />
-          </>
-        )}
+        <SelectDay days={getDistinctDays(allGames)} />
+        <MainTable />
       </main>
 
       <footer className={styles.footer}>
@@ -112,9 +89,37 @@ const Home: React.FC<PropsFromRedux> = (props: PropsFromRedux) => {
       </footer>
     </div>
   );
-};
+}
 
-export default connector(Home);
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries.
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+
+  const [users, games] = await Promise.all([
+    prisma.user.findMany({ orderBy: { name: "asc" } }),
+    prisma.game.findMany(),
+  ]);
+
+  //console.log("games: ", games);
+
+  // let users: any;
+  // let games: any;
+  //[users, games] = tables;
+
+  // By returning { props: { users, games } }, the Home component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      users: JSON.stringify(users),
+      games: JSON.stringify(games),
+    },
+  };
+}
+
+export default Home;
 
 // helper functions
 

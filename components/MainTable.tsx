@@ -1,17 +1,27 @@
 import React from "react";
+import { RootState } from "../app/store";
+import { connect, ConnectedProps } from "react-redux";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import Radio from "@mui/material/Radio";
+import { setOrder as setOrderAction } from "../features/filter/filterSlice";
 import { MainTableRow, Order } from "../features/filter/types";
 
-interface Props {
-  //users: Array<any>;
-  //games: Array<any>;
-  mainTable: Array<MainTableRow>;
-  orderBy: Order;
-  setOrder: ActionCreatorWithPayload<Order>;
+function mapStateToProps(state: RootState) {
+  return {
+    mainTable: state.filter.mainTable,
+    orderBy: state.filter.orderBy,
+  };
 }
 
-export default function MainTable(props: Props) {
+const mapDispatchToProps = {
+  setOrder: setOrderAction,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function MainTable(props: PropsFromRedux) {
   const { mainTable, orderBy, setOrder } = props;
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,4 +92,4 @@ export default function MainTable(props: Props) {
   );
 }
 
-// helper functions
+export default connector(MainTable);
