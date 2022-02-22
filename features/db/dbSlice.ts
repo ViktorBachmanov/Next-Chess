@@ -106,7 +106,7 @@ export const dbSlice = createSlice({
       .addCase(createGame.fulfilled, (state) => {
         state.requestStatus = RequestStatus.IDLE;
         //state.requestStatus = RequestStatus.CREATED;
-        window.location.reload();
+        //window.location.reload();
       })
       .addCase(deleteGame.pending, (state) => {
         state.requestStatus = RequestStatus.LOADING;
@@ -114,7 +114,7 @@ export const dbSlice = createSlice({
       .addCase(deleteGame.fulfilled, (state) => {
         state.requestStatus = RequestStatus.IDLE;
         //state.requestStatus = RequestStatus.DELETED;
-        window.location.reload();
+        //window.location.reload();
       });
   },
 });
