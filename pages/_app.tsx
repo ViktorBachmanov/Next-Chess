@@ -5,31 +5,11 @@ import { Provider } from "react-redux";
 
 import { store } from "../app/store";
 
-import createMainTheme from "../features/theme/muiTheme";
-import { LightStatus } from "../features/theme/types";
-
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-
-import { Storage } from "../constants";
-
-// window.addEventListener("beforeunload", () => {
-//   localStorage.setItem(
-//     Storage.LIGHT_MODE,
-//     JSON.stringify(store.getState().theme.lightStatus)
-//   );
-// });
-
-const mainTheme = createMainTheme(store.getState().theme.lightStatus);
-
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
       <Provider store={store}>
-        <ThemeProvider theme={mainTheme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <Component {...pageProps} />
       </Provider>
     </UserProvider>
   );

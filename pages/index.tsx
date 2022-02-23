@@ -4,20 +4,25 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 import prisma from "../lib/prisma";
 
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import { Toaster } from "react-hot-toast";
 
-import { RootState } from "../app/store";
+import { RootState, store } from "../app/store";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { assignTables } from "../features/db/dbSlice";
 import { setDayFilter } from "../features/filter/filterSlice";
 
-import AppBarChess from "../components/AppBarChess";
-import MainTable from "../components/MainTable";
-import SelectDay from "../components/SelectDay";
+import Layout from "../components/Layout";
+
+import createMainTheme from "../features/theme/muiTheme";
+
+import { Storage } from "../constants";
 
 function Home({
   users,
@@ -29,6 +34,14 @@ function Home({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    window.addEventListener("beforeunload", saveInLocalStorage);
+
+    return function cleanUp() {
+      window.removeEventListener("beforeunload", saveInLocalStorage);
+    };
+  }, []);
+
+  useEffect(() => {
     console.log("index useEffect()");
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
@@ -36,9 +49,15 @@ function Home({
     dispatch(setDayFilter("all"));
   }, [allUsers, allGames, dispatch]);
 
-  const requestStatus = useAppSelector(
-    (state: RootState) => state.db.requestStatus
+  // const requestStatus = useAppSelector(
+  //   (state: RootState) => state.db.requestStatus
+  // );
+
+  const lightMode = useAppSelector(
+    (state: RootState) => state.theme.lightStatus
   );
+
+  const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
 
   return (
     <div className={styles.container}>
@@ -48,28 +67,10 @@ function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <AppBarChess />
-
-        <SelectDay allGames={allGames} />
-
-        <MainTable />
-
-        <Toaster />
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <ThemeProvider theme={mainTheme}>
+        <CssBaseline />
+        <Layout />
+      </ThemeProvider>
     </div>
   );
 }
@@ -97,3 +98,12 @@ export async function getStaticProps() {
 }
 
 export default Home;
+
+// helper functions
+
+function saveInLocalStorage() {
+  localStorage.setItem(
+    Storage.LIGHT_MODE,
+    JSON.stringify(store.getState().theme.lightStatus)
+  );
+}

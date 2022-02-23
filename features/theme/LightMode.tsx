@@ -26,7 +26,7 @@ function LightMode(props: PropsFromRedux) {
   const { lightMode, setLightMode } = props;
 
   return (
-    <div className="LightMode">
+    <div style={{ cursor: "pointer" }}>
       {lightMode === LightStatus.DARK ? (
         <LightModeIcon onClick={() => setLightMode(LightStatus.LIGHT)} />
       ) : (

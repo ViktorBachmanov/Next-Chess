@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { RootState } from "../app/store";
 
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -9,11 +10,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { setDayFilter } from "../features/filter/filterSlice";
 
-type Props = {
-  allGames: Array<any>;
-};
-
-function SelectDay(props: Props) {
+function SelectDay() {
   const label = "Игровой день";
 
   const dispatch = useAppDispatch();
@@ -22,7 +19,9 @@ function SelectDay(props: Props) {
     dispatch(setDayFilter(e.target.value));
   };
 
-  const days = getDistinctDays(props.allGames);
+  const allGames = useAppSelector((state: RootState) => state.db.games);
+
+  const days = getDistinctDays(allGames);
 
   return (
     <Box style={{ width: "9rem" }}>
