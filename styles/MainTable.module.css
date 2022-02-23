@@ -5,11 +5,27 @@
 
 .MainTable th,
 .MainTable td {
-  border: solid rgb(145, 122, 122) 1px;
+  border: solid 1px;
   text-align: center;
+  padding: 0.5rem;
 }
 
 .MainTable td.userName {
   text-align: left;
   white-space: nowrap;
+}
+
+.self {
+  min-width: 2.5rem;
+  max-width: 2.5rem;
+  min-height: 2.5rem;
+  max-height: 2.5rem;
+  padding: 0;
+  /*
+  background: linear-gradient(
+    170deg,
+    rgb(245, 245, 255) 0%,
+    rgb(235, 240, 245) 55%,
+    rgb(205, 215, 225) 100%
+  );*/
 }

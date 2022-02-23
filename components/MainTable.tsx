@@ -69,7 +69,12 @@ function MainTable(props: PropsFromRedux) {
               <td>{rowNo + 1}</td>
               <td className={styles.userName}>{row.userName}</td>
               {row.cells.map((cell: number, colNo: number) => {
-                return <td key={row.userName + colNo}>{cell}</td>;
+                const key = row.userName + colNo;
+                return rowNo === colNo ? (
+                  <td key={key} className={styles.self}></td>
+                ) : (
+                  <td key={key}>{cell}</td>
+                );
               })}
               <td>{row.score}</td>
               <td>{row.games}</td>

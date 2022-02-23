@@ -3,6 +3,13 @@ import { LightStatus, BgColors } from "./types";
 
 export default function createMainTheme(lightMode: LightStatus) {
   const mainTheme = createTheme({
+    components: {
+      MuiAppBar: {
+        defaultProps: {
+          color: "inherit",
+        },
+      },
+    },
     palette: {
       mode: lightMode === LightStatus.LIGHT ? "light" : "dark",
       background: {
