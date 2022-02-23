@@ -1,6 +1,25 @@
+.smartTable {
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 .MainTable {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+.fixed {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  pointer-events: none;
+}
+
+.MainTable.fixed .hidden {
+  visibility: hidden;
+  border: none;
+  /*background-color: transparent;*/
 }
 
 .MainTable th,
@@ -13,6 +32,10 @@
 .MainTable td.userName {
   text-align: left;
   white-space: nowrap;
+}
+
+.fixed .rowNo {
+  background-color: gray;
 }
 
 .self {

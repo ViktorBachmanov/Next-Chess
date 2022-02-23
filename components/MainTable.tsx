@@ -7,6 +7,14 @@ import { setOrder as setOrderAction } from "../features/filter/filterSlice";
 import { MainTableRow, Order } from "../features/filter/types";
 import styles from "../styles/MainTable.module.css";
 
+import { styled } from "@mui/material/styles";
+
+const MyTd = styled("td")(
+  ({ theme }) => `
+  background: ${theme.palette.background.default};
+`
+);
+
 function mapStateToProps(state: RootState) {
   return {
     mainTable: state.filter.mainTable,
@@ -22,15 +30,19 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function MainTable(props: PropsFromRedux) {
-  const { mainTable, orderBy, setOrder } = props;
+type Props = PropsFromRedux & {
+  isFixed: boolean;
+};
+
+function MainTable(props: Props) {
+  const { mainTable, orderBy, setOrder, isFixed } = props;
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOrder(parseInt(e.target.value));
   };
 
   return (
-    <table className={styles.MainTable}>
+    <table className={`${styles.MainTable} ${isFixed && styles.fixed}`}>
       <thead>
         <tr>
           <th>№</th>
@@ -66,14 +78,19 @@ function MainTable(props: PropsFromRedux) {
         {mainTable.map((row: MainTableRow, rowNo: number) => {
           return (
             <tr key={row.userId}>
-              <td>{rowNo + 1}</td>
-              <td className={styles.userName}>{row.userName}</td>
+              <td className={styles.rowNo}>{rowNo + 1}</td>
+              <MyTd className={styles.userName}>{row.userName}</MyTd>
               {row.cells.map((cell: number, colNo: number) => {
                 const key = row.userName + colNo;
                 return rowNo === colNo ? (
-                  <td key={key} className={styles.self}></td>
+                  <td
+                    key={key}
+                    className={`${styles.self} ${isFixed && styles.hidden}`}
+                  ></td>
                 ) : (
-                  <td key={key}>{cell}</td>
+                  <td key={key} className={`${isFixed && styles.hidden}`}>
+                    {cell}
+                  </td>
                 );
               })}
               <td>{row.score}</td>
