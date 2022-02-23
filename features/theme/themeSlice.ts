@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LightStatus } from "./types";
-import { Storage } from "../../constants";
 
 interface ThemeState {
   lightStatus: LightStatus;
@@ -8,12 +7,6 @@ interface ThemeState {
 
 let initialState: ThemeState;
 
-//const storageState = localStorage.getItem(Storage.LIGHT_MODE);
-//if (storageState) {
-//  initialState = JSON.parse(storageState);
-//} else {
-//initialState = getDefaultState();
-//}
 initialState = { lightStatus: LightStatus.DARK };
 
 export const themeSlice = createSlice({
@@ -36,11 +29,3 @@ export const { setLightStatus } = themeSlice.actions;
 export default themeSlice.reducer;
 
 // helper functions
-
-// function getDefaultState(): ThemeState {
-//   return {
-//     lightStatus: window.matchMedia("(prefers-color-scheme: dark)").matches
-//       ? LightStatus.DARK
-//       : LightStatus.LIGHT,
-//   };
-// }

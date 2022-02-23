@@ -21,6 +21,8 @@ import { setDayFilter } from "../features/filter/filterSlice";
 import Layout from "../components/Layout";
 
 import createMainTheme from "../features/theme/muiTheme";
+import { LightStatus } from "../features/theme/types";
+import { setLightStatus } from "../features/theme/themeSlice";
 
 import { Storage } from "../constants";
 
@@ -34,6 +36,7 @@ function Home({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(setLightStatus(getInitialLightMode()));
     window.addEventListener("beforeunload", saveInLocalStorage);
 
     return function cleanUp() {
@@ -106,4 +109,15 @@ function saveInLocalStorage() {
     Storage.LIGHT_MODE,
     JSON.stringify(store.getState().theme.lightStatus)
   );
+}
+
+function getInitialLightMode(): LightStatus {
+  const storageStatus = localStorage.getItem(Storage.LIGHT_MODE);
+  if (storageStatus) {
+    return JSON.parse(storageStatus);
+  } else {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? LightStatus.DARK
+      : LightStatus.LIGHT;
+  }
 }
