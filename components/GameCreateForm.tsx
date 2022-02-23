@@ -89,9 +89,8 @@ function GameCreateForm(props: Props) {
     //props.handleClose();
 
     const rslt = createGame(sendData).unwrap();
-    toast
-      .promise(rslt, gameCreatingMessages)
-      .then(() => window.location.reload());
+    toast.promise(rslt, gameCreatingMessages);
+    rslt.then(() => window.location.reload());
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (

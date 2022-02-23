@@ -47,9 +47,8 @@ function GameDeleteForm(props: Props) {
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const rslt = deleteGame(lastGame.id).unwrap();
-    toast
-      .promise(rslt, gameDeletingMessages)
-      .then(() => window.location.reload());
+    toast.promise(rslt, gameDeletingMessages);
+    rslt.then(() => window.location.reload());
   };
 
   return (
