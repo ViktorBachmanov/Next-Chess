@@ -1,0 +1,15 @@
+.MainTable {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.MainTable th,
+.MainTable td {
+  border: solid rgb(145, 122, 122) 1px;
+  text-align: center;
+}
+
+.MainTable td.userName {
+  text-align: left;
+  white-space: nowrap;
+}

@@ -5,6 +5,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import Radio from "@mui/material/Radio";
 import { setOrder as setOrderAction } from "../features/filter/filterSlice";
 import { MainTableRow, Order } from "../features/filter/types";
+import styles from "../styles/MainTable.module.css";
 
 function mapStateToProps(state: RootState) {
   return {
@@ -29,7 +30,7 @@ function MainTable(props: PropsFromRedux) {
   };
 
   return (
-    <table>
+    <table className={styles.MainTable}>
       <thead>
         <tr>
           <th>№</th>
@@ -62,22 +63,11 @@ function MainTable(props: PropsFromRedux) {
       </thead>
 
       <tbody>
-        {/*users.map((user, index) => {
-          return (
-            <tr key={user.id}>
-              <td>{index + 1}</td>
-              <td style={{ whiteSpace: "nowrap" }}>{user.name}</td>
-              {users.map((user) => {
-                return <td key={user.id}></td>;
-              })}
-            </tr>
-          );
-        })*/}
         {mainTable.map((row: MainTableRow, rowNo: number) => {
           return (
             <tr key={row.userId}>
               <td>{rowNo + 1}</td>
-              <td style={{ whiteSpace: "nowrap" }}>{row.userName}</td>
+              <td className={styles.userName}>{row.userName}</td>
               {row.cells.map((cell: number, colNo: number) => {
                 return <td key={row.userName + colNo}>{cell}</td>;
               })}
