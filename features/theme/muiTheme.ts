@@ -1,16 +1,5 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-
-
-export enum LightStatus {
-    LIGHT,
-    DARK,
-}
-  
-enum BgColors {
-    DARK = "#102027",
-    LIGHT = "#F7F8FC",
-}
-
+import { LightStatus, BgColors } from "./types";
 
 export default function createMainTheme(lightMode: LightStatus) {
   const mainTheme = createTheme({

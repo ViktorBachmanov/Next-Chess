@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import dbReducer from "../features/db/dbSlice";
 import filterReducer from "../features/filter/filterSlice";
+import themeReducer from "../features/theme/themeSlice";
 
 export const store = configureStore({
   reducer: {
     db: dbReducer,
     filter: filterReducer,
+    theme: themeReducer,
   },
 });
 
