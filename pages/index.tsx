@@ -30,9 +30,6 @@ function Home({
   users,
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const allUsers = JSON.parse(users) as Array<any>;
-  const allGames = JSON.parse(games) as Array<any>;
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -48,9 +45,12 @@ function Home({
     console.log("index useEffect()");
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
+    const allUsers = JSON.parse(users) as Array<any>;
+    const allGames = JSON.parse(games) as Array<any>;
+
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
-  }, [allUsers, allGames, dispatch]);
+  }, [users, games, dispatch]);
 
   // const requestStatus = useAppSelector(
   //   (state: RootState) => state.db.requestStatus
