@@ -19,7 +19,6 @@
 .MainTable.fixed .hidden {
   visibility: hidden;
   border: none;
-  /*background-color: transparent;*/
 }
 
 .MainTable th,
@@ -32,10 +31,6 @@
 .MainTable td.userName {
   text-align: left;
   white-space: nowrap;
-}
-
-.fixed .rowNo {
-  background-color: gray;
 }
 
 .self {

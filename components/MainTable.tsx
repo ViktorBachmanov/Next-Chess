@@ -1,18 +1,26 @@
+/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
+/** @jsxImportSource @emotion/react */
+
 import React from "react";
 import { RootState } from "../app/store";
 import { connect, ConnectedProps } from "react-redux";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import Radio from "@mui/material/Radio";
+import { css } from "@emotion/react";
 import { setOrder as setOrderAction } from "../features/filter/filterSlice";
 import { MainTableRow, Order } from "../features/filter/types";
 import styles from "../styles/MainTable.module.css";
 
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 
-const MyTd = styled("td")(
+const OpaqueTh = styled("td")(
   ({ theme }) => `
-  background: ${theme.palette.background.default};
-`
+  background: ${theme.palette.background.default};`
+);
+
+const OpaqueTd = styled("td")(
+  ({ theme }) => `
+  background: ${theme.palette.background.default};`
 );
 
 function mapStateToProps(state: RootState) {
@@ -41,14 +49,21 @@ function MainTable(props: Props) {
     setOrder(parseInt(e.target.value));
   };
 
+  //const hidden = isFixed ? styles.hidden : "";
+
   return (
     <table className={`${styles.MainTable} ${isFixed && styles.fixed}`}>
       <thead>
         <tr>
-          <th>№</th>
-          <th>ФИО</th>
+          <OpaqueTh>№</OpaqueTh>
+          <OpaqueTh>ФИО</OpaqueTh>
+
           {mainTable.map((row: MainTableRow, rowNo: number) => {
-            return <th key={row.userId}>{rowNo + 1}</th>;
+            return (
+              <th key={row.userId} className={isFixed ? styles.hidden : ""}>
+                {rowNo + 1}
+              </th>
+            );
           })}
           <th>
             Очки
@@ -78,17 +93,17 @@ function MainTable(props: Props) {
         {mainTable.map((row: MainTableRow, rowNo: number) => {
           return (
             <tr key={row.userId}>
-              <td className={styles.rowNo}>{rowNo + 1}</td>
-              <MyTd className={styles.userName}>{row.userName}</MyTd>
+              <OpaqueTd>{rowNo + 1}</OpaqueTd>
+              <OpaqueTd className={styles.userName}>{row.userName}</OpaqueTd>
               {row.cells.map((cell: number, colNo: number) => {
                 const key = row.userName + colNo;
                 return rowNo === colNo ? (
                   <td
                     key={key}
-                    className={`${styles.self} ${isFixed && styles.hidden}`}
+                    className={`${styles.self} ${isFixed ? styles.hidden : ""}`}
                   ></td>
                 ) : (
-                  <td key={key} className={`${isFixed && styles.hidden}`}>
+                  <td key={key} className={isFixed ? styles.hidden : ""}>
                     {cell}
                   </td>
                 );
