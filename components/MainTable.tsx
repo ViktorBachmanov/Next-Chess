@@ -49,7 +49,7 @@ function MainTable(props: Props) {
     setOrder(parseInt(e.target.value));
   };
 
-  //const hidden = isFixed ? styles.hidden : "";
+  const visibility = isFixed ? styles.hidden : "";
 
   return (
     <table className={`${styles.MainTable} ${isFixed && styles.fixed}`}>
@@ -60,12 +60,12 @@ function MainTable(props: Props) {
 
           {mainTable.map((row: MainTableRow, rowNo: number) => {
             return (
-              <th key={row.userId} className={isFixed ? styles.hidden : ""}>
+              <th key={row.userId} className={visibility}>
                 {rowNo + 1}
               </th>
             );
           })}
-          <th>
+          <th className={visibility}>
             Очки
             <Radio
               checked={orderBy === Order.SCORE}
@@ -75,8 +75,8 @@ function MainTable(props: Props) {
               size="small"
             />
           </th>
-          <th>Игры</th>
-          <th>
+          <th className={visibility}>Игры</th>
+          <th className={visibility}>
             Рейтинг
             <Radio
               checked={orderBy === Order.RATING}
@@ -98,19 +98,16 @@ function MainTable(props: Props) {
               {row.cells.map((cell: number, colNo: number) => {
                 const key = row.userName + colNo;
                 return rowNo === colNo ? (
-                  <td
-                    key={key}
-                    className={`${styles.self} ${isFixed ? styles.hidden : ""}`}
-                  ></td>
+                  <td key={key} className={`${styles.self} ${visibility}`}></td>
                 ) : (
-                  <td key={key} className={isFixed ? styles.hidden : ""}>
+                  <td key={key} className={visibility}>
                     {cell}
                   </td>
                 );
               })}
-              <td>{row.score}</td>
-              <td>{row.games}</td>
-              <td></td>
+              <td className={visibility}>{row.score}</td>
+              <td className={visibility}>{row.games}</td>
+              <td className={visibility}></td>
             </tr>
           );
         })}
