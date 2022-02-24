@@ -98,7 +98,9 @@ function MainTable(props: Props) {
               {row.cells.map((cell: number, colNo: number) => {
                 const key = row.userName + colNo;
                 return rowNo === colNo ? (
-                  <td key={key} className={`${styles.self} ${visibility}`}></td>
+                  <td key={key} className={`${styles.self} ${visibility}`}>
+                    {renderPrizePlace(rowNo)}
+                  </td>
                 ) : (
                   <td key={key} className={visibility}>
                     {cell}
@@ -117,3 +119,21 @@ function MainTable(props: Props) {
 }
 
 export default connector(MainTable);
+
+// helper functions
+
+function renderPrizePlace(place: number) {
+  switch (place) {
+    case 0:
+      return <div className={styles.crown}></div>;
+    case 1:
+      return <div className={`${styles.medal} ${styles.silver}`}>II</div>;
+    case 2:
+      return <div className={`${styles.medal} ${styles.bronze}`}>III</div>;
+    case 3:
+      return <div className={`${styles.medal} ${styles.wood}`}>IV</div>;
+
+    default:
+      return;
+  }
+}

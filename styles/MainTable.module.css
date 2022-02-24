@@ -33,7 +33,7 @@
   white-space: nowrap;
 }
 
-.self {
+.MainTable td.self {
   min-width: 2.5rem;
   max-width: 2.5rem;
   min-height: 2.5rem;
@@ -46,4 +46,53 @@
     rgb(235, 240, 245) 55%,
     rgb(205, 215, 225) 100%
   );*/
+}
+
+.medal {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+  margin: auto auto;
+  vertical-align: middle;
+  font-family: "GFS Didot", serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crown {
+  background: url(../public/crown3_t.gif) no-repeat center center;
+  background-size: cover;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.silver {
+  background: linear-gradient(
+    170deg,
+    rgb(220, 220, 220) 0%,
+    rgb(253, 245, 237) 100%
+  );
+  box-shadow: 1px 1px 1px rgb(210, 205, 200);
+  color: rgb(253, 245, 237);
+  text-shadow: 1px 1px 1px rgb(210, 205, 200);
+}
+
+.bronze {
+  background: linear-gradient(
+    170deg,
+    rgb(237, 173, 102) 0%,
+    rgb(255, 219, 44) 100%
+  );
+  box-shadow: 1px 1px 1px rgb(237, 173, 102);
+  color: rgb(255, 219, 44);
+  text-shadow: 1px 1px 1px rgb(237, 173, 102);
+}
+
+.wood {
+  background-image: url("../public/pine_1.jpg");
+  background-size: cover;
+  box-shadow: 1px 1px 1px rgb(228, 108, 31);
+  color: rgb(247, 183, 112);
+  text-shadow: 1px 1px 1px rgb(228, 108, 31);
 }
