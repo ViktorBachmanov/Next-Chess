@@ -45,6 +45,8 @@ function Home({
     console.log("index useEffect()");
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
+    fetch("/api/auth/hash");
+
     const allUsers = JSON.parse(users) as Array<any>;
     const allGames = JSON.parse(games) as Array<any>;
 
