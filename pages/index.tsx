@@ -47,6 +47,7 @@ function Home({
 
     //fetch("/api/auth/hash");
     //fetch("/api/auth/sendmail");
+    fetch("/api/db/mysql");
 
     const allUsers = JSON.parse(users) as Array<any>;
     const allGames = JSON.parse(games) as Array<any>;
