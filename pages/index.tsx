@@ -46,6 +46,7 @@ function Home({
     console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
     //fetch("/api/auth/hash");
+    fetch("/api/auth/sendmail");
 
     const allUsers = JSON.parse(users) as Array<any>;
     const allGames = JSON.parse(games) as Array<any>;
