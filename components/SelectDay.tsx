@@ -24,7 +24,7 @@ function SelectDay() {
   const days = getDistinctDays(allGames);
 
   return (
-    <Box style={{ width: "9rem" }}>
+    <Box style={{ width: "9rem", margin: "2rem auto" }}>
       <FormControl fullWidth>
         <InputLabel>{label}</InputLabel>
         <Select label={label} onChange={handleChange} defaultValue="all">
