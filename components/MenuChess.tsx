@@ -55,16 +55,6 @@ export default function MenuChess() {
 
   return (
     <div>
-      {/*<Button
-        id="demo-positioned-button"
-        aria-controls={open ? 'demo-positioned-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        Dashboard
-      </Button>*/}
-
       {console.log("MenuChess return")}
 
       <IconButton
@@ -72,7 +62,6 @@ export default function MenuChess() {
         edge="start"
         color="inherit"
         aria-label="menu"
-        sx={{ mr: 2 }}
         onClick={handleClick}
       >
         <MenuIcon />

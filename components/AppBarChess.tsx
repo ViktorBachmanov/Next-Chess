@@ -13,7 +13,12 @@ export default function AppBarChess() {
       <Toolbar>
         <MenuChess />
 
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          align="center"
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1 }}
+        >
           Шахматный клуб
         </Typography>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
+import IconButton from "@mui/material/IconButton";
 
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../app/store";
@@ -26,17 +27,23 @@ function LightMode(props: PropsFromRedux) {
   const { lightMode, setLightMode } = props;
 
   return (
-    <div style={{ cursor: "pointer" }}>
+    <IconButton
+      size="large"
+      edge="end"
+      color="inherit"
+      aria-label="menu"
+      onClick={
+        lightMode === LightStatus.DARK
+          ? () => setLightMode(LightStatus.LIGHT)
+          : () => setLightMode(LightStatus.DARK)
+      }
+    >
       {lightMode === LightStatus.DARK ? (
-        <LightModeOutlinedIcon
-          onClick={() => setLightMode(LightStatus.LIGHT)}
-        />
+        <LightModeOutlinedIcon />
       ) : (
-        <Brightness4OutlinedIcon
-          onClick={() => setLightMode(LightStatus.DARK)}
-        />
+        <Brightness4OutlinedIcon />
       )}
-    </div>
+    </IconButton>
   );
 }
 
