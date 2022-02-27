@@ -13,14 +13,16 @@ import styles from "../styles/MainTable.module.css";
 
 import { styled, useTheme } from "@mui/material/styles";
 
-const OpaqueTh = styled("td")(
+const OpaqueTh = styled("th")(
   ({ theme }) => `
-  background: ${theme.palette.background.default};`
+  background: ${theme.palette.background.paper};
+  background-image: linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09));`
 );
 
 const OpaqueTd = styled("td")(
   ({ theme }) => `
-  background: ${theme.palette.background.default};`
+  background: ${theme.palette.background.paper};
+  background-image: linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09));`
 );
 
 function mapStateToProps(state: RootState) {
@@ -55,8 +57,8 @@ function MainTable(props: Props) {
     <table className={`${styles.MainTable} ${isFixed && styles.fixed}`}>
       <thead>
         <tr>
-          <OpaqueTh>№</OpaqueTh>
-          <OpaqueTh>ФИО</OpaqueTh>
+          <OpaqueTh style={{ boxShadow: "none" }}>№</OpaqueTh>
+          <OpaqueTh style={{ boxShadow: "grey 2px 2px 2px" }}>ФИО</OpaqueTh>
 
           {mainTable.map((row: MainTableRow, rowNo: number) => {
             return (
