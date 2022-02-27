@@ -8,6 +8,8 @@ import { useEffect, useMemo } from "react";
 
 import prisma from "../lib/prisma";
 
+import { db } from "../lib/db";
+
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -47,18 +49,6 @@ function Home({
 
     //fetch("/api/auth/hash");
     //fetch("/api/auth/sendmail");
-    fetch("/api/db/mysql")
-      .then(
-        (rslt) => {
-          const prms = rslt.json();
-          console.log("/api/db/mysql: ", prms);
-          return prms;
-        }
-        //(err) => console.log("/api/db/mysql rejected", err)
-      )
-      .then((data) => {
-        console.log("/api/db/mysql result: ", data);
-      });
 
     const allUsers = JSON.parse(users) as Array<any>;
     const allGames = JSON.parse(games) as Array<any>;
@@ -101,9 +91,26 @@ export async function getStaticProps() {
   // You can use any data fetching library
 
   const [users, games] = await Promise.all([
-    prisma.user.findMany({ orderBy: { name: "asc" } }),
-    prisma.game.findMany(),
+    //prisma.user.findMany({ orderBy: { name: "asc" } }),
+    //prisma.game.findMany(),
+    db.query("SELECT * FROM users ORDER BY rating DESC"),
+    db.query("SELECT * FROM games"),
   ]);
+
+  db.end();
+
+  // fetch("/api/db/mysql")
+  //     .then(
+  //       (rslt) => {
+  //         const prms = rslt.json();
+  //         console.log("/api/db/mysql: ", prms);
+  //         return prms;
+  //       }
+  //       //(err) => console.log("/api/db/mysql rejected", err)
+  //     )
+  //     .then((data) => {
+  //       console.log("/api/db/mysql result: ", data);
+  //     });
 
   // By returning { props: { users, games } }, the Home component
   // will receive `posts` as a prop at build time

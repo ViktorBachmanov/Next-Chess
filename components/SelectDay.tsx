@@ -45,7 +45,7 @@ export default SelectDay;
 // helper functions
 
 function getDistinctDays(games: Array<any>): Array<string> {
-  const dayArray = games.map((game) => game.day);
+  const dayArray = games.map((game) => game.date);
 
   return [...new Set(dayArray)];
 }

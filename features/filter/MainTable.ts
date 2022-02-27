@@ -32,6 +32,7 @@ export default class MainTable {
       this.orderedByRating[i].userName = users[i].name;
       this.orderedByRating[i].score = 0;
       this.orderedByRating[i].games = 0;
+      this.orderedByRating[i].rating = users[i].rating;
     }
 
     games.forEach((game) => {

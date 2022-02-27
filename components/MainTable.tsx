@@ -109,7 +109,7 @@ function MainTable(props: Props) {
               })}
               <td className={visibility}>{row.score}</td>
               <td className={visibility}>{row.games}</td>
-              <td className={visibility}></td>
+              <td className={visibility}>{row.rating}</td>
             </tr>
           );
         })}
