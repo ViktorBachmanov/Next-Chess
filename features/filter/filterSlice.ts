@@ -129,7 +129,7 @@ function filterGamesAndUsersByDay(
     return { games, users };
   }
 
-  const filteredGames = games.filter((game) => game.day === day);
+  const filteredGames = games.filter((game) => game.date === day);
 
   const filteredUsers = users.filter((user) => {
     return filteredGames.some((game) => {
