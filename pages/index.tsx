@@ -47,7 +47,18 @@ function Home({
 
     //fetch("/api/auth/hash");
     //fetch("/api/auth/sendmail");
-    fetch("/api/db/mysql");
+    fetch("/api/db/mysql")
+      .then(
+        (rslt) => {
+          const prms = rslt.json();
+          console.log("/api/db/mysql: ", prms);
+          return prms;
+        }
+        //(err) => console.log("/api/db/mysql rejected", err)
+      )
+      .then((data) => {
+        console.log("/api/db/mysql result: ", data);
+      });
 
     const allUsers = JSON.parse(users) as Array<any>;
     const allGames = JSON.parse(games) as Array<any>;

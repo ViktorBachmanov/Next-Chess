@@ -7,7 +7,7 @@ export default async function handle(
 ) {
   const rslt = await db.query("SELECT * FROM users");
 
-  console.log("MySQL: ", rslt);
+  //console.log("MySQL: ", rslt);
 
-  //res.json(tables);
+  res.json(rslt);
 }
