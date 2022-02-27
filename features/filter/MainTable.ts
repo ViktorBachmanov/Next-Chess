@@ -79,7 +79,7 @@ export default class MainTable {
     });
 
     orderedByScore.sort((a, b) => {
-      return a.score - b.score;
+      return b.score - a.score;
     });
 
     const byScoreIndexToByRatingIndex = new Map();
