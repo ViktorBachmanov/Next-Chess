@@ -75,7 +75,7 @@ function MainTable(props: Props) {
   return (
     <table className={`${styles.MainTable} ${isFixed && styles.fixed}`}>
       <thead>
-        <tr>
+        <tr style={{ boxShadow: "inset 0px 2px 2px gray" }}>
           <OpaqueTh style={{ boxShadow: "none" }}>№</OpaqueTh>
           <OpaqueTh style={{ boxShadow: "grey 2px 2px 2px" }}>ФИО</OpaqueTh>
 
