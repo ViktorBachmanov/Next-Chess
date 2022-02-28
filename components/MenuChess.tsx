@@ -31,8 +31,10 @@ export default function MenuChess() {
     setAnchorEl(null);
   };
 
-  function handleLogin() {
-    router.push("/api/auth/login");
+  function openDialogLogin() {
+    setDialogTitle("Аутентификация");
+    setDialogSubmitLabel("Ок");
+    setDialogOpen(true);
   }
 
   function handleLogout() {
@@ -82,7 +84,7 @@ export default function MenuChess() {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={handleLogin} disabled={user !== undefined}>
+        <MenuItem onClick={openDialogLogin} disabled={user !== undefined}>
           Войти
         </MenuItem>
         <MenuItem onClick={handleLogout} disabled={user === undefined}>
