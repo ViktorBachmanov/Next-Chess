@@ -11,3 +11,10 @@ export enum Order {
   RATING,
   SCORE,
 }
+
+export interface GamesTableRow {
+  whiteId: number;
+  blackId: number;
+  winnerId: number;
+  day: string;
+}

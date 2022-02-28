@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
 import MainTable from "./MainTable";
-import { MainTableRow, Order } from "./types";
+import GamesTable from "./GamesTable";
+import { MainTableRow, Order, GamesTableRow } from "./types";
 //import { fetchTables } from "../db/dbSlice";
 import { RequestStatus } from "../types";
 
@@ -13,6 +14,7 @@ export interface FilterState {
   //status: "idle" | "loading" | "failed";
   requestStatus: RequestStatus;
   mainTable: Array<MainTableRow>;
+  gamesTable: Array<GamesTableRow>;
   //isReady: boolean;
 }
 
@@ -23,6 +25,7 @@ const initialState: FilterState = {
   users: [],
   requestStatus: RequestStatus.IDLE,
   mainTable: [],
+  gamesTable: [],
   //isReady: false,
 };
 
@@ -53,6 +56,7 @@ const initialState: FilterState = {
 // );
 
 const mainTableObject = new MainTable();
+const gamesTableObject = new GamesTable();
 
 export const filterSlice = createSlice({
   name: "filter",
@@ -71,14 +75,11 @@ export const filterSlice = createSlice({
       state.games = games!;
       state.users = users!;
 
-      //state.mainTable = generateMainTable(games, users);
-      /*state.mainTable.sort((a, b) => {
-        return b.score - a.score;
-      });*/
       mainTableObject.regenerate(state.games, state.users);
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
 
-      //state.isReady = true;
+      gamesTableObject.regenerate(state.games, state.users);
+      state.gamesTable = gamesTableObject.getRows();
     },
     setOrder: (state, action: PayloadAction<Order>) => {
       state.orderBy = action.payload;

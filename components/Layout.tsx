@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 
 import AppBarChess from "../components/AppBarChess";
 import MainTable from "../components/MainTable";
+import GamesTable from "../components/GamesTable";
 import SelectDay from "../components/SelectDay";
 
 export default function Layout() {
@@ -25,6 +26,8 @@ export default function Layout() {
           </div>
           <MainTable isFixed={true} />
         </div>
+
+        <GamesTable />
 
         <Toaster />
       </main>
