@@ -94,7 +94,7 @@ export async function getStaticProps() {
     //prisma.user.findMany({ orderBy: { name: "asc" } }),
     //prisma.game.findMany(),
     db.query("SELECT * FROM users ORDER BY rating DESC"),
-    db.query("SELECT * FROM games"),
+    db.query("SELECT * FROM games ORDER BY id DESC"),
   ]);
 
   db.end();
