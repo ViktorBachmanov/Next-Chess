@@ -25,6 +25,25 @@ const OpaqueTd = styled("td")(
   background-image: linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09));`
 );
 
+const selfLightBg = `linear-gradient(
+  170deg,
+  rgb(245, 245, 255) 0%,
+  rgb(235, 240, 245) 55%,
+  rgb(205, 215, 225) 100%
+);`;
+
+const selfDarkBg = `linear-gradient(
+  170deg,
+  rgb(45, 45, 55) 0%,
+  rgb(35, 40, 45) 55%,
+  rgb(5, 15, 25) 100%
+);`;
+
+const SelfTd = styled("td")(
+  ({ theme }) => `
+  background: ${theme.palette.mode === "light" ? selfLightBg : selfDarkBg}`
+);
+
 function mapStateToProps(state: RootState) {
   return {
     mainTable: state.filter.mainTable,
@@ -100,9 +119,9 @@ function MainTable(props: Props) {
               {row.cells.map((cell: number, colNo: number) => {
                 const key = row.userName + colNo;
                 return rowNo === colNo ? (
-                  <td key={key} className={`${styles.self} ${visibility}`}>
+                  <SelfTd key={key} className={`${styles.self} ${visibility}`}>
                     {renderPrizePlace(rowNo)}
-                  </td>
+                  </SelfTd>
                 ) : (
                   <td key={key} className={visibility}>
                     {cell}
