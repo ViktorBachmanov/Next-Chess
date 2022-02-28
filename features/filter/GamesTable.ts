@@ -25,4 +25,8 @@ export default class GamesTable {
   public getRows() {
     return [...this.rows];
   }
+
+  public getUserNameById(id: number) {
+    return this.userIdToName.get(id);
+  }
 }

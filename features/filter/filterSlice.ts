@@ -56,7 +56,7 @@ const initialState: FilterState = {
 // );
 
 const mainTableObject = new MainTable();
-const gamesTableObject = new GamesTable();
+export const gamesTableObject = new GamesTable();
 
 export const filterSlice = createSlice({
   name: "filter",

@@ -11,6 +11,7 @@ import Radio from "@mui/material/Radio";
 import { css } from "@emotion/react";
 import { setOrder as setOrderAction } from "../features/filter/filterSlice";
 import { GamesTableRow } from "../features/filter/types";
+import { gamesTableObject } from "../features/filter/filterSlice";
 import styles from "../styles/MainTable.module.css";
 
 import { styled, useTheme } from "@mui/material/styles";
@@ -34,9 +35,9 @@ export default function GamesTable() {
         {gamesTable.map((row: GamesTableRow, rowNo: number) => {
           return (
             <tr key={rowNo}>
-              <td>{row.whiteId}</td>
-              <td>{row.day}</td>
-              <td>{row.blackId}</td>
+              <td>{gamesTableObject.getUserNameById(row.whiteId)}</td>
+              <td>{new Date(row.day).toLocaleDateString("ru-RU")}</td>
+              <td>{gamesTableObject.getUserNameById(row.blackId)}</td>
             </tr>
           );
         })}
