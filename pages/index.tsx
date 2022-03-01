@@ -55,6 +55,7 @@ function Home({
 
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
+    console.log(navigator.userAgent);
   }, [users, games, dispatch]);
 
   // const requestStatus = useAppSelector(

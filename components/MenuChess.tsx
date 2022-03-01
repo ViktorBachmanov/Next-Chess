@@ -8,7 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import { useRouter } from "next/router";
 
-import { useUser } from "@auth0/nextjs-auth0";
+//import { useUser } from "@auth0/nextjs-auth0";
 
 import GameDialog from "./GameDialog";
 
@@ -18,7 +18,7 @@ export default function MenuChess() {
 
   const router = useRouter();
 
-  const { user, error, isLoading } = useUser();
+  //const { user, error, isLoading } = useUser();
 
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
@@ -84,16 +84,16 @@ export default function MenuChess() {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={openDialogLogin} disabled={user !== undefined}>
+        <MenuItem onClick={openDialogLogin} disabled={false}>
           Войти
         </MenuItem>
-        <MenuItem onClick={handleLogout} disabled={user === undefined}>
+        <MenuItem onClick={handleLogout} disabled={true}>
           Выйти
         </MenuItem>
-        <MenuItem onClick={openDialogAddGame} disabled={user === undefined}>
+        <MenuItem onClick={openDialogAddGame} disabled={true}>
           Добавить партию
         </MenuItem>
-        <MenuItem onClick={openDialogDeleteGame} disabled={user === undefined}>
+        <MenuItem onClick={openDialogDeleteGame} disabled={true}>
           Удалить последнюю
         </MenuItem>
       </Menu>

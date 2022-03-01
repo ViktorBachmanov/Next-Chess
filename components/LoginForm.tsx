@@ -37,7 +37,7 @@ export default function LoginForm(props: Props) {
     console.log("submit");
     console.log(data);
 
-    const rslt = fetch("/api/login", {
+    const rslt = fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,6 +47,16 @@ export default function LoginForm(props: Props) {
         password: data.password,
       }),
     });
+    rslt
+      .then((res) => {
+        console.log(res);
+        const prms = res.text();
+        return prms;
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(document.cookie);
+      });
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (
@@ -61,7 +71,12 @@ export default function LoginForm(props: Props) {
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error } }) => (
-          <TextField required label="ФИО" />
+          <TextField
+            required
+            label="ФИО"
+            {...field}
+            style={{ margin: "2rem 0" }}
+          />
         )}
       />
 
@@ -70,7 +85,7 @@ export default function LoginForm(props: Props) {
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error } }) => (
-          <TextField label="Пароль" type="password" />
+          <TextField label="Пароль" type="password" {...field} />
         )}
       />
     </form>
