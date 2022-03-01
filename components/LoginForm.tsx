@@ -49,12 +49,12 @@ export default function LoginForm(props: Props) {
     });
     rslt
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         const prms = res.text();
         return prms;
       })
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         console.log(document.cookie);
       });
   };
