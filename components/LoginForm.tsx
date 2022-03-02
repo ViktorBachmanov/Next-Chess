@@ -1,4 +1,7 @@
 import React, { BaseSyntheticEvent } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { RootState } from "../app/store";
+
 import {
   useForm,
   Controller,
@@ -10,9 +13,7 @@ import TextField from "@mui/material/TextField";
 
 import toast from "react-hot-toast";
 
-import { createGame as createGameAction } from "../features/db/dbSlice";
-
-import { UserData, SendData } from "../types";
+import { setLoginStatus } from "../features/auth/authSlice";
 
 import bcrypt from "bcrypt";
 
@@ -32,6 +33,8 @@ export default function LoginForm(props: Props) {
       password: "",
     },
   });
+
+  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     console.log("submit");
@@ -56,6 +59,9 @@ export default function LoginForm(props: Props) {
       .then((res) => {
         console.log(res);
         //console.log(document.cookie);
+        if (res === "success") {
+          dispatch(setLoginStatus(true));
+        }
       });
   };
 

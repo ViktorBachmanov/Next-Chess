@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { RootState } from "../app/store";
+
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -19,6 +23,10 @@ export default function MenuChess() {
   const router = useRouter();
 
   //const { user, error, isLoading } = useUser();
+
+  const loginStatus = useAppSelector(
+    (state: RootState) => state.auth.loginStatus
+  );
 
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
@@ -84,16 +92,16 @@ export default function MenuChess() {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={openDialogLogin} disabled={false}>
+        <MenuItem onClick={openDialogLogin} disabled={loginStatus}>
           Войти
         </MenuItem>
-        <MenuItem onClick={handleLogout} disabled={true}>
+        <MenuItem onClick={handleLogout} disabled={!loginStatus}>
           Выйти
         </MenuItem>
-        <MenuItem onClick={openDialogAddGame} disabled={true}>
+        <MenuItem onClick={openDialogAddGame} disabled={!loginStatus}>
           Добавить партию
         </MenuItem>
-        <MenuItem onClick={openDialogDeleteGame} disabled={true}>
+        <MenuItem onClick={openDialogDeleteGame} disabled={!loginStatus}>
           Удалить последнюю
         </MenuItem>
       </Menu>
