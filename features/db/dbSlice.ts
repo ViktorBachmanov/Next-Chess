@@ -4,11 +4,11 @@ import { RootState } from "../../app/store";
 import { RequestStatus } from "../types";
 
 import { SendData } from "../../types";
-//import { setPending } from "../filter/filterSlice";
+import { User, Game } from "./types";
 
 interface DbState {
-  users: Array<any>;
-  games: Array<any>;
+  users: Array<User>;
+  games: Array<Game>;
   requestStatus: RequestStatus;
 }
 

@@ -19,6 +19,8 @@ import { createGame as createGameAction } from "../features/db/dbSlice";
 import { UserData, SendData } from "../types";
 import { gameCreatingMessages } from "../features/db/constants";
 
+//import { User, Game } from '../features/db/types'
+
 function mapStateToProps(state: RootState) {
   return {
     users: state.db.users,
@@ -61,29 +63,36 @@ function GameCreateForm(props: Props) {
     console.log("submit");
     console.log(data);
 
-    let sendData = new SendData(
-      new UserData(data.whiteUser, users),
-      new UserData(data.blackUser, users)
-    );
+    const whiteUser = new UserData(data.whiteUser, users, games);
+    const blackUser = new UserData(data.blackUser, users, games);
+    let winnerId: number | null;
+
+    const whiteRating = whiteUser.rating;
+    const blackRating = blackUser.rating;
+
     switch (data.winner) {
       case Won.WHITE:
-        sendData.white.increaseScore(1);
-        sendData.winner = data.whiteUser;
+        whiteUser.evalRating(blackRating, 1);
+        blackUser.evalRating(whiteRating, 0);
+        winnerId = data.whiteUser;
         break;
       case Won.BLACK:
-        sendData.black.increaseScore(1);
-        sendData.winner = data.blackUser;
+        whiteUser.evalRating(blackRating, 0);
+        blackUser.evalRating(whiteRating, 1);
+        winnerId = data.blackUser;
         break;
       case Won.DRAW:
       default:
-        sendData.white.increaseScore(0.5);
-        sendData.black.increaseScore(0.5);
-        sendData.winner = null;
+        whiteUser.evalRating(blackRating, 0.5);
+        blackUser.evalRating(whiteRating, 0.5);
+        winnerId = null;
         break;
     }
 
+    let sendData = new SendData(whiteUser, blackUser, winnerId);
+
     if (data.day) {
-      sendData.day = data.day;
+      sendData.day = data.day.toISOString().substring(0, 10);
     }
 
     //props.handleClose();

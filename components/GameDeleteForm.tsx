@@ -46,9 +46,9 @@ function GameDeleteForm(props: Props) {
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const rslt = deleteGame(lastGame.id).unwrap();
-    toast.promise(rslt, gameDeletingMessages);
-    rslt.then(() => window.location.reload());
+    // const rslt = deleteGame(lastGame.id).unwrap();
+    // toast.promise(rslt, gameDeletingMessages);
+    // rslt.then(() => window.location.reload());
   };
 
   return (
@@ -78,7 +78,7 @@ function GameDeleteForm(props: Props) {
         defaultValue={lastGameWinner}
       />
 
-      <LocalizedDatePicker disabled={true} value={lastGame.day} />
+      <LocalizedDatePicker disabled={true} value={lastGame.date} />
     </form>
   );
 }

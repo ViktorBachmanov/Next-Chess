@@ -21,6 +21,7 @@ export default async function handle(
   );
   const dbPassword = queryResult[0].password;
   //console.log("/api/auth/login dbPassword:", dbPassword);
+  db.end();
 
   bcrypt.compare(formData.password, dbPassword, function (err, result) {
     if (result) {
