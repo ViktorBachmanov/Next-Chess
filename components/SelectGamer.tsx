@@ -5,10 +5,11 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import IconKing from "./IconKing";
+import { User } from "../features/db/types";
 
 type Props = {
   label: string;
-  users: Array<any>;
+  users: Array<User>;
   onChange?: (value: any) => void;
   disabled: boolean;
   defaultValue: string | number;
@@ -18,11 +19,16 @@ type Props = {
 };
 
 const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
-  /*const [gamerId, setGamer] = useState('');
+  const users = [...props.users];
 
-    function handleChange(event: SelectChangeEvent) {
-        setGamer(event.target.value);
-    }*/
+  users.sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    } else if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
 
   return (
     <div style={{ display: "flex" }}>
@@ -43,7 +49,7 @@ const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
           disabled={props.disabled}
           defaultValue={props.defaultValue}
         >
-          {props.users.map((user) => (
+          {users.map((user) => (
             <MenuItem key={user.id} value={user.id}>
               {user.name}
             </MenuItem>
