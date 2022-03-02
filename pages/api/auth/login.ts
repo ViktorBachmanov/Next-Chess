@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { serialize, CookieSerializeOptions } from "cookie";
 import { db } from "../../../lib/db";
+import bcrypt from "bcrypt";
 
 export default async function handle(
   req: NextApiRequest,
@@ -21,20 +22,19 @@ export default async function handle(
   const dbPassword = queryResult[0].password;
   //console.log("/api/auth/login dbPassword:", dbPassword);
 
-  //res.removeHeader("Set-Cookie");
+  bcrypt.compare(formData.password, dbPassword, function (err, result) {
+    if (result) {
+      res.json("success");
+    } else {
+      res.json("fail");
+    }
+  });
 
-  // bcrypt.hash("123", 10, function (err, hash) {
-  //   console.log("Bcrypt hash: ", hash);
-  // });
+  // res.setHeader("Set-Cookie", [
+  //   "userName=John; path=/; Secure",
+  //   "password=123; path=/; Secure",
+  // ]);
 
-  //res.setHeader("Set-Cookie", serialize("userName", "John"));
-  //res.setHeader("Set-Cookie", "userName=John; HttpOnly; Secure");
-  //res.setHeader("Set-Cookie", "userName=John; path=/; Secure");
-  res.setHeader("Set-Cookie", [
-    "userName=John; path=/; Secure",
-    "password=123; path=/; Secure",
-  ]);
-
-  res.json("Ok");
+  //res.json("Ok");
   //res.end("Ok");
 }

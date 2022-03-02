@@ -54,8 +54,8 @@ export default function LoginForm(props: Props) {
         return prms;
       })
       .then((res) => {
-        //console.log(res);
-        console.log(document.cookie);
+        console.log(res);
+        //console.log(document.cookie);
       });
   };
 
