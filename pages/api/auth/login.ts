@@ -28,48 +28,44 @@ export default async function handle(
   //console.log("/api/auth/login dbPassword:", dbPassword);
   db.end();
 
-  bcrypt.compare(formData.password, dbPassword, function (err, result) {
-    if (result) {
-      const tokenObj = {
-        userAgent,
-        userName: formData.userName,
-        password: formData.password,
-      };
-      // bcrypt.hash(JSON.stringify(tokenObj), 10, function (err, hash) {
-      //   res.json(hash);
-      // });
+  const match = await bcrypt.compare(formData.password, dbPassword);
 
-      console.log(tokenObj);
-      console.log(JSON.stringify(tokenObj));
+  if (match) {
+    const tokenObj = {
+      userAgent,
+      userName: formData.userName,
+      password: formData.password,
+    };
 
-      scrypt(cryptoPassword, "salt", 24, (err: any, key: any) => {
-        if (err) throw err;
-        // Then, we'll generate a random initialization vector
-        //randomFill(new Uint8Array(16), (err: any, iv: any) => {
-        //if (err) throw err;
+    console.log(tokenObj);
+    console.log(JSON.stringify(tokenObj));
 
-        const cipher = createCipher(algorithm, key);
+    scrypt(cryptoPassword, "salt", 24, (err: any, key: any) => {
+      if (err) throw err;
+      // Then, we'll generate a random initialization vector
+      //randomFill(new Uint8Array(16), (err: any, iv: any) => {
+      //if (err) throw err;
 
-        let encrypted = cipher.update(JSON.stringify(tokenObj), "utf8", "hex");
-        encrypted += cipher.final("hex");
-        //console.log(encrypted);
+      const cipher = createCipher(algorithm, key);
 
-        // const iv1 = Buffer.alloc(16, 0); // Initialization vector.
+      let encrypted = cipher.update(JSON.stringify(tokenObj), "utf8", "hex");
+      encrypted += cipher.final("hex");
+      //console.log(encrypted);
 
-        // const decipher = createDecipheriv(algorithm, key, iv);
+      // const iv1 = Buffer.alloc(16, 0); // Initialization vector.
 
-        // let decrypted = decipher.update(encrypted, "hex", "utf8");
-        // decrypted += decipher.final("utf8");
-        // console.log(decrypted);
-        // console.log(JSON.parse(decrypted));
+      // const decipher = createDecipheriv(algorithm, key, iv);
 
-        res.send(encrypted);
-        //});
-      });
-    } else {
-      res.json("fail");
-    }
-  });
+      // let decrypted = decipher.update(encrypted, "hex", "utf8");
+      // decrypted += decipher.final("utf8");
+      // console.log(decrypted);
+      // console.log(JSON.parse(decrypted));
+
+      res.send(encrypted);
+    });
+  } else {
+    res.json("fail");
+  }
 
   // res.setHeader("Set-Cookie", [
   //   "userName=John; path=/; Secure",
