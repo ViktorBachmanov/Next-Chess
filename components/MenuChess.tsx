@@ -16,11 +16,16 @@ import { useRouter } from "next/router";
 
 import GameDialog from "./GameDialog";
 
+import { setLoginStatus } from "../features/auth/authSlice";
+import { Storage } from "../constants";
+
 export default function MenuChess() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const router = useRouter();
+
+  const dispatch = useAppDispatch();
 
   //const { user, error, isLoading } = useUser();
 
@@ -46,7 +51,9 @@ export default function MenuChess() {
   }
 
   function handleLogout() {
-    router.push("/api/auth/logout");
+    //router.push("/api/auth/logout");
+    localStorage.removeItem(Storage.TOKEN);
+    dispatch(setLoginStatus(false));
   }
 
   function openDialogAddGame() {
