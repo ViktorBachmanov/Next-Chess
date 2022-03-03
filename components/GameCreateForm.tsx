@@ -14,10 +14,10 @@ import { RootState } from "../app/store";
 
 import toast from "react-hot-toast";
 
-import { createGame as createGameAction } from "../features/db/dbSlice";
+//import { createGame as createGameAction } from "../features/db/dbSlice";
 
 import { UserData, SendData } from "../types";
-import { gameCreatingMessages } from "../features/db/constants";
+//import { gameCreatingMessages } from "../features/db/constants";
 
 import { Storage } from "../constants";
 
@@ -30,11 +30,11 @@ function mapStateToProps(state: RootState) {
   };
 }
 
-const mapDispatchToProps = {
-  createGame: createGameAction,
-};
+// const mapDispatchToProps = {
+//   createGame: createGameAction,
+// };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -51,7 +51,7 @@ interface IFormInputs {
 }
 
 function GameCreateForm(props: Props) {
-  const { users, games, createGame } = props;
+  const { users, games } = props;
 
   const { handleSubmit, control, watch } = useForm<IFormInputs>({
     defaultValues: {
@@ -64,6 +64,8 @@ function GameCreateForm(props: Props) {
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     console.log("submit");
     console.log(data);
+
+    const startToastId = toast.loading("Game creating...");
 
     const whiteUser = new UserData(data.whiteUser, users, games);
     const blackUser = new UserData(data.blackUser, users, games);
@@ -101,9 +103,29 @@ function GameCreateForm(props: Props) {
 
     //props.handleClose();
 
-    const rslt = createGame(sendData).unwrap();
-    toast.promise(rslt, gameCreatingMessages);
-    rslt.then(() => window.location.reload());
+    //const rslt = createGame(sendData).unwrap();
+
+    const rslt = fetch("/api/game/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(sendData),
+    });
+
+    rslt
+      .then((res) => res.text())
+      .then((res) => {
+        toast.dismiss(startToastId);
+        if (res === "Auth error") {
+          toast.error("Error when creating");
+          console.log(res);
+        } else {
+          toast.success("Created successfully");
+          window.location.reload();
+        }
+      });
+
+    //toast.promise(rslt, gameCreatingMessages);
+    //rslt.then(() => window.location.reload());
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (

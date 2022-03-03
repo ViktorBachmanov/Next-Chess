@@ -4,8 +4,8 @@ export const gameCreatingMessages = {
   error: "Error when creating",
 };
 
-export const gameDeletingMessages = {
-  loading: "Game deleting",
-  success: "Deleted successfully",
-  error: "Error when deleting",
-};
+// export const gameDeletingMessages = {
+//   loading: "Game deleting",
+//   success: "Deleted successfully",
+//   error: "Error when deleting",
+// };

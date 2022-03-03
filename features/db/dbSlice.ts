@@ -37,33 +37,25 @@ const initialState: DbState = {
 //   }
 // );
 
-export const createGame = createAsyncThunk(
-  "db/createGame",
-  async (sendData: SendData, { dispatch }) => {
-    const response = await fetch("/api/game/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sendData),
-    });
+// export const createGame = createAsyncThunk(
+//   "db/createGame",
+//   async (sendData: SendData, { dispatch }) => {
+//     const response = await fetch("/api/game/create", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(sendData),
+//     });
 
-    const rslt = await response.text();
+//     const rslt = await response.text();
 
-    if (rslt === "Auth error") {
-      console.log(rslt);
-    }
+//     if (rslt === "Auth error") {
+//       console.log(rslt);
+//     }
 
-    //dispatch(fetchTables());
-
-    //await fetch('/api/db/fetch');
-
-    //const tables = response.json();
-    //console.log('AsyncThunk', tables);
-    //return tables;
-
-    // The value we return becomes the `fulfilled` action payload
-    return;
-  }
-);
+//     // The value we return becomes the `fulfilled` action payload
+//     return;
+//   }
+// );
 
 export const deleteGame = createAsyncThunk(
   "db/deleteGame",
@@ -106,14 +98,12 @@ export const dbSlice = createSlice({
       //   state.games = tables[1];
       //   state.requestStatus = RequestStatus.IDLE;
       // })
-      .addCase(createGame.pending, (state) => {
-        state.requestStatus = RequestStatus.LOADING;
-      })
-      .addCase(createGame.fulfilled, (state) => {
-        state.requestStatus = RequestStatus.IDLE;
-        //state.requestStatus = RequestStatus.CREATED;
-        //window.location.reload();
-      })
+      // .addCase(createGame.pending, (state) => {
+      //   state.requestStatus = RequestStatus.LOADING;
+      // })
+      // .addCase(createGame.fulfilled, (state) => {
+      //   state.requestStatus = RequestStatus.IDLE;
+      // })
       .addCase(deleteGame.pending, (state) => {
         state.requestStatus = RequestStatus.LOADING;
       })
