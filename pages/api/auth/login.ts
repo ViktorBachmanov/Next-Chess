@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { serialize, CookieSerializeOptions } from "cookie";
 import { db } from "../../../lib/db";
 import bcrypt from "bcrypt";
+import { verifyPassword } from "../../../lib/utils";
 
 import { scrypt, randomFill, createCipher, createDecipheriv } from "crypto";
 
@@ -21,16 +22,23 @@ export default async function handle(
   const formData = req.body;
   //console.log("/api/auth/login formData", formData);
 
-  const queryResult: Array<any> = await db.query(
-    `SELECT password FROM users WHERE name="${formData.userName}"`
+  // const queryResult: Array<any> = await db.query(
+  //   `SELECT password FROM users WHERE name="${formData.userName}"`
+  // );
+  // const dbPassword = queryResult[0].password;
+  // //console.log("/api/auth/login dbPassword:", dbPassword);
+
+  // const match = await bcrypt.compare(formData.password, dbPassword);
+
+  const isPasswordOk = await verifyPassword(
+    formData.userName,
+    formData.password,
+    db
   );
-  const dbPassword = queryResult[0].password;
-  //console.log("/api/auth/login dbPassword:", dbPassword);
+
   db.end();
 
-  const match = await bcrypt.compare(formData.password, dbPassword);
-
-  if (match) {
+  if (isPasswordOk) {
     const tokenObj = {
       userAgent,
       userName: formData.userName,

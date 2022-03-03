@@ -6,6 +6,8 @@ import { SendData } from "../../../types";
 
 import { scryptSync, createDecipher } from "crypto";
 
+import { verifyPassword } from "../../../lib/utils";
+
 const algorithm = "aes-192-cbc";
 const password = "Password used to generate key";
 // Use the async `crypto.scrypt()` instead.
@@ -43,6 +45,16 @@ export default async function handle(
   console.log(authTokenObj.userAgent);
 
   if (userAgent !== authTokenObj.userAgent) {
+    res.json("Auth error");
+    return;
+  }
+
+  const isPasswordOk = await verifyPassword(
+    authTokenObj.userName,
+    authTokenObj.password,
+    db
+  );
+  if (!isPasswordOk) {
     res.json("Auth error");
     return;
   }
