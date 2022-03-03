@@ -29,7 +29,7 @@ const SelectWinner = React.forwardRef(function SelectWinner(props: Props, ref) {
 
   return (
     <FormControl
-      style={{ marginTop: "2rem", width: "12rem" }}
+      style={{ margin: "2rem auto", width: "12rem" }}
       error={Boolean(props.error)}
     >
       <InputLabel>{props.label}</InputLabel>

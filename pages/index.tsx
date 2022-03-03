@@ -25,6 +25,7 @@ import Layout from "../components/Layout";
 import createMainTheme from "../features/theme/muiTheme";
 import { LightStatus } from "../features/theme/types";
 import { setLightStatus } from "../features/theme/themeSlice";
+import { setLoginStatus } from "../features/auth/authSlice";
 
 import { Storage } from "../constants";
 
@@ -37,6 +38,11 @@ function Home({
   useEffect(() => {
     dispatch(setLightStatus(getInitialLightMode()));
     window.addEventListener("beforeunload", saveInLocalStorage);
+
+    const authToken = localStorage.getItem(Storage.TOKEN);
+    if (authToken) {
+      dispatch(setLoginStatus(true));
+    }
 
     return function cleanUp() {
       window.removeEventListener("beforeunload", saveInLocalStorage);
@@ -55,7 +61,6 @@ function Home({
 
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
-    console.log(navigator.userAgent);
   }, [users, games, dispatch]);
 
   // const requestStatus = useAppSelector(
@@ -144,3 +149,7 @@ function getInitialLightMode(): LightStatus {
       : LightStatus.LIGHT;
   }
 }
+
+// function getStorageToken() {
+//   return localStorage.getItem(Storage.TOKEN);
+// }

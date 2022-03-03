@@ -13,9 +13,13 @@ import TextField from "@mui/material/TextField";
 
 import toast from "react-hot-toast";
 
+import bcrypt from "bcrypt";
+
 import { setLoginStatus } from "../features/auth/authSlice";
 
-import bcrypt from "bcrypt";
+import { Storage } from "../constants";
+
+//import { authMessages } from "../features/auth/constants";
 
 interface Props {
   formId: string;
@@ -40,6 +44,8 @@ export default function LoginForm(props: Props) {
     console.log("submit");
     console.log(data);
 
+    const authToastId = toast.loading("Authenticating...");
+
     const rslt = fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -59,10 +65,16 @@ export default function LoginForm(props: Props) {
       .then((res) => {
         console.log(res);
         //console.log(document.cookie);
-        if (res === "success") {
+        toast.dismiss(authToastId);
+        if (res === "fail") {
+          toast.error("Authenticating failed");
+        } else {
+          toast.success("Authenticated successfully");
+          localStorage.setItem(Storage.TOKEN, res);
           dispatch(setLoginStatus(true));
         }
       });
+    //toast.promise(rslt, authMessages);
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (

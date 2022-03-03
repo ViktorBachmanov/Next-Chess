@@ -25,7 +25,14 @@ export default async function handle(
 
   bcrypt.compare(formData.password, dbPassword, function (err, result) {
     if (result) {
-      res.json("success");
+      const tokenObj = {
+        userName: formData.userName,
+        password: formData.password,
+        userAgent,
+      };
+      bcrypt.hash(JSON.stringify(tokenObj), 10, function (err, hash) {
+        res.json(hash);
+      });
     } else {
       res.json("fail");
     }
