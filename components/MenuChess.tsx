@@ -54,6 +54,7 @@ export default function MenuChess() {
     //router.push("/api/auth/logout");
     localStorage.removeItem(Storage.TOKEN);
     dispatch(setLoginStatus(false));
+    handleClose();
   }
 
   function openDialogAddGame() {
