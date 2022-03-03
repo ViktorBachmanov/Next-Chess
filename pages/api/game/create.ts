@@ -2,7 +2,7 @@
 import { db } from "../../../lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { SendData } from "../../../types";
+import { CreateGameData } from "../../../types";
 
 //import { scryptSync, createDecipher } from "crypto";
 
@@ -21,7 +21,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const sendData: SendData = req.body;
+  const sendData: CreateGameData = req.body;
 
   // const gameAddRslt = await prisma.game.create({
   //   data: {

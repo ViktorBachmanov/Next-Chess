@@ -57,19 +57,19 @@ const initialState: DbState = {
 //   }
 // );
 
-export const deleteGame = createAsyncThunk(
-  "db/deleteGame",
-  async (gameId: number, { dispatch }) => {
-    const response = await fetch("/api/game/delete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(gameId),
-    });
+// export const deleteGame = createAsyncThunk(
+//   "db/deleteGame",
+//   async (gameId: number, { dispatch }) => {
+//     const response = await fetch("/api/game/delete", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(gameId),
+//     });
 
-    // The value we return becomes the `fulfilled` action payload
-    return;
-  }
-);
+//     // The value we return becomes the `fulfilled` action payload
+//     return;
+//   }
+// );
 
 export const dbSlice = createSlice({
   name: "db",
@@ -85,32 +85,30 @@ export const dbSlice = createSlice({
       state.games = action.payload.games;
     },
   },
-  extraReducers(builder) {
-    builder
-      // .addCase(fetchTables.pending, (state) => {
-      //   state.requestStatus = RequestStatus.LOADING;
-      // })
-      // .addCase(fetchTables.fulfilled, (state, action) => {
-      //   const tables: any = action.payload;
-      //   state.users = tables[0];
-      //   state.games = tables[1];
-      //   state.requestStatus = RequestStatus.IDLE;
-      // })
-      // .addCase(createGame.pending, (state) => {
-      //   state.requestStatus = RequestStatus.LOADING;
-      // })
-      // .addCase(createGame.fulfilled, (state) => {
-      //   state.requestStatus = RequestStatus.IDLE;
-      // })
-      .addCase(deleteGame.pending, (state) => {
-        state.requestStatus = RequestStatus.LOADING;
-      })
-      .addCase(deleteGame.fulfilled, (state) => {
-        state.requestStatus = RequestStatus.IDLE;
-        //state.requestStatus = RequestStatus.DELETED;
-        //window.location.reload();
-      });
-  },
+  // extraReducers(builder) {
+  //   builder
+  // .addCase(fetchTables.pending, (state) => {
+  //   state.requestStatus = RequestStatus.LOADING;
+  // })
+  // .addCase(fetchTables.fulfilled, (state, action) => {
+  //   const tables: any = action.payload;
+  //   state.users = tables[0];
+  //   state.games = tables[1];
+  //   state.requestStatus = RequestStatus.IDLE;
+  // })
+  // .addCase(createGame.pending, (state) => {
+  //   state.requestStatus = RequestStatus.LOADING;
+  // })
+  // .addCase(createGame.fulfilled, (state) => {
+  //   state.requestStatus = RequestStatus.IDLE;
+  // })
+  // .addCase(deleteGame.pending, (state) => {
+  //   state.requestStatus = RequestStatus.LOADING;
+  // })
+  // .addCase(deleteGame.fulfilled, (state) => {
+  //   state.requestStatus = RequestStatus.IDLE;
+  // });
+  //},
 });
 
 export const { assignTables } = dbSlice.actions;

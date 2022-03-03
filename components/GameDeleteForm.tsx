@@ -10,7 +10,9 @@ import toast from "react-hot-toast";
 
 import { Storage } from "../constants";
 
-import { deleteGame as deleteGameAction } from "../features/db/dbSlice";
+import { UserData, DeleteGameData } from "../types";
+
+//import { deleteGame as deleteGameAction } from "../features/db/dbSlice";
 //import { gameDeletingMessages } from "../features/db/constants";
 
 function mapStateToProps(state: RootState) {
@@ -20,11 +22,11 @@ function mapStateToProps(state: RootState) {
   };
 }
 
-const mapDispatchToProps = {
-  deleteGame: deleteGameAction,
-};
+// const mapDispatchToProps = {
+//   deleteGame: deleteGameAction,
+// };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -33,17 +35,31 @@ type Props = PropsFromRedux & {
 };
 
 function GameDeleteForm(props: Props) {
-  const { users, games, deleteGame } = props;
+  const { users, games } = props;
   //const isDeleteForm = props.formId === 'deleteForm';
 
-  const lastGame = games[games.length - 1];
+  //const lastGame = games[games.length - 1];
+  const lastGame = games[0];
+
+  const whiteUser = new UserData(lastGame.white, users, games);
+  const blackUser = new UserData(lastGame.black, users, games);
+
+  const whiteRating = whiteUser.rating;
+  const blackRating = blackUser.rating;
+
   let lastGameWinner: Won;
   if (lastGame.winner === lastGame.white) {
     lastGameWinner = Won.WHITE;
+    whiteUser.evalOldRating(blackRating, 1);
+    blackUser.evalOldRating(whiteRating, 0);
   } else if (lastGame.winner === lastGame.black) {
     lastGameWinner = Won.BLACK;
+    whiteUser.evalOldRating(blackRating, 0);
+    blackUser.evalOldRating(whiteRating, 1);
   } else {
     lastGameWinner = Won.DRAW;
+    whiteUser.evalOldRating(blackRating, 0.5);
+    blackUser.evalOldRating(whiteRating, 0.5);
   }
 
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -54,15 +70,19 @@ function GameDeleteForm(props: Props) {
 
     const startToastId = toast.loading("Game deleting...");
 
-    const authToken = localStorage.getItem(Storage.TOKEN);
+    const authToken = localStorage.getItem(Storage.TOKEN)!;
+
+    let sendData: DeleteGameData = {
+      id: lastGame.id,
+      white: whiteUser,
+      black: blackUser,
+      authToken,
+    };
 
     const rslt = fetch("/api/game/delete", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        gameId: lastGame.id,
-        authToken,
-      }),
+      body: JSON.stringify(sendData),
     });
 
     rslt

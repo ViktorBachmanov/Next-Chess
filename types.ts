@@ -31,6 +31,22 @@ export class UserData {
     this.rating += koef * (score - expectedScore);
   }
 
+  public evalOldRating(opponentRating: number, score: number) {
+    const expectedScore =
+      1 / (1 + Math.pow(10, (opponentRating - this.rating) / 400));
+
+    let koef: number;
+    if (this.rating >= 2400) {
+      koef = 10;
+    } else if (this.isTotalGamesGT30) {
+      koef = 20;
+    } else {
+      koef = 40;
+    }
+
+    this.rating -= koef * (score - expectedScore);
+  }
+
   private static isTotalGamesGT30(games: Array<Game>, userId: number) {
     let totalGames = 0;
     for (let i = 0; i < games.length; i++) {
@@ -45,12 +61,17 @@ export class UserData {
   }
 }
 
-export class SendData {
-  constructor(
-    public readonly white: UserData,
-    public readonly black: UserData,
-    public readonly winner: number | null,
-    public readonly authToken: string,
-    public day: string = ""
-  ) {}
+export interface SendData {
+  white: UserData;
+  black: UserData;
+  authToken: string;
+}
+
+export interface CreateGameData extends SendData {
+  winner: number | null;
+  day: string;
+}
+
+export interface DeleteGameData extends SendData {
+  id: number;
 }

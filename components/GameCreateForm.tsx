@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 
 //import { createGame as createGameAction } from "../features/db/dbSlice";
 
-import { UserData, SendData } from "../types";
+import { UserData, CreateGameData } from "../types";
 //import { gameCreatingMessages } from "../features/db/constants";
 
 import { Storage } from "../constants";
@@ -93,13 +93,19 @@ function GameCreateForm(props: Props) {
         break;
     }
 
-    const authToken = localStorage.getItem(Storage.TOKEN);
+    const authToken = localStorage.getItem(Storage.TOKEN)!;
 
-    let sendData = new SendData(whiteUser, blackUser, winnerId, authToken!);
+    let sendData: CreateGameData = {
+      white: whiteUser,
+      black: blackUser,
+      winner: winnerId,
+      authToken,
+      day: data.day.toISOString().substring(0, 10),
+    };
 
-    if (data.day) {
-      sendData.day = data.day.toISOString().substring(0, 10);
-    }
+    // if (data.day) {
+    //   sendData.day = data.day.toISOString().substring(0, 10);
+    // }
 
     //props.handleClose();
 
