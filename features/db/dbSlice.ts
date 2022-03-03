@@ -66,8 +66,6 @@ export const deleteGame = createAsyncThunk(
       body: JSON.stringify(gameId),
     });
 
-    //dispatch(fetchTables());
-
     // The value we return becomes the `fulfilled` action payload
     return;
   }

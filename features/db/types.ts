@@ -7,6 +7,7 @@ export interface User {
 }
 
 export interface Game {
+  id: number;
   white: number;
   black: number;
   winner: number;

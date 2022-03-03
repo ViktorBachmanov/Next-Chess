@@ -8,6 +8,8 @@ import { RootState } from "../app/store";
 
 import toast from "react-hot-toast";
 
+import { Storage } from "../constants";
+
 import { deleteGame as deleteGameAction } from "../features/db/dbSlice";
 //import { gameDeletingMessages } from "../features/db/constants";
 
@@ -49,6 +51,32 @@ function GameDeleteForm(props: Props) {
     // const rslt = deleteGame(lastGame.id).unwrap();
     // toast.promise(rslt, gameDeletingMessages);
     // rslt.then(() => window.location.reload());
+
+    const startToastId = toast.loading("Game deleting...");
+
+    const authToken = localStorage.getItem(Storage.TOKEN);
+
+    const rslt = fetch("/api/game/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        gameId: lastGame.id,
+        authToken,
+      }),
+    });
+
+    rslt
+      .then((res) => res.text())
+      .then((res) => {
+        toast.dismiss(startToastId);
+        if (res === "Auth error") {
+          toast.error("Error when deleting");
+          console.log(res);
+        } else {
+          toast.success("Deleteted successfully");
+          window.location.reload();
+        }
+      });
   };
 
   return (

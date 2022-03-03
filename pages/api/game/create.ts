@@ -4,18 +4,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { SendData } from "../../../types";
 
-import { scryptSync, createDecipher } from "crypto";
+//import { scryptSync, createDecipher } from "crypto";
 
-import { verifyPassword } from "../../../lib/utils";
+import { verifyAuthToken } from "../../../lib/utils";
 
-const algorithm = "aes-192-cbc";
-const password = "Password used to generate key";
-// Use the async `crypto.scrypt()` instead.
-const key = scryptSync(password, "salt", 24);
-// The IV is usually passed along with the ciphertext.
+// const algorithm = "aes-192-cbc";
+// const password = "Password used to generate key";
+// // Use the async `crypto.scrypt()` instead.
+// const key = scryptSync(password, "salt", 24);
+// // The IV is usually passed along with the ciphertext.
 //const iv = Buffer.alloc(16, 0); // Initialization vector.
 
-const decipher = createDecipher(algorithm, key);
+//const decipher = createDecipher(algorithm, key);
 
 export default async function handle(
   req: NextApiRequest,
@@ -34,28 +34,13 @@ export default async function handle(
 
   let authToken = sendData.authToken;
 
-  let decrypted = decipher.update(authToken, "hex", "utf8");
-  decrypted += decipher.final("utf8");
-  // console.log(decrypted);
-  // console.log(JSON.parse(decrypted));
-  const authTokenObj = JSON.parse(decrypted);
-
   const userAgent = req.headers["user-agent"];
-  console.log(userAgent);
-  console.log(authTokenObj.userAgent);
 
-  if (userAgent !== authTokenObj.userAgent) {
-    res.json("Auth error");
-    return;
-  }
+  const isAuthTokenOk = verifyAuthToken(authToken, userAgent!, db);
 
-  const isPasswordOk = await verifyPassword(
-    authTokenObj.userName,
-    authTokenObj.password,
-    db
-  );
-  if (!isPasswordOk) {
+  if (!isAuthTokenOk) {
     res.json("Auth error");
+    db.end();
     return;
   }
 
