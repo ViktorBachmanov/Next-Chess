@@ -36,7 +36,7 @@ export default async function handle(
 
   const userAgent = req.headers["user-agent"];
 
-  const isAuthTokenOk = verifyAuthToken(authToken, userAgent!, db);
+  const isAuthTokenOk = await verifyAuthToken(authToken, userAgent!, db);
 
   if (!isAuthTokenOk) {
     res.json("Auth error");
