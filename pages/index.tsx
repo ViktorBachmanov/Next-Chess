@@ -50,8 +50,8 @@ function Home({
   }, []);
 
   useEffect(() => {
-    console.log("index useEffect()");
-    console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
+    // console.log("index useEffect()");
+    // console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 
     //fetch("/api/auth/hash");
     //fetch("/api/auth/sendmail");

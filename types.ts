@@ -12,7 +12,7 @@ export class UserData {
     this.rating = userRecord.rating;
 
     this.isTotalGamesGT30 = UserData.isTotalGamesGT30(games, this.id);
-    console.log("isTotalGamesGT30: ", this.isTotalGamesGT30);
+    //console.log("isTotalGamesGT30: ", this.isTotalGamesGT30);
   }
 
   public evalRating(opponentRating: number, score: number) {

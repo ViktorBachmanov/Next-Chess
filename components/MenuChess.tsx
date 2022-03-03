@@ -72,7 +72,7 @@ export default function MenuChess() {
 
   return (
     <div>
-      {console.log("MenuChess return")}
+      {/*console.log("MenuChess return")*/}
 
       <IconButton
         size="large"

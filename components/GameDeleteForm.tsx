@@ -91,7 +91,7 @@ function GameDeleteForm(props: Props) {
         toast.dismiss(startToastId);
         if (res === "Auth error") {
           toast.error("Error when deleting");
-          console.log(res);
+          //console.log(res);
         } else {
           toast.success("Deleteted successfully");
           window.location.reload();
@@ -126,7 +126,7 @@ function GameDeleteForm(props: Props) {
         defaultValue={lastGameWinner}
       />
 
-      <LocalizedDatePicker disabled={true} value={lastGame.date} />
+      <LocalizedDatePicker disabled={true} value={new Date(lastGame.date)} />
     </form>
   );
 }

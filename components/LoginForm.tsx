@@ -41,8 +41,8 @@ export default function LoginForm(props: Props) {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log("submit");
-    console.log(data);
+    // console.log("submit");
+    // console.log(data);
 
     const authToastId = toast.loading("Authenticating...");
 
@@ -63,7 +63,7 @@ export default function LoginForm(props: Props) {
         return prms;
       })
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         //console.log(document.cookie);
         toast.dismiss(authToastId);
         if (res === "fail") {

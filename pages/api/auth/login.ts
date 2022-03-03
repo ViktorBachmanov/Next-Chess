@@ -45,8 +45,8 @@ export default async function handle(
       password: formData.password,
     };
 
-    console.log(tokenObj);
-    console.log(JSON.stringify(tokenObj));
+    // console.log(tokenObj);
+    // console.log(JSON.stringify(tokenObj));
 
     scrypt(cryptoPassword, "salt", 24, (err: any, key: any) => {
       if (err) throw err;

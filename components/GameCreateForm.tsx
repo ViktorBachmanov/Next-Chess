@@ -62,8 +62,8 @@ function GameCreateForm(props: Props) {
   const watchWinner = watch("winner");
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log("submit");
-    console.log(data);
+    // console.log("submit");
+    // console.log(data);
 
     const startToastId = toast.loading("Game creating...");
 
@@ -123,7 +123,7 @@ function GameCreateForm(props: Props) {
         toast.dismiss(startToastId);
         if (res === "Auth error") {
           toast.error("Error when creating");
-          console.log(res);
+          //console.log(res);
         } else {
           toast.success("Created successfully");
           window.location.reload();

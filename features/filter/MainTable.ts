@@ -59,11 +59,11 @@ export default class MainTable {
       }
     });
 
-    console.log("orderedByRating: )", this.orderedByRating);
-    console.log(
-      "JSON.stringify(orderedByRating: )",
-      JSON.stringify(this.orderedByRating)
-    );
+    // console.log("orderedByRating: )", this.orderedByRating);
+    // console.log(
+    //   "JSON.stringify(orderedByRating: )",
+    //   JSON.stringify(this.orderedByRating)
+    // );
   }
 
   private getOrderedByRating() {
@@ -103,9 +103,9 @@ export default class MainTable {
       });
     });
 
-    console.log("byScoreIndexToByRatingIndex: ", byScoreIndexToByRatingIndex);
-    console.log("this.orderedByRating: ", this.orderedByRating);
-    console.log("orderedByScore: ", orderedByScore);
+    // console.log("byScoreIndexToByRatingIndex: ", byScoreIndexToByRatingIndex);
+    // console.log("this.orderedByRating: ", this.orderedByRating);
+    // console.log("orderedByScore: ", orderedByScore);
 
     return orderedByScore;
   }
