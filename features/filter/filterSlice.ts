@@ -5,12 +5,13 @@ import GamesTable from "./GamesTable";
 import { MainTableRow, Order, GamesTableRow } from "./types";
 //import { fetchTables } from "../db/dbSlice";
 import { RequestStatus } from "../types";
+import { User, Game } from "../db/types";
 
 export interface FilterState {
   day: string;
   orderBy: Order;
-  games: Array<any>;
-  users: Array<any>;
+  games: Array<Game>;
+  users: Array<User>;
   //status: "idle" | "loading" | "failed";
   requestStatus: RequestStatus;
   mainTable: Array<MainTableRow>;
@@ -122,15 +123,12 @@ export default filterSlice.reducer;
 // helper functions
 
 function filterGamesAndUsersByDay(
-  games: Array<any>,
-  users: Array<any>,
+  games: Array<Game>,
+  users: Array<User>,
   day: string
 ) {
-  if (day === "all") {
-    return { games, users };
-  }
-
-  const filteredGames = games.filter((game) => game.date === day);
+  const filteredGames: Array<Game> =
+    day === "all" ? games : games.filter((game) => game.date === day);
 
   const filteredUsers = users.filter((user) => {
     return filteredGames.some((game) => {

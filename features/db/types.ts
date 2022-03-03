@@ -11,5 +11,5 @@ export interface Game {
   white: number;
   black: number;
   winner: number;
-  date: Date;
+  date: string;
 }
