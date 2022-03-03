@@ -4,6 +4,17 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { SendData } from "../../../types";
 
+import { scryptSync, createDecipher } from "crypto";
+
+const algorithm = "aes-192-cbc";
+const password = "Password used to generate key";
+// Use the async `crypto.scrypt()` instead.
+const key = scryptSync(password, "salt", 24);
+// The IV is usually passed along with the ciphertext.
+//const iv = Buffer.alloc(16, 0); // Initialization vector.
+
+const decipher = createDecipher(algorithm, key);
+
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -18,6 +29,23 @@ export default async function handle(
   //     day: sendData.day,
   //   },
   // });
+
+  let authToken = sendData.authToken;
+
+  let decrypted = decipher.update(authToken, "hex", "utf8");
+  decrypted += decipher.final("utf8");
+  // console.log(decrypted);
+  // console.log(JSON.parse(decrypted));
+  const authTokenObj = JSON.parse(decrypted);
+
+  const userAgent = req.headers["user-agent"];
+  console.log(userAgent);
+  console.log(authTokenObj.userAgent);
+
+  if (userAgent !== authTokenObj.userAgent) {
+    res.json("Auth error");
+    return;
+  }
 
   let results = await db
     .transaction()

@@ -19,6 +19,8 @@ import { createGame as createGameAction } from "../features/db/dbSlice";
 import { UserData, SendData } from "../types";
 import { gameCreatingMessages } from "../features/db/constants";
 
+import { Storage } from "../constants";
+
 //import { User, Game } from '../features/db/types'
 
 function mapStateToProps(state: RootState) {
@@ -89,7 +91,9 @@ function GameCreateForm(props: Props) {
         break;
     }
 
-    let sendData = new SendData(whiteUser, blackUser, winnerId);
+    const authToken = localStorage.getItem(Storage.TOKEN);
+
+    let sendData = new SendData(whiteUser, blackUser, winnerId, authToken!);
 
     if (data.day) {
       sendData.day = data.day.toISOString().substring(0, 10);

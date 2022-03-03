@@ -46,6 +46,12 @@ export const createGame = createAsyncThunk(
       body: JSON.stringify(sendData),
     });
 
+    const rslt = await response.text();
+
+    if (rslt === "Auth error") {
+      console.log(rslt);
+    }
+
     //dispatch(fetchTables());
 
     //await fetch('/api/db/fetch');

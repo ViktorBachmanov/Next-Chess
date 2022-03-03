@@ -63,6 +63,7 @@ export class SendData {
     public readonly white: UserData,
     public readonly black: UserData,
     public readonly winner: number | null,
+    public readonly authToken: string,
     public day: string = ""
   ) {}
 }
