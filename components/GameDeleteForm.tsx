@@ -32,10 +32,11 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   formId: string;
+  handleClose: () => void;
 };
 
 function GameDeleteForm(props: Props) {
-  const { users, games } = props;
+  const { users, games, handleClose } = props;
   //const isDeleteForm = props.formId === 'deleteForm';
 
   //const lastGame = games[games.length - 1];
@@ -67,6 +68,8 @@ function GameDeleteForm(props: Props) {
     // const rslt = deleteGame(lastGame.id).unwrap();
     // toast.promise(rslt, gameDeletingMessages);
     // rslt.then(() => window.location.reload());
+
+    handleClose();
 
     const startToastId = toast.loading("Game deleting...");
 

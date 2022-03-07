@@ -23,6 +23,7 @@ import { Storage } from "../constants";
 
 interface Props {
   formId: string;
+  handleClose: () => void;
 }
 
 interface IFormInputs {
@@ -43,6 +44,8 @@ export default function LoginForm(props: Props) {
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     // console.log("submit");
     // console.log(data);
+
+    props.handleClose();
 
     const authToastId = toast.loading("Authenticating...");
 

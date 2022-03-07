@@ -32,13 +32,13 @@ export default function GameDialog(props: Props) {
   let formEl;
   switch (props.title) {
     case "Новая партия":
-      formEl = <GameCreateForm formId={formId} />;
+      formEl = <GameCreateForm formId={formId} handleClose={handleClose} />;
       break;
     case "Последняя партия":
-      formEl = <GameDeleteForm formId={formId} />;
+      formEl = <GameDeleteForm formId={formId} handleClose={handleClose} />;
       break;
     case "Аутентификация":
-      formEl = <LoginForm formId={formId} />;
+      formEl = <LoginForm formId={formId} handleClose={handleClose} />;
       break;
   }
 
@@ -49,7 +49,7 @@ export default function GameDialog(props: Props) {
         <DialogContent>{formEl}</DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>
-          <Button onClick={handleClose} type="submit" form={formId}>
+          <Button type="submit" form={formId}>
             {props.submitButtonLabel}
           </Button>
         </DialogActions>

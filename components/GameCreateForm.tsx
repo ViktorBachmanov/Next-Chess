@@ -40,7 +40,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   formId: string;
-  //handleClose: () => void;
+  handleClose: () => void;
 };
 
 interface IFormInputs {
@@ -51,7 +51,7 @@ interface IFormInputs {
 }
 
 function GameCreateForm(props: Props) {
-  const { users, games } = props;
+  const { users, games, handleClose } = props;
 
   const { handleSubmit, control, watch } = useForm<IFormInputs>({
     defaultValues: {
@@ -64,6 +64,8 @@ function GameCreateForm(props: Props) {
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     // console.log("submit");
     // console.log(data);
+
+    handleClose();
 
     const startToastId = toast.loading("Game creating...");
 
