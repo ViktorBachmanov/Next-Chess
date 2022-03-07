@@ -16,7 +16,7 @@ interface Props {
   submitButtonLabel: string;
 }
 
-export default function GameDialog(props: Props) {
+export default function MenuDialog(props: Props) {
   //const [open, setOpen] = React.useState(false);
   /*
   const handleClickOpen = () => {

@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 
 //import { useUser } from "@auth0/nextjs-auth0";
 
-import GameDialog from "./GameDialog";
+import MenuDialog from "./MenuDialog";
 
 import { setLoginStatus } from "../features/auth/authSlice";
 import { Storage } from "../constants";
@@ -114,7 +114,7 @@ export default function MenuChess() {
         </MenuItem>
       </Menu>
 
-      <GameDialog
+      <MenuDialog
         isDialogOpen={isDialogOpen}
         setDialogOpen={setDialogOpen}
         title={dialogTitle}
