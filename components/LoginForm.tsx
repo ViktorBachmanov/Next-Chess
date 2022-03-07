@@ -1,6 +1,5 @@
 import React, { BaseSyntheticEvent } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { RootState } from "../app/store";
+import { useAppDispatch } from "../app/hooks";
 
 import {
   useForm,
@@ -13,13 +12,9 @@ import TextField from "@mui/material/TextField";
 
 import toast from "react-hot-toast";
 
-import bcrypt from "bcrypt";
-
 import { setLoginStatus } from "../features/auth/authSlice";
 
 import { Storage } from "../constants";
-
-//import { authMessages } from "../features/auth/constants";
 
 interface Props {
   formId: string;
@@ -42,9 +37,6 @@ export default function LoginForm(props: Props) {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    // console.log("submit");
-    // console.log(data);
-
     props.handleClose();
 
     const authToastId = toast.loading("Authenticating...");
@@ -61,13 +53,10 @@ export default function LoginForm(props: Props) {
     });
     rslt
       .then((res) => {
-        //console.log(res);
         const prms = res.text();
         return prms;
       })
       .then((res) => {
-        //console.log(res);
-        //console.log(document.cookie);
         toast.dismiss(authToastId);
         if (res === "fail") {
           toast.error("Authenticating failed");
@@ -77,7 +66,6 @@ export default function LoginForm(props: Props) {
           dispatch(setLoginStatus(true));
         }
       });
-    //toast.promise(rslt, authMessages);
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (

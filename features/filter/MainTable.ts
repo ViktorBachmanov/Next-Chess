@@ -13,7 +13,6 @@ export default class MainTable {
   }
 
   public regenerate(games: Array<any>, users: Array<any>) {
-    //const mainTable: Array<any> = [];
     this.orderedByRating = [];
     this.userIdToByRatingIndex.clear();
 
@@ -58,12 +57,6 @@ export default class MainTable {
         this.orderedByRating[blackIndex].cells[whiteIndex]++;
       }
     });
-
-    // console.log("orderedByRating: )", this.orderedByRating);
-    // console.log(
-    //   "JSON.stringify(orderedByRating: )",
-    //   JSON.stringify(this.orderedByRating)
-    // );
   }
 
   private getOrderedByRating() {
@@ -102,10 +95,6 @@ export default class MainTable {
           this.orderedByRating[byRatingRowIndex].cells[byRatingCellIndex];
       });
     });
-
-    // console.log("byScoreIndexToByRatingIndex: ", byScoreIndexToByRatingIndex);
-    // console.log("this.orderedByRating: ", this.orderedByRating);
-    // console.log("orderedByScore: ", orderedByScore);
 
     return orderedByScore;
   }

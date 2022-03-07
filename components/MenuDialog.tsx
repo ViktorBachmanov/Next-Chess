@@ -17,17 +17,10 @@ interface Props {
 }
 
 export default function MenuDialog(props: Props) {
-  //const [open, setOpen] = React.useState(false);
-  /*
-  const handleClickOpen = () => {
-    props.setDialogOpen(true);
-  };*/
-
   const handleClose = () => {
     props.setDialogOpen(false);
   };
 
-  //const formId = props.title === "Новая партия" ? "createForm" : "deleteForm";
   const formId = "dialogForm";
   let formEl;
   switch (props.title) {

@@ -12,19 +12,12 @@ import { Storage } from "../constants";
 
 import { UserData, DeleteGameData } from "../types";
 
-//import { deleteGame as deleteGameAction } from "../features/db/dbSlice";
-//import { gameDeletingMessages } from "../features/db/constants";
-
 function mapStateToProps(state: RootState) {
   return {
     users: state.db.users,
     games: state.db.games,
   };
 }
-
-// const mapDispatchToProps = {
-//   deleteGame: deleteGameAction,
-// };
 
 const connector = connect(mapStateToProps);
 
@@ -37,9 +30,7 @@ type Props = PropsFromRedux & {
 
 function GameDeleteForm(props: Props) {
   const { users, games, handleClose } = props;
-  //const isDeleteForm = props.formId === 'deleteForm';
 
-  //const lastGame = games[games.length - 1];
   const lastGame = games[0];
 
   const whiteUser = new UserData(lastGame.white, users, games);
@@ -65,9 +56,6 @@ function GameDeleteForm(props: Props) {
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // const rslt = deleteGame(lastGame.id).unwrap();
-    // toast.promise(rslt, gameDeletingMessages);
-    // rslt.then(() => window.location.reload());
 
     handleClose();
 
@@ -94,7 +82,6 @@ function GameDeleteForm(props: Props) {
         toast.dismiss(startToastId);
         if (res === "Auth error") {
           toast.error("Error when deleting");
-          //console.log(res);
         } else {
           toast.success("Deleteted successfully");
           window.location.reload();

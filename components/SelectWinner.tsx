@@ -21,12 +21,6 @@ type Props = {
 };
 
 const SelectWinner = React.forwardRef(function SelectWinner(props: Props, ref) {
-  //const [gamerId, setGamer] = useState('');
-  /*
-    function handleChange(event: SelectChangeEvent) {
-        setGamer(event.target.value);
-    }*/
-
   return (
     <FormControl
       style={{ margin: "2rem auto", width: "12rem" }}

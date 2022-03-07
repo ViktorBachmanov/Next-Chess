@@ -1,9 +1,7 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RequestStatus } from "../types";
 
-import { SendData } from "../../types";
 import { User, Game } from "./types";
 
 interface DbState {
@@ -17,59 +15,6 @@ const initialState: DbState = {
   games: [],
   requestStatus: RequestStatus.LOADING,
 };
-
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
-
-// export const fetchTables = createAsyncThunk(
-//   "db/fetchTables",
-//   async (_payload, { dispatch }) => {
-//     const response = await fetch("/api/db/fetch");
-
-//     const tables = response.json();
-//     console.log("AsyncThunk", tables);
-//     return tables;
-
-//     // The value we return becomes the `fulfilled` action payload
-//   }
-// );
-
-// export const createGame = createAsyncThunk(
-//   "db/createGame",
-//   async (sendData: SendData, { dispatch }) => {
-//     const response = await fetch("/api/game/create", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(sendData),
-//     });
-
-//     const rslt = await response.text();
-
-//     if (rslt === "Auth error") {
-//       console.log(rslt);
-//     }
-
-//     // The value we return becomes the `fulfilled` action payload
-//     return;
-//   }
-// );
-
-// export const deleteGame = createAsyncThunk(
-//   "db/deleteGame",
-//   async (gameId: number, { dispatch }) => {
-//     const response = await fetch("/api/game/delete", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(gameId),
-//     });
-
-//     // The value we return becomes the `fulfilled` action payload
-//     return;
-//   }
-// );
 
 export const dbSlice = createSlice({
   name: "db",
@@ -85,30 +30,6 @@ export const dbSlice = createSlice({
       state.games = action.payload.games;
     },
   },
-  // extraReducers(builder) {
-  //   builder
-  // .addCase(fetchTables.pending, (state) => {
-  //   state.requestStatus = RequestStatus.LOADING;
-  // })
-  // .addCase(fetchTables.fulfilled, (state, action) => {
-  //   const tables: any = action.payload;
-  //   state.users = tables[0];
-  //   state.games = tables[1];
-  //   state.requestStatus = RequestStatus.IDLE;
-  // })
-  // .addCase(createGame.pending, (state) => {
-  //   state.requestStatus = RequestStatus.LOADING;
-  // })
-  // .addCase(createGame.fulfilled, (state) => {
-  //   state.requestStatus = RequestStatus.IDLE;
-  // })
-  // .addCase(deleteGame.pending, (state) => {
-  //   state.requestStatus = RequestStatus.LOADING;
-  // })
-  // .addCase(deleteGame.fulfilled, (state) => {
-  //   state.requestStatus = RequestStatus.IDLE;
-  // });
-  //},
 });
 
 export const { assignTables } = dbSlice.actions;
@@ -119,13 +40,3 @@ export const { assignTables } = dbSlice.actions;
 //export const selectTitle = (state: RootState) => state.appbar.title;
 
 export default dbSlice.reducer;
-
-/*
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const [users, games] = await Promise.all([prisma.user.findMany({ orderBy: {name: 'asc'}}), 
-                                          prisma.game.findMany()]);
-  
-  return { props: { users, games } };
-};
-*/

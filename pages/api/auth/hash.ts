@@ -8,5 +8,4 @@ export default async function handle(
   bcrypt.hash("123", 10, function (err, hash) {
     console.log("Bcrypt hash: ", hash);
   });
-  //res.json(tables);
 }

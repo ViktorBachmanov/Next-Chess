@@ -14,14 +14,9 @@ import { RootState } from "../app/store";
 
 import toast from "react-hot-toast";
 
-//import { createGame as createGameAction } from "../features/db/dbSlice";
-
 import { UserData, CreateGameData } from "../types";
-//import { gameCreatingMessages } from "../features/db/constants";
 
 import { Storage } from "../constants";
-
-//import { User, Game } from '../features/db/types'
 
 function mapStateToProps(state: RootState) {
   return {
@@ -29,10 +24,6 @@ function mapStateToProps(state: RootState) {
     games: state.db.games,
   };
 }
-
-// const mapDispatchToProps = {
-//   createGame: createGameAction,
-// };
 
 const connector = connect(mapStateToProps);
 
@@ -63,9 +54,6 @@ function GameCreateForm(props: Props) {
   const watchWinner = watch("winner");
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    // console.log("submit");
-    // console.log(data);
-
     const [whiteId, blackId] = getValues(["whiteUser", "blackUser"]);
     if (whiteId === blackId) {
       setError("whiteUser", {
@@ -119,14 +107,6 @@ function GameCreateForm(props: Props) {
       day: data.day.toISOString().substring(0, 10),
     };
 
-    // if (data.day) {
-    //   sendData.day = data.day.toISOString().substring(0, 10);
-    // }
-
-    //props.handleClose();
-
-    //const rslt = createGame(sendData).unwrap();
-
     const rslt = fetch("/api/game/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -139,15 +119,11 @@ function GameCreateForm(props: Props) {
         toast.dismiss(startToastId);
         if (res === "Auth error") {
           toast.error("Error when creating");
-          //console.log(res);
         } else {
           toast.success("Created successfully");
           window.location.reload();
         }
       });
-
-    //toast.promise(rslt, gameCreatingMessages);
-    //rslt.then(() => window.location.reload());
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (

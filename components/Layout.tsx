@@ -1,7 +1,6 @@
 import type { NextPage, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import homeStyles from "../styles/Home.module.css";
 import styles from "../styles/MainTable.module.css";
 

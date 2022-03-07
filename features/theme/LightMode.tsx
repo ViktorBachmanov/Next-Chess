@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
 import IconButton from "@mui/material/IconButton";

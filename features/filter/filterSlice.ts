@@ -1,9 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState, AppThunk } from "../../app/store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk } from "../../app/store";
 import MainTable from "./MainTable";
 import GamesTable from "./GamesTable";
 import { MainTableRow, Order, GamesTableRow } from "./types";
-//import { fetchTables } from "../db/dbSlice";
 import { RequestStatus } from "../types";
 import { User, Game } from "../db/types";
 
@@ -12,11 +11,9 @@ export interface FilterState {
   orderBy: Order;
   games: Array<Game>;
   users: Array<User>;
-  //status: "idle" | "loading" | "failed";
   requestStatus: RequestStatus;
   mainTable: Array<MainTableRow>;
   gamesTable: Array<GamesTableRow>;
-  //isReady: boolean;
 }
 
 const initialState: FilterState = {
@@ -27,34 +24,7 @@ const initialState: FilterState = {
   requestStatus: RequestStatus.IDLE,
   mainTable: [],
   gamesTable: [],
-  //isReady: false,
 };
-
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
-
-// export const synchronizeMainTable = createAsyncThunk(
-//   "filter/synchronizeMainTable",
-//   async (_payload, { dispatch, getState }) => {
-//     await dispatch(fetchTables());
-
-//     const rootState = getState() as RootState;
-//     const filterState = rootState.filter;
-
-//     const allUsers = rootState.db.users;
-//     const allGames = rootState.db.games;
-
-//     dispatch(setDay({ day: filterState.day, allUsers, allGames }));
-
-//     dispatch(setOrder(filterState.orderBy));
-
-//     // The value we return becomes the `fulfilled` action payload
-//     return;
-//   }
-// );
 
 const mainTableObject = new MainTable();
 export const gamesTableObject = new GamesTable();
@@ -86,19 +56,7 @@ export const filterSlice = createSlice({
       state.orderBy = action.payload;
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
     },
-    //setPending: (state) => {
-    //state.isReady = false;
-    //},
   },
-  // extraReducers(builder) {
-  //   builder
-  //     .addCase(synchronizeMainTable.pending, (state) => {
-  //       state.requestStatus = RequestStatus.LOADING;
-  //     })
-  //     .addCase(synchronizeMainTable.fulfilled, (state, action) => {
-  //       state.requestStatus = RequestStatus.IDLE;
-  //     });
-  // },
 });
 
 export const { setDay, setOrder } = filterSlice.actions;

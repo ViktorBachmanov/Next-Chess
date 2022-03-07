@@ -1,17 +1,12 @@
-/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
-/** @jsxImportSource @emotion/react */
-
 import React from "react";
 import { RootState } from "../app/store";
 import { connect, ConnectedProps } from "react-redux";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import Radio from "@mui/material/Radio";
-import { css } from "@emotion/react";
 import { setOrder as setOrderAction } from "../features/filter/filterSlice";
 import { MainTableRow, Order } from "../features/filter/types";
 import styles from "../styles/MainTable.module.css";
 
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 const OpaqueTh = styled("th")(
   ({ theme }) => `

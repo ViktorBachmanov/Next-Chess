@@ -16,10 +16,6 @@ const LocalizedDatePicker = React.forwardRef(function LocalizedDatePicker(
   props: Props,
   ref
 ) {
-  //const [value, setValue] = React.useState<Date | null>(new Date());
-
-  //console.log("LocalizedDatePicker props.value: ", props.value);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
       <div>

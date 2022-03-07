@@ -6,7 +6,6 @@ export async function verifyPassword(name: string, password: string, db: any) {
     `SELECT password FROM users WHERE name="${name}"`
   );
   const dbPassword = queryResult[0].password;
-  //console.log("/api/auth/login dbPassword:", dbPassword);
 
   return await bcrypt.compare(password, dbPassword);
 }
@@ -27,12 +26,8 @@ export async function verifyAuthToken(
 
   let decrypted = decipher.update(authToken, "hex", "utf8");
   decrypted += decipher.final("utf8");
-  // console.log(decrypted);
-  // console.log(JSON.parse(decrypted));
-  const authTokenObj = JSON.parse(decrypted);
 
-  //   console.log(userAgent);
-  //   console.log(authTokenObj.userAgent);
+  const authTokenObj = JSON.parse(decrypted);
 
   if (userAgent !== authTokenObj.userAgent) {
     return false;

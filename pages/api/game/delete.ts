@@ -1,4 +1,3 @@
-//import prisma from "../../../lib/prisma";
 import { db } from "../../../lib/db";
 
 import { NextApiRequest, NextApiResponse } from "next";
@@ -10,7 +9,6 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  //const lastGameId: number = req.body;
   const sendData: DeleteGameData = req.body;
   const lastGameId: number = sendData.id;
   const authToken: string = sendData.authToken;
@@ -18,12 +16,6 @@ export default async function handle(
   const blackUser: UserData = sendData.black;
 
   const userAgent = req.headers["user-agent"];
-
-  // const rslt = await prisma.game.delete({
-  //   where: {
-  //     id: lastGameId,
-  //   },
-  // });
 
   const isAuthTokenOk = await verifyAuthToken(authToken, userAgent!, db);
 
@@ -52,5 +44,4 @@ export default async function handle(
   await res.unstable_revalidate("/");
 
   res.json(results);
-  //res.end();
 }

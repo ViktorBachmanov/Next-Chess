@@ -9,7 +9,5 @@ export default async function handle(
 
   db.end();
 
-  //console.log("MySQL: ", rslt);
-
   res.json(rslt);
 }

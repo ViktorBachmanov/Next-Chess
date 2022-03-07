@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
 
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -11,8 +10,6 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useRouter } from "next/router";
-
-//import { useUser } from "@auth0/nextjs-auth0";
 
 import MenuDialog from "./MenuDialog";
 
@@ -26,8 +23,6 @@ export default function MenuChess() {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-
-  //const { user, error, isLoading } = useUser();
 
   const loginStatus = useAppSelector(
     (state: RootState) => state.auth.loginStatus
@@ -51,7 +46,6 @@ export default function MenuChess() {
   }
 
   function handleLogout() {
-    //router.push("/api/auth/logout");
     localStorage.removeItem(Storage.TOKEN);
     dispatch(setLoginStatus(false));
     handleClose();
@@ -73,8 +67,6 @@ export default function MenuChess() {
 
   return (
     <div>
-      {/*console.log("MenuChess return")*/}
-
       <IconButton
         size="large"
         edge="start"
