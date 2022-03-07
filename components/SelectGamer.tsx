@@ -30,6 +30,8 @@ const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
     return 0;
   });
 
+  const errorMessage = props.error?.message || "Выберите игрока";
+
   return (
     <div style={{ display: "flex" }}>
       <IconKing color={props.color} transform={props.transform} />
@@ -56,7 +58,7 @@ const SelectGamer = React.forwardRef(function SelectGamer(props: Props, ref) {
           ))}
         </Select>
 
-        {props.error && <FormHelperText>Выберите игрока</FormHelperText>}
+        {props.error && <FormHelperText>{errorMessage}</FormHelperText>}
       </FormControl>
     </div>
   );

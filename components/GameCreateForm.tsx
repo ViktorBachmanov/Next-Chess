@@ -53,17 +53,31 @@ interface IFormInputs {
 function GameCreateForm(props: Props) {
   const { users, games, handleClose } = props;
 
-  const { handleSubmit, control, watch } = useForm<IFormInputs>({
-    defaultValues: {
-      day: new Date(),
-    },
-  });
+  const { handleSubmit, control, watch, getValues, setError } =
+    useForm<IFormInputs>({
+      defaultValues: {
+        day: new Date(),
+      },
+    });
 
   const watchWinner = watch("winner");
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     // console.log("submit");
     // console.log(data);
+
+    const [whiteId, blackId] = getValues(["whiteUser", "blackUser"]);
+    if (whiteId === blackId) {
+      setError("whiteUser", {
+        type: "manual",
+        message: "Сам с собой",
+      });
+      setError("blackUser", {
+        type: "manual",
+        message: "Сам с собой",
+      });
+      return;
+    }
 
     handleClose();
 
