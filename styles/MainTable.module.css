@@ -62,10 +62,21 @@
 }
 
 .crown {
-  background: url(../public/crown3_t.gif) no-repeat center center;
-  background-size: cover;
+  /*background: url(../public/crown3_t.gif) no-repeat center center;
+  background-size: cover;*/
   width: 2.5rem;
   height: 2.5rem;
+}
+
+.gold {
+  background: linear-gradient(
+    170deg,
+    rgb(252, 220, 107) 0%,
+    rgb(255, 254, 182) 100%
+  );
+  box-shadow: 1px 1px 1px rgb(255, 180, 68);
+  color: rgb(255, 254, 182);
+  text-shadow: 1px 1px 1px rgb(255, 180, 68);
 }
 
 .silver {
@@ -91,8 +102,8 @@
 }
 
 .wood {
-  background-image: url("../public/pine_1.jpg");
-  background-size: cover;
+  /*background-image: url("../public/pine_1.jpg");
+  background-size: cover;*/
   box-shadow: 1px 1px 1px rgb(228, 108, 31);
   color: rgb(247, 183, 112);
   text-shadow: 1px 1px 1px rgb(228, 108, 31);

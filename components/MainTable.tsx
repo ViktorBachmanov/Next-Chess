@@ -141,13 +141,14 @@ export default connector(MainTable);
 function renderPrizePlace(place: number) {
   switch (place) {
     case 0:
-      return <div className={styles.crown}></div>;
+      //return <div className={styles.crown}></div>;
+      return <div className={`${styles.medal} ${styles.gold}`}>I</div>;
     case 1:
       return <div className={`${styles.medal} ${styles.silver}`}>II</div>;
     case 2:
       return <div className={`${styles.medal} ${styles.bronze}`}>III</div>;
-    case 3:
-      return <div className={`${styles.medal} ${styles.wood}`}>IV</div>;
+    // case 3:
+    //   return <div className={`${styles.medal} ${styles.wood}`}>IV</div>;
 
     default:
       return;
