@@ -26,7 +26,7 @@ const initialState: FilterState = {
   gamesTable: [],
 };
 
-const mainTableObject = new MainTable();
+export const mainTableObject = new MainTable();
 export const gamesTableObject = new GamesTable();
 
 export const filterSlice = createSlice({
@@ -56,10 +56,16 @@ export const filterSlice = createSlice({
       state.orderBy = action.payload;
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
     },
+    setInitialMainTable: (
+      state,
+      action: PayloadAction<Array<MainTableRow>>
+    ) => {
+      state.mainTable = action.payload;
+    },
   },
 });
 
-export const { setDay, setOrder } = filterSlice.actions;
+export const { setDay, setOrder, setInitialMainTable } = filterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -80,7 +86,7 @@ export default filterSlice.reducer;
 
 // helper functions
 
-function filterGamesAndUsersByDay(
+export function filterGamesAndUsersByDay(
   games: Array<Game>,
   users: Array<User>,
   day: string

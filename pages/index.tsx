@@ -12,7 +12,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { RootState, store } from "../app/store";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { assignTables } from "../features/db/dbSlice";
-import { setDayFilter } from "../features/filter/filterSlice";
+import { User, Game } from "../features/db/types";
+
+import {
+  setInitialMainTable,
+  filterGamesAndUsersByDay,
+  mainTableObject,
+} from "../features/filter/filterSlice";
+import { Order } from "../features/filter/types";
 
 import Layout from "../components/Layout";
 
@@ -26,6 +33,7 @@ import { Storage } from "../constants";
 function Home({
   users,
   games,
+  mainTable,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const dispatch = useAppDispatch();
 
@@ -46,9 +54,10 @@ function Home({
   useEffect(() => {
     const allUsers = JSON.parse(users) as Array<any>;
     const allGames = JSON.parse(games) as Array<any>;
+    const initialMainTable = JSON.parse(mainTable) as Array<any>;
 
+    dispatch(setInitialMainTable(initialMainTable));
     dispatch(assignTables({ users: allUsers, games: allGames }));
-    dispatch(setDayFilter("all"));
   }, [users, games, dispatch]);
 
   const lightMode = useAppSelector(
@@ -80,17 +89,26 @@ export async function getStaticProps() {
   // Call an external API endpoint to get posts.
   // You can use any data fetching library
 
-  const [users, games] = await Promise.all([
-    db.query("SELECT * FROM users ORDER BY rating DESC"),
-    db.query("SELECT * FROM games ORDER BY id DESC"),
+  let allUsers: User[];
+  let allGames: Game[];
+
+  [allUsers, allGames] = await Promise.all([
+    db.query<User[]>("SELECT * FROM users ORDER BY rating DESC"),
+    db.query<Game[]>("SELECT * FROM games ORDER BY id DESC"),
   ]);
 
   db.end();
 
+  const { games, users } = filterGamesAndUsersByDay(allGames, allUsers, "all");
+
+  mainTableObject.regenerate(games, users);
+  const mainTable = mainTableObject.getTableOrderedBy(Order.RATING);
+
   return {
     props: {
-      users: JSON.stringify(users),
-      games: JSON.stringify(games),
+      users: JSON.stringify(allUsers),
+      games: JSON.stringify(allGames),
+      mainTable: JSON.stringify(mainTable),
     },
   };
 }
