@@ -18,6 +18,8 @@ import {
   setInitialMainTable,
   filterGamesAndUsersByDay,
   mainTableObject,
+  setGameTable,
+  setDayFilter,
 } from "../features/filter/filterSlice";
 import { Order } from "../features/filter/types";
 
@@ -58,6 +60,8 @@ function Home({
 
     dispatch(setInitialMainTable(initialMainTable));
     dispatch(assignTables({ users: allUsers, games: allGames }));
+    dispatch(setDayFilter("all"));
+    dispatch(setGameTable());
   }, [users, games, dispatch]);
 
   const lightMode = useAppSelector(

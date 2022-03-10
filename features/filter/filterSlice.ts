@@ -35,20 +35,11 @@ export const filterSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setDay: (state, action: PayloadAction<any>) => {
-      state.day = action.payload.day;
-
-      const { games, users } = filterGamesAndUsersByDay(
-        action.payload.allGames,
-        action.payload.allUsers,
-        action.payload.day
-      );
-      state.games = games!;
-      state.users = users!;
-
+    setMainTable: (state) => {
       mainTableObject.regenerate(state.games, state.users);
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
-
+    },
+    setGameTable: (state) => {
       gamesTableObject.regenerate(state.games, state.users);
       state.gamesTable = gamesTableObject.getRows();
     },
@@ -62,10 +53,27 @@ export const filterSlice = createSlice({
     ) => {
       state.mainTable = action.payload;
     },
+    filterByDay: (state, action: PayloadAction<any>) => {
+      state.day = action.payload.day;
+
+      const { games, users } = filterGamesAndUsersByDay(
+        action.payload.allGames,
+        action.payload.allUsers,
+        action.payload.day
+      );
+      state.games = games!;
+      state.users = users!;
+    },
   },
 });
 
-export const { setDay, setOrder, setInitialMainTable } = filterSlice.actions;
+export const {
+  filterByDay,
+  setMainTable,
+  setGameTable,
+  setOrder,
+  setInitialMainTable,
+} = filterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -79,7 +87,9 @@ export const setDayFilter =
     const allUsers = getState().db.users;
     const allGames = getState().db.games;
 
-    dispatch(setDay({ day, allUsers, allGames }));
+    dispatch(filterByDay({ day, allUsers, allGames }));
+    dispatch(setMainTable());
+    dispatch(setGameTable());
   };
 
 export default filterSlice.reducer;
