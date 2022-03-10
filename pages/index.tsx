@@ -51,7 +51,7 @@ function Home({
     return function cleanUp() {
       window.removeEventListener("beforeunload", saveInLocalStorage);
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const allUsers = JSON.parse(users) as Array<any>;
@@ -62,7 +62,7 @@ function Home({
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
     dispatch(setGameTable());
-  }, [users, games, dispatch]);
+  }, [users, games, mainTable, dispatch]);
 
   const lightMode = useAppSelector(
     (state: RootState) => state.theme.lightStatus
