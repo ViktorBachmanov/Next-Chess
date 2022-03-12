@@ -33,18 +33,19 @@ import { setLoginStatus } from "../features/auth/authSlice";
 import { Storage } from "../constants";
 
 function Home({
+  mainTable,
   users,
   games,
-  mainTable,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const initialMainTable = JSON.parse(mainTable) as Array<any>;
+    dispatch(setInitialMainTable(initialMainTable));
+
     const allUsers = JSON.parse(users) as Array<any>;
     const allGames = JSON.parse(games) as Array<any>;
-    const initialMainTable = JSON.parse(mainTable) as Array<any>;
 
-    dispatch(setInitialMainTable(initialMainTable));
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
     dispatch(setGameTable());
@@ -110,9 +111,9 @@ export async function getStaticProps() {
 
   return {
     props: {
+      mainTable: JSON.stringify(mainTable),
       users: JSON.stringify(allUsers),
       games: JSON.stringify(allGames),
-      mainTable: JSON.stringify(mainTable),
     },
   };
 }
