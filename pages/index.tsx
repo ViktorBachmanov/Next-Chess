@@ -40,6 +40,17 @@ function Home({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const allUsers = JSON.parse(users) as Array<any>;
+    const allGames = JSON.parse(games) as Array<any>;
+    const initialMainTable = JSON.parse(mainTable) as Array<any>;
+
+    dispatch(setInitialMainTable(initialMainTable));
+    dispatch(assignTables({ users: allUsers, games: allGames }));
+    dispatch(setDayFilter("all"));
+    dispatch(setGameTable());
+  }, [users, games, mainTable, dispatch]);
+
+  useEffect(() => {
     dispatch(setLightStatus(getInitialLightMode()));
     window.addEventListener("beforeunload", saveInLocalStorage);
 
@@ -52,17 +63,6 @@ function Home({
       window.removeEventListener("beforeunload", saveInLocalStorage);
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    const allUsers = JSON.parse(users) as Array<any>;
-    const allGames = JSON.parse(games) as Array<any>;
-    const initialMainTable = JSON.parse(mainTable) as Array<any>;
-
-    dispatch(setInitialMainTable(initialMainTable));
-    dispatch(assignTables({ users: allUsers, games: allGames }));
-    dispatch(setDayFilter("all"));
-    dispatch(setGameTable());
-  }, [users, games, mainTable, dispatch]);
 
   const lightMode = useAppSelector(
     (state: RootState) => state.theme.lightStatus
