@@ -37,9 +37,19 @@ export const filterSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
+    setInitialMainTable: (
+      state,
+      action: PayloadAction<Array<MainTableRow>>
+    ) => {
+      //timer.print("reducer setInitialMainTable");
+      state.mainTable = action.payload;
+    },
     setMainTable: (state) => {
       mainTableObject.regenerate(state.games, state.users);
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
+    },
+    resetMainTable: (state) => {
+      state.mainTable = null;
     },
     setGameTable: (state) => {
       gamesTableObject.regenerate(state.games, state.users);
@@ -48,13 +58,6 @@ export const filterSlice = createSlice({
     setOrder: (state, action: PayloadAction<Order>) => {
       state.orderBy = action.payload;
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
-    },
-    setInitialMainTable: (
-      state,
-      action: PayloadAction<Array<MainTableRow>>
-    ) => {
-      //timer.print("reducer setInitialMainTable");
-      state.mainTable = action.payload;
     },
     filterByDay: (state, action: PayloadAction<any>) => {
       state.day = action.payload.day;
@@ -71,11 +74,12 @@ export const filterSlice = createSlice({
 });
 
 export const {
-  filterByDay,
+  setInitialMainTable,
   setMainTable,
+  resetMainTable,
+  filterByDay,
   setGameTable,
   setOrder,
-  setInitialMainTable,
 } = filterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

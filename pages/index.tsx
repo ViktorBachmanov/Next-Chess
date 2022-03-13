@@ -20,6 +20,7 @@ import {
   mainTableObject,
   setGameTable,
   setDayFilter,
+  resetMainTable as resetMainTableAction,
 } from "../features/filter/filterSlice";
 import { Order, MainTableRow } from "../features/filter/types";
 
@@ -69,6 +70,12 @@ function Home({
     dispatch(setLightStatus(getInitialLightMode()));
     window.addEventListener("beforeunload", saveInLocalStorage);
 
+    function resetMainTable() {
+      console.log("resetMainTable");
+      dispatch(resetMainTableAction());
+    }
+    window.addEventListener("beforeunload", resetMainTable);
+
     const authToken = localStorage.getItem(Storage.TOKEN);
     if (authToken) {
       dispatch(setLoginStatus(true));
@@ -76,6 +83,7 @@ function Home({
 
     return function cleanUp() {
       window.removeEventListener("beforeunload", saveInLocalStorage);
+      window.removeEventListener("beforeunload", resetMainTable);
     };
   }, [dispatch]);
 
