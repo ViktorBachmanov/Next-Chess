@@ -37,13 +37,13 @@ export const filterSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setInitialMainTable: (
-      state,
-      action: PayloadAction<Array<MainTableRow>>
-    ) => {
-      //timer.print("reducer setInitialMainTable");
-      state.mainTable = action.payload;
-    },
+    // setInitialMainTable: (
+    //   state,
+    //   action: PayloadAction<Array<MainTableRow>>
+    // ) => {
+    //   //timer.print("reducer setInitialMainTable");
+    //   state.mainTable = action.payload;
+    // },
     setMainTable: (state) => {
       mainTableObject.regenerate(state.games, state.users);
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
@@ -74,7 +74,7 @@ export const filterSlice = createSlice({
 });
 
 export const {
-  setInitialMainTable,
+  //setInitialMainTable,
   setMainTable,
   resetMainTable,
   filterByDay,

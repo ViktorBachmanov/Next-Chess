@@ -12,11 +12,11 @@ import SelectDay from "../components/SelectDay";
 import { MainTableRow } from "../features/filter/types";
 
 interface Props {
-  mainTable: MainTableRow[];
+  initialMainTable: MainTableRow[];
 }
 
 export default function Layout(props: Props) {
-  const { mainTable } = props;
+  const { initialMainTable } = props;
 
   return (
     <div className={homeStyles.container}>
@@ -27,9 +27,9 @@ export default function Layout(props: Props) {
 
         <div className={styles.smartTable}>
           <div style={{ overflow: "auto" }}>
-            <MainTable isFixed={false} mainTable={mainTable} />
+            <MainTable isFixed={false} initialMainTable={initialMainTable} />
           </div>
-          <MainTable isFixed={true} mainTable={mainTable} />
+          <MainTable isFixed={true} initialMainTable={initialMainTable} />
         </div>
 
         <GamesTable />

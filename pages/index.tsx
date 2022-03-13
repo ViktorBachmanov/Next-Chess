@@ -15,7 +15,7 @@ import { assignTables } from "../features/db/dbSlice";
 import { User, Game } from "../features/db/types";
 
 import {
-  setInitialMainTable,
+  //setInitialMainTable,
   filterGamesAndUsersByDay,
   mainTableObject,
   setGameTable,
@@ -52,15 +52,9 @@ function Home({
   );
 
   useEffect(() => {
-    dispatch(setInitialMainTable(initialMainTable));
-  }, [mainTable, dispatch, initialMainTable]);
-
-  useEffect(() => {
-    //const initialMainTable = JSON.parse(mainTable) as Array<MainTableRow>;
     const allUsers = JSON.parse(users) as Array<User>;
     const allGames = JSON.parse(games) as Array<Game>;
 
-    //dispatch(setInitialMainTable(initialMainTable));
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
     dispatch(setGameTable());
@@ -71,7 +65,7 @@ function Home({
     window.addEventListener("beforeunload", saveInLocalStorage);
 
     function resetMainTable() {
-      console.log("resetMainTable");
+      //console.log("resetMainTable");
       dispatch(resetMainTableAction());
     }
     window.addEventListener("beforeunload", resetMainTable);
@@ -103,7 +97,7 @@ function Home({
 
       <ThemeProvider theme={mainTheme}>
         <CssBaseline />
-        <Layout mainTable={initialMainTable} />
+        <Layout initialMainTable={initialMainTable} />
       </ThemeProvider>
     </div>
   );
