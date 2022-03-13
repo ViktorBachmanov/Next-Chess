@@ -9,7 +9,15 @@ import MainTable from "../components/MainTable";
 import GamesTable from "../components/GamesTable";
 import SelectDay from "../components/SelectDay";
 
-export default function Layout() {
+import { MainTableRow } from "../features/filter/types";
+
+interface Props {
+  mainTable: MainTableRow[];
+}
+
+export default function Layout(props: Props) {
+  const { mainTable } = props;
+
   return (
     <div className={homeStyles.container}>
       <main className={homeStyles.main}>
@@ -19,9 +27,9 @@ export default function Layout() {
 
         <div className={styles.smartTable}>
           <div style={{ overflow: "auto" }}>
-            <MainTable isFixed={false} />
+            <MainTable isFixed={false} mainTable={mainTable} />
           </div>
-          <MainTable isFixed={true} />
+          <MainTable isFixed={true} mainTable={mainTable} />
         </div>
 
         <GamesTable />

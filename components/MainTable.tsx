@@ -1,12 +1,16 @@
 import React from "react";
 import { RootState } from "../app/store";
 import { connect, ConnectedProps } from "react-redux";
+import { useAppSelector } from "../app/hooks";
+
 import Radio from "@mui/material/Radio";
 import { setOrder as setOrderAction } from "../features/filter/filterSlice";
 import { MainTableRow, Order } from "../features/filter/types";
 import styles from "../styles/MainTable.module.css";
 
 import { styled } from "@mui/material/styles";
+
+//import { timer } from "../pages/index";
 
 const OpaqueTh = styled("th")(
   ({ theme }) => `
@@ -41,7 +45,7 @@ const SelfTd = styled("td")(
 
 function mapStateToProps(state: RootState) {
   return {
-    mainTable: state.filter.mainTable,
+    //mainTable: state.filter.mainTable,
     orderBy: state.filter.orderBy,
   };
 }
@@ -56,10 +60,19 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   isFixed: boolean;
+  mainTable: MainTableRow[];
 };
 
 function MainTable(props: Props) {
-  const { mainTable, orderBy, setOrder, isFixed } = props;
+  const { orderBy, setOrder, isFixed } = props;
+
+  const reduxMainTable = useAppSelector(
+    (state: RootState) => state.filter.mainTable
+  );
+
+  const mainTable = reduxMainTable || props.mainTable;
+
+  //timer.print("MainTable.tsx");
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOrder(parseInt(e.target.value));

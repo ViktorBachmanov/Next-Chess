@@ -32,17 +32,27 @@ import { setLoginStatus } from "../features/auth/authSlice";
 
 import { Storage } from "../constants";
 
+//import Timer from "./Timer";
+
+//export let timer: Timer;
+
 function Home({
   mainTable,
   users,
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  //timer = new Timer();
+
   const dispatch = useAppDispatch();
 
+  const initialMainTable: Array<MainTableRow> = useMemo(
+    () => JSON.parse(mainTable),
+    [mainTable]
+  );
+
   useEffect(() => {
-    const initialMainTable = JSON.parse(mainTable) as Array<MainTableRow>;
     dispatch(setInitialMainTable(initialMainTable));
-  }, [mainTable, dispatch]);
+  }, [mainTable, dispatch, initialMainTable]);
 
   useEffect(() => {
     //const initialMainTable = JSON.parse(mainTable) as Array<MainTableRow>;
@@ -85,7 +95,7 @@ function Home({
 
       <ThemeProvider theme={mainTheme}>
         <CssBaseline />
-        <Layout />
+        <Layout mainTable={initialMainTable} />
       </ThemeProvider>
     </div>
   );

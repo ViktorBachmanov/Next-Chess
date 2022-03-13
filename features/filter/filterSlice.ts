@@ -6,13 +6,15 @@ import { MainTableRow, Order, GamesTableRow } from "./types";
 import { RequestStatus } from "../types";
 import { User, Game } from "../db/types";
 
+//import { timer } from "../../pages/index";
+
 export interface FilterState {
   day: string;
   orderBy: Order;
   games: Array<Game>;
   users: Array<User>;
   requestStatus: RequestStatus;
-  mainTable: Array<MainTableRow>;
+  mainTable: Array<MainTableRow> | null;
   gamesTable: Array<GamesTableRow>;
 }
 
@@ -22,7 +24,7 @@ const initialState: FilterState = {
   games: [],
   users: [],
   requestStatus: RequestStatus.IDLE,
-  mainTable: [],
+  mainTable: null,
   gamesTable: [],
 };
 
@@ -51,6 +53,7 @@ export const filterSlice = createSlice({
       state,
       action: PayloadAction<Array<MainTableRow>>
     ) => {
+      //timer.print("reducer setInitialMainTable");
       state.mainTable = action.payload;
     },
     filterByDay: (state, action: PayloadAction<any>) => {
