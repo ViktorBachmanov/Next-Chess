@@ -41,14 +41,19 @@ function Home({
 
   useEffect(() => {
     const initialMainTable = JSON.parse(mainTable) as Array<MainTableRow>;
+    dispatch(setInitialMainTable(initialMainTable));
+  }, [mainTable, dispatch]);
+
+  useEffect(() => {
+    //const initialMainTable = JSON.parse(mainTable) as Array<MainTableRow>;
     const allUsers = JSON.parse(users) as Array<User>;
     const allGames = JSON.parse(games) as Array<Game>;
 
-    dispatch(setInitialMainTable(initialMainTable));
+    //dispatch(setInitialMainTable(initialMainTable));
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
     dispatch(setGameTable());
-  }, [users, games, mainTable, dispatch]);
+  }, [users, games, dispatch]);
 
   useEffect(() => {
     dispatch(setLightStatus(getInitialLightMode()));
