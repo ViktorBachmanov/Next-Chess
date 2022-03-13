@@ -21,7 +21,7 @@ import {
   setGameTable,
   setDayFilter,
 } from "../features/filter/filterSlice";
-import { Order } from "../features/filter/types";
+import { Order, MainTableRow } from "../features/filter/types";
 
 import Layout from "../components/Layout";
 
@@ -40,9 +40,9 @@ function Home({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const initialMainTable = JSON.parse(mainTable) as Array<any>;
-    const allUsers = JSON.parse(users) as Array<any>;
-    const allGames = JSON.parse(games) as Array<any>;
+    const initialMainTable = JSON.parse(mainTable) as Array<MainTableRow>;
+    const allUsers = JSON.parse(users) as Array<User>;
+    const allGames = JSON.parse(games) as Array<Game>;
 
     dispatch(setInitialMainTable(initialMainTable));
     dispatch(assignTables({ users: allUsers, games: allGames }));
