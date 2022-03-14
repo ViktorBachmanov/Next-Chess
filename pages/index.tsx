@@ -17,12 +17,13 @@ import { User, Game } from "../features/db/types";
 import {
   //setInitialMainTable,
   filterGamesAndUsersByDay,
-  mainTableObject,
-  setGameTable,
+  //mainTableObject,
+  setGamesTable,
   setDayFilter,
   resetMainTable as resetMainTableAction,
 } from "../features/filter/filterSlice";
 import { Order, MainTableRow } from "../features/filter/types";
+import MainTable from "../features/filter/MainTable";
 
 import Layout from "../components/Layout";
 
@@ -59,7 +60,7 @@ function Home({
 
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
-    //dispatch(setGameTable());
+    dispatch(setGamesTable());
   }, [users, games, dispatch]);
 
   useEffect(() => {
@@ -123,6 +124,7 @@ export async function getStaticProps() {
 
   const { games, users } = filterGamesAndUsersByDay(allGames, allUsers, "all");
 
+  const mainTableObject = new MainTable();
   mainTableObject.regenerate(games, users);
   const mainTable = mainTableObject.getTableOrderedBy(Order.RATING);
 

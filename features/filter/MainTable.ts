@@ -1,4 +1,5 @@
 import { MainTableRow, Order } from "./types";
+import { User, Game } from "../db/types";
 
 export default class MainTable {
   private orderedByRating: Array<MainTableRow> = [];
@@ -12,7 +13,7 @@ export default class MainTable {
     }
   }
 
-  public regenerate(games: Array<any>, users: Array<any>) {
+  public regenerate(games: Array<Game>, users: Array<User>) {
     this.orderedByRating = [];
     this.userIdToByRatingIndex.clear();
 

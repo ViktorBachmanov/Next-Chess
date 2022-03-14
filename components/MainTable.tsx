@@ -66,6 +66,8 @@ type Props = PropsFromRedux & {
 function MainTable(props: Props) {
   const { orderBy, setOrder, isFixed } = props;
 
+  console.log("MainTable");
+
   const reduxMainTable = useAppSelector(
     (state: RootState) => state.filter.mainTable
   );

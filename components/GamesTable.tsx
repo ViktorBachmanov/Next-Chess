@@ -8,6 +8,8 @@ import { gamesTableObject } from "../features/filter/filterSlice";
 import { LightStatus } from "../features/theme/types";
 
 export default function GamesTable() {
+  console.log("GamesTable");
+
   const gamesTable = useAppSelector(
     (state: RootState) => state.filter.gamesTable
   );

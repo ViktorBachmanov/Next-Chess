@@ -6,9 +6,13 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
+//import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { setDayFilter } from "../features/filter/filterSlice";
+import {
+  setDayFilter,
+  setMainTable,
+  setGamesTable,
+} from "../features/filter/filterSlice";
 
 function SelectDay() {
   const label = "Игровой день";
@@ -17,6 +21,8 @@ function SelectDay() {
 
   const handleChange = (e: SelectChangeEvent<string>) => {
     dispatch(setDayFilter(e.target.value));
+    dispatch(setMainTable());
+    dispatch(setGamesTable());
   };
 
   const allGames = useAppSelector((state: RootState) => state.db.games);

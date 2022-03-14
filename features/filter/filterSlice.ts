@@ -45,17 +45,18 @@ export const filterSlice = createSlice({
     //   state.mainTable = action.payload;
     // },
     setMainTable: (state) => {
-      mainTableObject.regenerate(state.games, state.users);
+      //mainTableObject.regenerate(state.games, state.users);
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
     },
     resetMainTable: (state) => {
       state.mainTable = null;
     },
-    setGameTable: (state) => {
-      gamesTableObject.regenerate(state.games, state.users);
+    setGamesTable: (state) => {
+      //gamesTableObject.regenerate(state.games, state.users);
       state.gamesTable = gamesTableObject.getRows();
     },
     setOrder: (state, action: PayloadAction<Order>) => {
+      //console.log(mainTableObject);
       state.orderBy = action.payload;
       state.mainTable = mainTableObject.getTableOrderedBy(state.orderBy);
     },
@@ -69,6 +70,9 @@ export const filterSlice = createSlice({
       );
       state.games = games!;
       state.users = users!;
+
+      mainTableObject.regenerate(state.games, state.users);
+      gamesTableObject.regenerate(state.games, state.users);
     },
   },
 });
@@ -78,7 +82,7 @@ export const {
   setMainTable,
   resetMainTable,
   filterByDay,
-  setGameTable,
+  setGamesTable,
   setOrder,
 } = filterSlice.actions;
 
@@ -95,8 +99,8 @@ export const setDayFilter =
     const allGames = getState().db.games;
 
     dispatch(filterByDay({ day, allUsers, allGames }));
-    dispatch(setMainTable());
-    dispatch(setGameTable());
+    // dispatch(setMainTable());
+    // dispatch(setGamesTable());
   };
 
 export default filterSlice.reducer;
