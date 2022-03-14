@@ -55,20 +55,21 @@ function Home({
     const allUsers = JSON.parse(users) as Array<User>;
     const allGames = JSON.parse(games) as Array<Game>;
 
+    dispatch(resetMainTableAction());
+
     dispatch(assignTables({ users: allUsers, games: allGames }));
     dispatch(setDayFilter("all"));
-    dispatch(setGameTable());
+    //dispatch(setGameTable());
   }, [users, games, dispatch]);
 
   useEffect(() => {
     dispatch(setLightStatus(getInitialLightMode()));
     window.addEventListener("beforeunload", saveInLocalStorage);
 
-    function resetMainTable() {
-      //console.log("resetMainTable");
-      dispatch(resetMainTableAction());
-    }
-    window.addEventListener("beforeunload", resetMainTable);
+    // function resetMainTable() {
+    //   dispatch(resetMainTableAction());
+    // }
+    // window.addEventListener("beforeunload", resetMainTable);
 
     const authToken = localStorage.getItem(Storage.TOKEN);
     if (authToken) {
@@ -77,7 +78,7 @@ function Home({
 
     return function cleanUp() {
       window.removeEventListener("beforeunload", saveInLocalStorage);
-      window.removeEventListener("beforeunload", resetMainTable);
+      //window.removeEventListener("beforeunload", resetMainTable);
     };
   }, [dispatch]);
 
