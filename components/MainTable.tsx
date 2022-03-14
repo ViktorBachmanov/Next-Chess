@@ -164,6 +164,6 @@ function renderPrizePlace(place: number) {
       return <div className={`${styles.medal} ${styles.wood}`}>IV</div>;
 
     default:
-      return;
+      return null;
   }
 }
