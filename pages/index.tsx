@@ -22,8 +22,8 @@ import {
   setDayFilter,
   resetMainTable as resetMainTableAction,
 } from "../features/filter/filterSlice";
-import { Order, MainTableRow } from "../features/filter/types";
-import MainTable from "../features/filter/MainTable";
+// import { Order, MainTableRow } from "../features/filter/types";
+// import MainTable from "../features/filter/MainTable";
 
 import Layout from "../components/Layout";
 
@@ -44,7 +44,7 @@ import Tables from "../mobx/Tables";
 export let TablesContext: Context<Tables>;
 
 function Home({
-  mainTable,
+  //mainTable,
   users,
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -54,10 +54,10 @@ function Home({
 
   const dispatch = useAppDispatch();
 
-  const initialMainTable: Array<MainTableRow> = useMemo(
-    () => JSON.parse(mainTable),
-    [mainTable]
-  );
+  // const initialMainTable: Array<MainTableRow> = useMemo(
+  //   () => JSON.parse(mainTable),
+  //   [mainTable]
+  // );
 
   const allUsers = JSON.parse(users) as Array<User>;
   const allGames = JSON.parse(games) as Array<Game>;
@@ -67,7 +67,7 @@ function Home({
   //   [allUsers, allGames]
   // );
 
-  const myTables = new Tables(allUsers, allGames, initialMainTable);
+  const myTables = new Tables(allUsers, allGames);
 
   TablesContext = createContext<Tables>(myTables);
 
@@ -75,16 +75,16 @@ function Home({
   //   <Layout initialMainTable={initialMainTable} tables={tables} />
   // ));
 
-  useEffect(() => {
-    const allUsers = JSON.parse(users) as Array<User>;
-    const allGames = JSON.parse(games) as Array<Game>;
+  // useEffect(() => {
+  //   const allUsers = JSON.parse(users) as Array<User>;
+  //   const allGames = JSON.parse(games) as Array<Game>;
 
-    dispatch(resetMainTableAction());
+  //   dispatch(resetMainTableAction());
 
-    dispatch(assignTables({ users: allUsers, games: allGames }));
-    dispatch(setDayFilter("all"));
-    dispatch(setGamesTable());
-  }, [users, games, dispatch]);
+  //   dispatch(assignTables({ users: allUsers, games: allGames }));
+  //   dispatch(setDayFilter("all"));
+  //   dispatch(setGamesTable());
+  // }, [users, games, dispatch]);
 
   useEffect(() => {
     dispatch(setLightStatus(getInitialLightMode()));
@@ -149,13 +149,13 @@ export async function getStaticProps() {
 
   const { games, users } = filterGamesAndUsersByDay(allGames, allUsers, "all");
 
-  const mainTableObject = new MainTable();
-  mainTableObject.regenerate(games, users);
-  const mainTable = mainTableObject.getTableOrderedBy(Order.RATING);
+  // const mainTableObject = new MainTable();
+  // mainTableObject.regenerate(games, users);
+  // const mainTable = mainTableObject.getTableOrderedBy(Order.RATING);
 
   return {
     props: {
-      mainTable: JSON.stringify(mainTable),
+      //mainTable: JSON.stringify(mainTable),
       users: JSON.stringify(allUsers),
       games: JSON.stringify(allGames),
     },

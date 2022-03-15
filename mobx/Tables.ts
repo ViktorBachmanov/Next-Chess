@@ -5,20 +5,24 @@ import MainTable, { filterGamesAndUsersByDay } from "./MainTable";
 export default class Tables {
   private _allUsers: User[];
   private _allGames: Game[];
-  private _mainTable: MainTableRow[];
+  private _mainTableObj: MainTable;
+  //private _mainTable: MainTableRow[] = [];
   private _orderBy: Order = Order.RATING;
   private _users: User[] = [];
   private _games: Game[] = [];
   private _day: string = "all";
 
-  constructor(allUsers: User[], allGames: Game[], mainTable: MainTableRow[]) {
+  constructor(allUsers: User[], allGames: Game[]) {
     this._allUsers = allUsers;
     this._allGames = allGames;
-    this._mainTable = mainTable;
+    this.setDay("all");
+    this._mainTableObj = new MainTable(this._games, this._users);
+    //this._mainTable = this._mainTableObj.getTableOrderedBy(this._orderBy);
+    this.setOrderBy(this._orderBy);
 
-    makeObservable<Tables, "_mainTable">(this, {
-      _mainTable: observable,
-      //truncate: action,
+    makeObservable<Tables, "_orderBy" | "_day">(this, {
+      _orderBy: observable,
+      _day: observable,
       mainTable: computed,
       setOrderBy: action,
       day: computed,
@@ -26,7 +30,7 @@ export default class Tables {
   }
 
   get mainTable() {
-    return this._mainTable;
+    return this._mainTableObj.getTableOrderedBy(this._orderBy);
   }
 
   get orderBy() {
@@ -35,21 +39,16 @@ export default class Tables {
 
   setOrderBy(val: Order) {
     this._orderBy = val;
-    console.log("setOrderBy: ", this.orderBy);
+    //console.log("setOrderBy: ", this.orderBy);
 
-    this.day = "all";
-
-    this._mainTable = new MainTable(this._games, this._users).getTableOrderedBy(
-      this.orderBy
-    );
-    //this._mainTable = [];
+    //this._mainTable = this._mainTableObj.getTableOrderedBy(this._orderBy);
   }
 
   get day() {
     return this._day;
   }
 
-  set day(val: string) {
+  setDay(val: string) {
     this._day = val;
     const { games, users } = filterGamesAndUsersByDay(
       this._allGames,
@@ -58,5 +57,7 @@ export default class Tables {
     );
     this._games = games;
     this._users = users;
+
+    this._mainTableObj.regenerate();
   }
 }

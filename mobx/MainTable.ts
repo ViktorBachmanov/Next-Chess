@@ -1,70 +1,78 @@
 import { User, Game, MainTableRow, Order } from "./types";
 
 export default class MainTable {
-  private orderedByRating: MainTableRow[];
-  private userIdToByRatingIndex: Map<number, number>;
+  private _games: Game[];
+  private _users: User[];
+  private _orderedByRating: MainTableRow[] = [];
+  private _userIdToByRatingIndex: Map<number, number> = new Map();
 
   constructor(games: Game[], users: User[]) {
-    this.orderedByRating = [];
-    this.userIdToByRatingIndex = new Map();
+    this._games = games;
+    this._users = users;
+    this.regenerate();
+  }
 
-    for (let i = 0; i < users.length; i++) {
-      this.userIdToByRatingIndex.set(users[i].id, i);
+  regenerate() {
+    this._orderedByRating.length = 0;
+    this._userIdToByRatingIndex.clear();
 
-      this.orderedByRating[i] = {} as MainTableRow;
+    for (let i = 0; i < this._users.length; i++) {
+      this._userIdToByRatingIndex.set(this._users[i].id, i);
 
-      this.orderedByRating[i].cells = [];
+      this._orderedByRating[i] = {} as MainTableRow;
 
-      for (let j = 0; j < users.length; j++) {
-        this.orderedByRating[i].cells[j] = 0;
+      this._orderedByRating[i].cells = [];
+
+      for (let j = 0; j < this._users.length; j++) {
+        this._orderedByRating[i].cells[j] = 0;
       }
 
-      this.orderedByRating[i].userId = users[i].id;
-      this.orderedByRating[i].userName = users[i].name;
-      this.orderedByRating[i].score = 0;
-      this.orderedByRating[i].games = 0;
-      this.orderedByRating[i].rating = users[i].rating;
+      this._orderedByRating[i].userId = this._users[i].id;
+      this._orderedByRating[i].userName = this._users[i].name;
+      this._orderedByRating[i].score = 0;
+      this._orderedByRating[i].games = 0;
+      this._orderedByRating[i].rating = this._users[i].rating;
     }
 
-    games.forEach((game) => {
+    this._games.forEach((game) => {
       const whiteId = game.white;
       const blackId = game.black;
 
-      const whiteIndex = this.userIdToByRatingIndex.get(whiteId)!;
-      const blackIndex = this.userIdToByRatingIndex.get(blackId)!;
+      const whiteIndex = this._userIdToByRatingIndex.get(whiteId)!;
+      const blackIndex = this._userIdToByRatingIndex.get(blackId)!;
 
-      this.orderedByRating[whiteIndex].games++;
-      this.orderedByRating[blackIndex].games++;
+      this._orderedByRating[whiteIndex].games++;
+      this._orderedByRating[blackIndex].games++;
 
       if (game.winner === null) {
-        this.orderedByRating[whiteIndex].score += 0.5;
-        this.orderedByRating[blackIndex].score += 0.5;
-        this.orderedByRating[whiteIndex].cells[blackIndex] += 0.5;
-        this.orderedByRating[blackIndex].cells[whiteIndex] += 0.5;
+        this._orderedByRating[whiteIndex].score += 0.5;
+        this._orderedByRating[blackIndex].score += 0.5;
+        this._orderedByRating[whiteIndex].cells[blackIndex] += 0.5;
+        this._orderedByRating[blackIndex].cells[whiteIndex] += 0.5;
       } else if (game.winner === whiteId) {
-        this.orderedByRating[whiteIndex].score++;
-        this.orderedByRating[whiteIndex].cells[blackIndex]++;
+        this._orderedByRating[whiteIndex].score++;
+        this._orderedByRating[whiteIndex].cells[blackIndex]++;
       } else {
-        this.orderedByRating[blackIndex].score++;
-        this.orderedByRating[blackIndex].cells[whiteIndex]++;
+        this._orderedByRating[blackIndex].score++;
+        this._orderedByRating[blackIndex].cells[whiteIndex]++;
       }
     });
   }
 
   public getTableOrderedBy(order: Order) {
     if (order === Order.RATING) {
-      return this.getOrderedByRating();
+      return this.get_orderedByRating();
     } else {
       return this.getOrderedByScore();
     }
   }
 
-  private getOrderedByRating() {
-    return this.orderedByRating;
+  private get_orderedByRating() {
+    return this._orderedByRating;
   }
 
   private getOrderedByScore() {
-    const orderedByScore = this.orderedByRating.map((row) => {
+    const orderedByScore = this._orderedByRating.map((row) => {
       return {
         ...row,
         cells: [...row.cells],
@@ -83,16 +91,16 @@ export default class MainTable {
     orderedByScore.forEach((row, index) => {
       byScoreIndexToByRatingIndex.set(
         index,
-        this.userIdToByRatingIndex.get(row.userId)
+        this._userIdToByRatingIndex.get(row.userId)
       );
     });
 
     orderedByScore.forEach((row) => {
-      const byRatingRowIndex = this.userIdToByRatingIndex.get(row.userId)!;
+      const byRatingRowIndex = this._userIdToByRatingIndex.get(row.userId)!;
       row.cells.forEach((cell, cellIndex, cells) => {
         const byRatingCellIndex = byScoreIndexToByRatingIndex.get(cellIndex);
         cells[cellIndex] =
-          this.orderedByRating[byRatingRowIndex].cells[byRatingCellIndex];
+          this._orderedByRating[byRatingRowIndex].cells[byRatingCellIndex];
       });
     });
 
