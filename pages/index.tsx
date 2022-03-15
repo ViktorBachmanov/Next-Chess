@@ -34,6 +34,9 @@ import { setLoginStatus } from "../features/auth/authSlice";
 
 import { Storage } from "../constants";
 
+import { observer } from "mobx-react";
+import Tables from "../mobx/Tables";
+
 //import Timer from "./Timer";
 
 //export let timer: Timer;
@@ -45,12 +48,28 @@ function Home({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   //timer = new Timer();
 
+  console.log("Home");
+
   const dispatch = useAppDispatch();
 
   const initialMainTable: Array<MainTableRow> = useMemo(
     () => JSON.parse(mainTable),
     [mainTable]
   );
+
+  const allUsers = JSON.parse(users) as Array<User>;
+  const allGames = JSON.parse(games) as Array<Game>;
+
+  // const myTables: Tables = useMemo(
+  //   () => new Tables(allUsers, allGames),
+  //   [allUsers, allGames]
+  // );
+
+  const myTables = new Tables(allUsers, allGames);
+
+  // const WrappedLayout = observer(({ tables }) => (
+  //   <Layout initialMainTable={initialMainTable} tables={tables} />
+  // ));
 
   useEffect(() => {
     const allUsers = JSON.parse(users) as Array<User>;
@@ -99,7 +118,7 @@ function Home({
 
       <ThemeProvider theme={mainTheme}>
         <CssBaseline />
-        <Layout initialMainTable={initialMainTable} />
+        <Layout initialMainTable={initialMainTable} tables={myTables} />
       </ThemeProvider>
     </div>
   );
