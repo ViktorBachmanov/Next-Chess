@@ -11,49 +11,29 @@ import SelectDay from "../components/SelectDay";
 
 import { MainTableRow } from "../features/filter/types";
 import Tables from "../mobx/Tables";
-import { action } from "mobx";
-import { Observer } from "mobx-react";
 
-interface Props {
-  initialMainTable: MainTableRow[];
-  tables: Tables;
-}
+// interface Props {
+//   //initialMainTable: MainTableRow[];
+//   tables: Tables;
+// }
 
-export default function Layout(props: Props) {
+export default function Layout() {
   console.log("Layout");
 
-  const { initialMainTable } = props;
+  //const { initialMainTable } = props;
 
   return (
     <div className={homeStyles.container}>
       <main className={homeStyles.main}>
         <AppBarChess />
 
-        <Observer>
-          {() => (
-            <>
-              {props.tables.allUsersTable.map((user) => {
-                return <div key={user.id}>{user.name}</div>;
-              })}
-
-              <button
-                onClick={action((e) => {
-                  props.tables.truncate();
-                })}
-              >
-                Truncate
-              </button>
-            </>
-          )}
-        </Observer>
-
         <SelectDay />
 
         <div className={styles.smartTable}>
           <div style={{ overflow: "auto" }}>
-            <MainTable isFixed={false} initialMainTable={initialMainTable} />
+            <MainTable isFixed={false} />
           </div>
-          <MainTable isFixed={true} initialMainTable={initialMainTable} />
+          <MainTable isFixed={true} />
         </div>
 
         <GamesTable />

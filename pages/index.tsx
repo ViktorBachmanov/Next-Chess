@@ -2,7 +2,7 @@ import type { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, createContext, Context } from "react";
 
 import { db } from "../lib/db";
 
@@ -41,6 +41,8 @@ import Tables from "../mobx/Tables";
 
 //export let timer: Timer;
 
+export let TablesContext: Context<Tables>;
+
 function Home({
   mainTable,
   users,
@@ -65,7 +67,9 @@ function Home({
   //   [allUsers, allGames]
   // );
 
-  const myTables = new Tables(allUsers, allGames);
+  const myTables = new Tables(allUsers, allGames, initialMainTable);
+
+  TablesContext = createContext<Tables>(myTables);
 
   // const WrappedLayout = observer(({ tables }) => (
   //   <Layout initialMainTable={initialMainTable} tables={tables} />
@@ -118,7 +122,9 @@ function Home({
 
       <ThemeProvider theme={mainTheme}>
         <CssBaseline />
-        <Layout initialMainTable={initialMainTable} tables={myTables} />
+        <TablesContext.Provider value={myTables}>
+          <Layout />
+        </TablesContext.Provider>
       </ThemeProvider>
     </div>
   );

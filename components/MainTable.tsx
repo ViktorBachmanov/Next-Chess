@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { RootState } from "../app/store";
 import { connect, ConnectedProps } from "react-redux";
 import { useAppSelector } from "../app/hooks";
@@ -9,6 +9,10 @@ import { MainTableRow, Order } from "../features/filter/types";
 import styles from "../styles/MainTable.module.css";
 
 import { styled } from "@mui/material/styles";
+
+import { TablesContext } from "../pages/index";
+import { action } from "mobx";
+import { observer } from "mobx-react";
 
 //import { timer } from "../pages/index";
 
@@ -43,41 +47,31 @@ const SelfTd = styled("td")(
   background: ${theme.palette.mode === "light" ? selfLightBg : selfDarkBg}`
 );
 
-function mapStateToProps(state: RootState) {
-  return {
-    //mainTable: state.filter.mainTable,
-    orderBy: state.filter.orderBy,
-  };
+interface Props {
+  isFixed: boolean;
 }
 
-const mapDispatchToProps = {
-  setOrder: setOrderAction,
-};
+const MainTable = observer(function MainTable(props: Props) {
+  const { isFixed } = props;
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type Props = PropsFromRedux & {
-  isFixed: boolean;
-  initialMainTable: MainTableRow[];
-};
-
-function MainTable(props: Props) {
-  const { orderBy, setOrder, isFixed } = props;
-
-  console.log("MainTable");
+  //console.log("MainTable");
 
   const reduxMainTable = useAppSelector(
     (state: RootState) => state.filter.mainTable
   );
 
-  const mainTable = reduxMainTable || props.initialMainTable;
+  //const mainTable = reduxMainTable || props.initialMainTable;
+  const tables = useContext(TablesContext);
+  const mainTable = tables.mainTable;
+
+  console.log("MainTable orderBy: ", tables.orderBy);
 
   //timer.print("MainTable.tsx");
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOrder(parseInt(e.target.value));
+    //setOrder(parseInt(e.target.value));
+    const orderBy = parseInt(e.target.value) as Order;
+    tables.setOrderBy(orderBy);
   };
 
   const visibility = isFixed ? styles.hidden : "";
@@ -99,7 +93,7 @@ function MainTable(props: Props) {
           <th className={visibility}>
             Очки
             <Radio
-              checked={orderBy === Order.SCORE}
+              checked={tables.orderBy === Order.SCORE}
               onChange={handleChangeOrder}
               value={Order.SCORE}
               name="orderBy"
@@ -110,7 +104,7 @@ function MainTable(props: Props) {
           <th className={visibility}>
             Рейтинг
             <Radio
-              checked={orderBy === Order.RATING}
+              checked={tables.orderBy === Order.RATING}
               onChange={handleChangeOrder}
               value={Order.RATING}
               name="orderBy"
@@ -147,9 +141,9 @@ function MainTable(props: Props) {
       </tbody>
     </table>
   );
-}
+});
 
-export default connector(MainTable);
+export default MainTable;
 
 // helper functions
 
