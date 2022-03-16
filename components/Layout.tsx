@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo, useContext, useEffect } from "react";
 import Image from "next/image";
 import homeStyles from "../styles/Home.module.css";
 import styles from "../styles/MainTable.module.css";
@@ -19,6 +19,8 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
+import { Storage } from "../constants";
+
 // interface Props {
 //   //initialMainTable: MainTableRow[];
 //   tables: Tables;
@@ -29,9 +31,24 @@ const Layout = observer(function Layout() {
   //const { initialMainTable } = props;
 
   const rootStore = useContext(StoreContext);
-  const lightMode = rootStore.theme.lightStatus;
+  const themeStore = rootStore.theme;
+  const lightMode = themeStore.lightStatus;
 
   const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
+
+  useEffect(() => {
+    function saveInLocalStorage() {
+      localStorage.setItem(
+        Storage.LIGHT_MODE,
+        JSON.stringify(themeStore.lightStatus)
+      );
+    }
+    window.addEventListener("beforeunload", saveInLocalStorage);
+
+    return function cleanUp() {
+      window.removeEventListener("beforeunload", saveInLocalStorage);
+    };
+  }, []);
 
   return (
     <ThemeProvider theme={mainTheme}>

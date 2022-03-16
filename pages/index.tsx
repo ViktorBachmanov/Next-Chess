@@ -9,7 +9,7 @@ import { db } from "../lib/db";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import { RootState, store } from "../app/store";
+//import { RootState, store } from "../app/store";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { assignTables } from "../features/db/dbSlice";
 import { User, Game } from "../features/db/types";
@@ -152,13 +152,6 @@ export async function getStaticProps() {
 export default Home;
 
 // // helper functions
-
-function saveInLocalStorage() {
-  localStorage.setItem(
-    Storage.LIGHT_MODE,
-    JSON.stringify(store.getState().theme.lightStatus)
-  );
-}
 
 function getInitialLightMode(): LightStatus {
   const storageStatus = localStorage.getItem(Storage.LIGHT_MODE);

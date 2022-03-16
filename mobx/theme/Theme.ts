@@ -18,10 +18,12 @@ export default class Theme {
   }
 
   get lightStatus() {
+    console.log("get lightStatus: ", this._lightStatus);
     return this._lightStatus;
   }
 
   public setLightStatus(val: LightStatus) {
+    console.log("setLightStatus: ", val);
     this._lightStatus = val;
   }
 }
