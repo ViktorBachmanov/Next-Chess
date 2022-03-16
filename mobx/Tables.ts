@@ -1,6 +1,6 @@
 import { makeObservable, observable, computed, action, flow } from "mobx";
 import { User, Game, MainTableRow, Order } from "./types";
-import MainTable, { filterGamesAndUsersByDay } from "./MainTable";
+import MainTable from "./MainTable";
 
 export default class Tables {
   private _allUsers: User[];
@@ -15,17 +15,16 @@ export default class Tables {
   constructor(allUsers: User[], allGames: Game[]) {
     this._allUsers = allUsers;
     this._allGames = allGames;
-    this.setDay("all");
-    this._mainTableObj = new MainTable(this._games, this._users);
+    this.filterByDay(this._day);
+    this._mainTableObj = new MainTable(this._users, this._games);
     //this._mainTable = this._mainTableObj.getTableOrderedBy(this._orderBy);
-    this.setOrderBy(this._orderBy);
 
     makeObservable<Tables, "_orderBy" | "_day">(this, {
       _orderBy: observable,
       _day: observable,
       mainTable: computed,
       setOrderBy: action,
-      day: computed,
+      //day: computed,
     });
   }
 
@@ -48,16 +47,42 @@ export default class Tables {
     return this._day;
   }
 
-  setDay(val: string) {
-    this._day = val;
-    const { games, users } = filterGamesAndUsersByDay(
-      this._allGames,
-      this._allUsers,
-      this._day
-    );
-    this._games = games;
-    this._users = users;
+  setDay(day: string) {
+    this._day = day;
 
-    this._mainTableObj.regenerate();
+    this.filterByDay(this._day);
+
+    this._mainTableObj.regenerate(this._users, this._games);
+  }
+
+  filterByDay(day: string) {
+    this._games =
+      day === "all"
+        ? this._allGames
+        : this._allGames.filter((game) => game.date === day);
+    this._users = this._allUsers.filter((user) => {
+      return this._games.some((game) => {
+        return game.white === user.id || game.black === user.id;
+      });
+    });
   }
 }
+
+// helper functions
+
+// export function filterGamesAndUsersByDay(
+//   allGames: Game[],
+//   allUsers: User[],
+//   day: string
+// ) {
+//   const filteredGames: Game[] =
+//     day === "all" ? allGames : allGames.filter((game) => game.date === day);
+
+//   const filteredUsers = allUsers.filter((user) => {
+//     return filteredGames.some((game) => {
+//       return game.white === user.id || game.black === user.id;
+//     });
+//   });
+
+//   return { games: filteredGames, users: filteredUsers };
+// }

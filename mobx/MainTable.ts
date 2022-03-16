@@ -1,40 +1,36 @@
 import { User, Game, MainTableRow, Order } from "./types";
 
 export default class MainTable {
-  private _games: Game[];
-  private _users: User[];
   private _orderedByRating: MainTableRow[] = [];
   private _userIdToByRatingIndex: Map<number, number> = new Map();
 
-  constructor(games: Game[], users: User[]) {
-    this._games = games;
-    this._users = users;
-    this.regenerate();
+  constructor(users: User[], games: Game[]) {
+    this.regenerate(users, games);
   }
 
-  regenerate() {
+  regenerate(users: User[], games: Game[]) {
     this._orderedByRating.length = 0;
     this._userIdToByRatingIndex.clear();
 
-    for (let i = 0; i < this._users.length; i++) {
-      this._userIdToByRatingIndex.set(this._users[i].id, i);
+    for (let i = 0; i < users.length; i++) {
+      this._userIdToByRatingIndex.set(users[i].id, i);
 
       this._orderedByRating[i] = {} as MainTableRow;
 
       this._orderedByRating[i].cells = [];
 
-      for (let j = 0; j < this._users.length; j++) {
+      for (let j = 0; j < users.length; j++) {
         this._orderedByRating[i].cells[j] = 0;
       }
 
-      this._orderedByRating[i].userId = this._users[i].id;
-      this._orderedByRating[i].userName = this._users[i].name;
+      this._orderedByRating[i].userId = users[i].id;
+      this._orderedByRating[i].userName = users[i].name;
       this._orderedByRating[i].score = 0;
       this._orderedByRating[i].games = 0;
-      this._orderedByRating[i].rating = this._users[i].rating;
+      this._orderedByRating[i].rating = users[i].rating;
     }
 
-    this._games.forEach((game) => {
+    games.forEach((game) => {
       const whiteId = game.white;
       const blackId = game.black;
 
@@ -106,23 +102,4 @@ export default class MainTable {
 
     return orderedByScore;
   }
-}
-
-// helper functions
-
-export function filterGamesAndUsersByDay(
-  allGames: Game[],
-  allUsers: User[],
-  day: string
-) {
-  const filteredGames: Game[] =
-    day === "all" ? allGames : allGames.filter((game) => game.date === day);
-
-  const filteredUsers = allUsers.filter((user) => {
-    return filteredGames.some((game) => {
-      return game.white === user.id || game.black === user.id;
-    });
-  });
-
-  return { games: filteredGames, users: filteredUsers };
 }
