@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
 
@@ -13,19 +13,25 @@ import {
   setMainTable,
   setGamesTable,
 } from "../features/filter/filterSlice";
+import { observer } from "mobx-react";
+import { TablesContext } from "../pages/index";
 
-function SelectDay() {
+const SelectDay = observer(function SelectDay() {
   const label = "Игровой день";
 
-  const dispatch = useAppDispatch();
+  //const dispatch = useAppDispatch();
+
+  const tables = useContext(TablesContext);
+  const allGames = tables.allGames;
 
   const handleChange = (e: SelectChangeEvent<string>) => {
-    dispatch(setDayFilter(e.target.value));
-    dispatch(setMainTable());
-    dispatch(setGamesTable());
+    // dispatch(setDayFilter(e.target.value));
+    // dispatch(setMainTable());
+    // dispatch(setGamesTable());
+    tables.setDay(e.target.value);
   };
 
-  const allGames = useAppSelector((state: RootState) => state.db.games);
+  //const allGames = useAppSelector((state: RootState) => state.db.games);
 
   const days = getDistinctDays(allGames);
 
@@ -44,7 +50,7 @@ function SelectDay() {
       </FormControl>
     </Box>
   );
-}
+});
 
 export default SelectDay;
 

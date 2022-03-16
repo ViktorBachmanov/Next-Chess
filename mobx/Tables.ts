@@ -22,14 +22,23 @@ export default class Tables {
     makeObservable<Tables, "_orderBy" | "_day">(this, {
       _orderBy: observable,
       _day: observable,
-      mainTable: computed,
+      //mainTable: computed,
       setOrderBy: action,
+      setDay: action,
       //day: computed,
     });
   }
 
   get mainTable() {
     return this._mainTableObj.getTableOrderedBy(this._orderBy);
+  }
+
+  get allGames() {
+    return [...this._allGames];
+  }
+
+  get games() {
+    return [...this._games];
   }
 
   get orderBy() {
@@ -48,14 +57,15 @@ export default class Tables {
   }
 
   setDay(day: string) {
-    this._day = day;
-
-    this.filterByDay(this._day);
+    console.log("Tables_setDay: ", day);
+    this.filterByDay(day);
 
     this._mainTableObj.regenerate(this._users, this._games);
+
+    this._day = day;
   }
 
-  filterByDay(day: string) {
+  private filterByDay(day: string) {
     this._games =
       day === "all"
         ? this._allGames

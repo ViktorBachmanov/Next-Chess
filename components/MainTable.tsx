@@ -56,13 +56,14 @@ const MainTable = observer(function MainTable(props: Props) {
 
   //console.log("MainTable");
 
-  const reduxMainTable = useAppSelector(
-    (state: RootState) => state.filter.mainTable
-  );
+  // const reduxMainTable = useAppSelector(
+  //   (state: RootState) => state.filter.mainTable
+  // );
 
   //const mainTable = reduxMainTable || props.initialMainTable;
   const tables = useContext(TablesContext);
   const mainTable = tables.mainTable;
+  const day = tables.day;
 
   console.log("MainTable orderBy: ", tables.orderBy);
 
