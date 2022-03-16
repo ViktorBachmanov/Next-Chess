@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { RootState } from "../app/store";
 import { useAppSelector } from "../app/hooks";
 
-import { GamesTableRow } from "../mobx/types";
+import { GamesTableRow } from "../mobx/tables/types";
 //import { gamesTableObject } from "../features/filter/filterSlice";
 
 import { LightStatus } from "../features/theme/types";
 
 import { observer } from "mobx-react-lite";
-import { TablesContext } from "../pages/index";
+import { StoreContext } from "../pages/index";
 
 const GamesTable = observer(function GamesTable() {
   console.log("GamesTable");
@@ -17,7 +17,8 @@ const GamesTable = observer(function GamesTable() {
   //   (state: RootState) => state.filter.gamesTable
   // );
 
-  const tables = useContext(TablesContext);
+  const rootStore = useContext(StoreContext);
+  const tables = rootStore.tables;
   const gamesTableObject = tables.gamesTable;
   const gamesTable = gamesTableObject.getRows();
   const day = tables.day;

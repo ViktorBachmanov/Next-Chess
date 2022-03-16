@@ -14,14 +14,15 @@ import {
   setGamesTable,
 } from "../features/filter/filterSlice";
 import { observer } from "mobx-react-lite";
-import { TablesContext } from "../pages/index";
+import { StoreContext } from "../pages/index";
 
 const SelectDay = observer(function SelectDay() {
   const label = "Игровой день";
 
   //const dispatch = useAppDispatch();
 
-  const tables = useContext(TablesContext);
+  const rootStore = useContext(StoreContext);
+  const tables = rootStore.tables;
   const allGames = tables.allGames;
 
   const handleChange = (e: SelectChangeEvent<string>) => {

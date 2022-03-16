@@ -10,7 +10,7 @@ import styles from "../styles/MainTable.module.css";
 
 import { styled } from "@mui/material/styles";
 
-import { TablesContext } from "../pages/index";
+import { StoreContext } from "../pages/index";
 import { observer } from "mobx-react-lite";
 
 //import { timer } from "../pages/index";
@@ -60,7 +60,8 @@ const MainTable = observer(function MainTable(props: Props) {
   // );
 
   //const mainTable = reduxMainTable || props.initialMainTable;
-  const tables = useContext(TablesContext);
+  const rootStore = useContext(StoreContext);
+  const tables = rootStore.tables;
   const mainTable = tables.mainTable;
   const day = tables.day;
 

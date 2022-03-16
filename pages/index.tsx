@@ -27,7 +27,7 @@ import {
 
 import Layout from "../components/Layout";
 
-import createMainTheme from "../features/theme/muiTheme";
+//import createMainTheme from "../features/theme/muiTheme";
 import { LightStatus } from "../features/theme/types";
 import { setLightStatus } from "../features/theme/themeSlice";
 import { setLoginStatus } from "../features/auth/authSlice";
@@ -35,13 +35,15 @@ import { setLoginStatus } from "../features/auth/authSlice";
 import { Storage } from "../constants";
 
 //import { observer } from "mobx-react";
-import Tables from "../mobx/Tables";
+import RootStore from "../mobx/RootStore";
+import Tables from "../mobx/tables/Tables";
+import Theme from "../mobx/theme/Theme";
 
 //import Timer from "./Timer";
 
 //export let timer: Timer;
 
-export let TablesContext: Context<Tables>;
+export let StoreContext: Context<RootStore>;
 
 function Home({
   //mainTable,
@@ -59,58 +61,46 @@ function Home({
   //   [mainTable]
   // );
 
-  const allUsers = JSON.parse(users) as Array<User>;
-  const allGames = JSON.parse(games) as Array<Game>;
-
   // const myTables: Tables = useMemo(
   //   () => new Tables(allUsers, allGames),
   //   [allUsers, allGames]
   // );
 
+  let rootStore: RootStore;
+  const allUsers = JSON.parse(users) as Array<User>;
+  const allGames = JSON.parse(games) as Array<Game>;
+
   const myTables = new Tables(allUsers, allGames);
+  //const myTheme = new Theme(getInitialLightMode());
+  const myTheme = new Theme();
 
-  TablesContext = createContext<Tables>(myTables);
+  rootStore = new RootStore(myTables, myTheme);
 
-  // const WrappedLayout = observer(({ tables }) => (
-  //   <Layout initialMainTable={initialMainTable} tables={tables} />
-  // ));
-
-  // useEffect(() => {
-  //   const allUsers = JSON.parse(users) as Array<User>;
-  //   const allGames = JSON.parse(games) as Array<Game>;
-
-  //   dispatch(resetMainTableAction());
-
-  //   dispatch(assignTables({ users: allUsers, games: allGames }));
-  //   dispatch(setDayFilter("all"));
-  //   dispatch(setGamesTable());
-  // }, [users, games, dispatch]);
+  StoreContext = createContext<RootStore>(rootStore);
 
   useEffect(() => {
-    dispatch(setLightStatus(getInitialLightMode()));
-    window.addEventListener("beforeunload", saveInLocalStorage);
+    myTheme.setLightStatus(getInitialLightMode());
+  }, []);
 
-    // function resetMainTable() {
-    //   dispatch(resetMainTableAction());
-    // }
-    // window.addEventListener("beforeunload", resetMainTable);
+  // useEffect(() => {
+  //   dispatch(setLightStatus(getInitialLightMode()));
+  //   window.addEventListener("beforeunload", saveInLocalStorage);
 
-    const authToken = localStorage.getItem(Storage.TOKEN);
-    if (authToken) {
-      dispatch(setLoginStatus(true));
-    }
+  //   const authToken = localStorage.getItem(Storage.TOKEN);
+  //   if (authToken) {
+  //     dispatch(setLoginStatus(true));
+  //   }
 
-    return function cleanUp() {
-      window.removeEventListener("beforeunload", saveInLocalStorage);
-      //window.removeEventListener("beforeunload", resetMainTable);
-    };
-  }, [dispatch]);
+  //   return function cleanUp() {
+  //     window.removeEventListener("beforeunload", saveInLocalStorage);
+  //   };
+  // }, [dispatch]);
 
-  const lightMode = useAppSelector(
-    (state: RootState) => state.theme.lightStatus
-  );
+  // const lightMode = useAppSelector(
+  //   (state: RootState) => state.theme.lightStatus
+  // );
 
-  const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
+  //const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
 
   return (
     <div className={styles.container}>
@@ -120,12 +110,9 @@ function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <ThemeProvider theme={mainTheme}>
-        <CssBaseline />
-        <TablesContext.Provider value={myTables}>
-          <Layout />
-        </TablesContext.Provider>
-      </ThemeProvider>
+      <StoreContext.Provider value={rootStore}>
+        <Layout />
+      </StoreContext.Provider>
     </div>
   );
 }
@@ -164,7 +151,7 @@ export async function getStaticProps() {
 
 export default Home;
 
-// helper functions
+// // helper functions
 
 function saveInLocalStorage() {
   localStorage.setItem(
