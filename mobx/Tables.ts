@@ -1,12 +1,13 @@
 import { makeObservable, observable, computed, action, flow } from "mobx";
 import { User, Game, MainTableRow, Order } from "./types";
 import MainTable from "./MainTable";
+import GamesTable from "./GamesTable";
 
 export default class Tables {
   private _allUsers: User[];
   private _allGames: Game[];
-  private _mainTableObj: MainTable;
-  //private _mainTable: MainTableRow[] = [];
+  private _mainTable: MainTable;
+  private _gamesTable: GamesTable;
   private _orderBy: Order = Order.RATING;
   private _users: User[] = [];
   private _games: Game[] = [];
@@ -16,8 +17,8 @@ export default class Tables {
     this._allUsers = allUsers;
     this._allGames = allGames;
     this.filterByDay(this._day);
-    this._mainTableObj = new MainTable(this._users, this._games);
-    //this._mainTable = this._mainTableObj.getTableOrderedBy(this._orderBy);
+    this._mainTable = new MainTable(this._users, this._games);
+    this._gamesTable = new GamesTable(this._games, this._users);
 
     makeObservable<Tables, "_orderBy" | "_day">(this, {
       _orderBy: observable,
@@ -30,7 +31,11 @@ export default class Tables {
   }
 
   get mainTable() {
-    return this._mainTableObj.getTableOrderedBy(this._orderBy);
+    return this._mainTable.getTableOrderedBy(this._orderBy);
+  }
+
+  get gamesTable() {
+    return this._gamesTable;
   }
 
   get allGames() {
@@ -49,7 +54,7 @@ export default class Tables {
     this._orderBy = val;
     //console.log("setOrderBy: ", this.orderBy);
 
-    //this._mainTable = this._mainTableObj.getTableOrderedBy(this._orderBy);
+    //this._mainTable = this._mainTable.getTableOrderedBy(this._orderBy);
   }
 
   get day() {
@@ -60,7 +65,8 @@ export default class Tables {
     console.log("Tables_setDay: ", day);
     this.filterByDay(day);
 
-    this._mainTableObj.regenerate(this._users, this._games);
+    this._mainTable.regenerate(this._users, this._games);
+    this._gamesTable.regenerate(this._games, this._users);
 
     this._day = day;
   }

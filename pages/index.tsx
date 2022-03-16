@@ -34,7 +34,7 @@ import { setLoginStatus } from "../features/auth/authSlice";
 
 import { Storage } from "../constants";
 
-import { observer } from "mobx-react";
+//import { observer } from "mobx-react";
 import Tables from "../mobx/Tables";
 
 //import Timer from "./Timer";

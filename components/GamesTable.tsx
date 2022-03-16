@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { RootState } from "../app/store";
 import { useAppSelector } from "../app/hooks";
 
-import { GamesTableRow } from "../features/filter/types";
-import { gamesTableObject } from "../features/filter/filterSlice";
+import { GamesTableRow } from "../mobx/types";
+//import { gamesTableObject } from "../features/filter/filterSlice";
 
 import { LightStatus } from "../features/theme/types";
 
-export default function GamesTable() {
+import { observer } from "mobx-react-lite";
+import { TablesContext } from "../pages/index";
+
+const GamesTable = observer(function GamesTable() {
   console.log("GamesTable");
 
-  const gamesTable = useAppSelector(
-    (state: RootState) => state.filter.gamesTable
-  );
+  // const gamesTable = useAppSelector(
+  //   (state: RootState) => state.filter.gamesTable
+  // );
+
+  const tables = useContext(TablesContext);
+  const gamesTableObject = tables.gamesTable;
+  const gamesTable = gamesTableObject.getRows();
+  const day = tables.day;
 
   const lightMode = useAppSelector(
     (state: RootState) => state.theme.lightStatus
@@ -45,7 +53,9 @@ export default function GamesTable() {
       </tbody>
     </table>
   );
-}
+});
+
+export default GamesTable;
 
 // helper functions
 

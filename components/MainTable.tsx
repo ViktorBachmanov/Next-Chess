@@ -11,8 +11,7 @@ import styles from "../styles/MainTable.module.css";
 import { styled } from "@mui/material/styles";
 
 import { TablesContext } from "../pages/index";
-import { action } from "mobx";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 
 //import { timer } from "../pages/index";
 

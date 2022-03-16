@@ -13,7 +13,7 @@ import {
   setMainTable,
   setGamesTable,
 } from "../features/filter/filterSlice";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { TablesContext } from "../pages/index";
 
 const SelectDay = observer(function SelectDay() {
