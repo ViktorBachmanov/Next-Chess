@@ -54,7 +54,7 @@ const MainTable = observer(function MainTable(props: Props) {
   const rootStore = useContext(StoreContext);
   const tables = rootStore.tables;
   const mainTable = tables.mainTable;
-  const day = tables.day;
+  //const day = tables.day;
 
   //console.log("MainTable orderBy: ", tables.orderBy);
 

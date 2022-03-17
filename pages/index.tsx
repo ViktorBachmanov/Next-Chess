@@ -2,11 +2,9 @@ import type { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
-import { useEffect, useMemo, createContext, Context } from "react";
+import { useEffect, createContext, Context } from "react";
 
 import { db } from "../lib/db";
-
-import { User, Game } from "../mobx/tables/types";
 
 import Layout from "../components/Layout";
 
@@ -18,6 +16,8 @@ import { Storage } from "../constants";
 //import { observer } from "mobx-react";
 import RootStore from "../mobx/RootStore";
 import Tables from "../mobx/tables/Tables";
+import MainTable from "../mobx/tables/MainTable";
+import { User, Game, MainTableRow, Order } from "../mobx/tables/types";
 
 //import Timer from "./Timer";
 
@@ -28,16 +28,18 @@ export let StoreContext: Context<RootStore>;
 function Home({
   users,
   games,
+  mainTable,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   //timer = new Timer();
 
   //console.log("Home");
 
   let rootStore: RootStore;
-  const allUsers = JSON.parse(users) as Array<User>;
-  const allGames = JSON.parse(games) as Array<Game>;
+  const allUsers = JSON.parse(users) as User[];
+  const allGames = JSON.parse(games) as Game[];
+  const initialMainTable = JSON.parse(mainTable) as MainTableRow[];
 
-  const myTables = new Tables(allUsers, allGames);
+  const myTables = new Tables(allUsers, allGames, initialMainTable);
 
   rootStore = new RootStore(myTables);
 
@@ -98,10 +100,14 @@ export async function getStaticProps() {
 
   db.end();
 
+  const mainTableObj = new MainTable(allUsers, allGames);
+  const initialMainTable = mainTableObj.getTableOrderedBy(Order.RATING);
+
   return {
     props: {
       users: JSON.stringify(allUsers),
       games: JSON.stringify(allGames),
+      mainTable: JSON.stringify(initialMainTable),
     },
   };
 }

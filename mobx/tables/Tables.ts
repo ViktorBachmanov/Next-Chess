@@ -6,32 +6,38 @@ import GamesTable from "./GamesTable";
 export default class Tables {
   private _allUsers: User[];
   private _allGames: Game[];
-  private _mainTable: MainTable;
+  private _mainTableObj: MainTable;
+  private _mainTable: MainTableRow[];
   private _gamesTable: GamesTable;
   private _orderBy: Order = Order.RATING;
   private _users: User[] = [];
   private _games: Game[] = [];
   private _day: string = "all";
 
-  constructor(allUsers: User[], allGames: Game[]) {
+  constructor(
+    allUsers: User[],
+    allGames: Game[],
+    initialMainTable: MainTableRow[]
+  ) {
     this._allUsers = allUsers;
     this._allGames = allGames;
+    this._mainTable = initialMainTable;
     this.filterByDay(this._day);
-    this._mainTable = new MainTable(this._users, this._games);
+    this._mainTableObj = new MainTable(this._users, this._games);
     this._gamesTable = new GamesTable(this._games, this._users);
 
-    makeObservable<Tables, "_orderBy" | "_day">(this, {
+    makeObservable<Tables, "_orderBy" | "_day" | "_mainTable">(this, {
       _orderBy: observable,
       _day: observable,
-      //mainTable: computed,
+      _mainTable: observable,
       setOrderBy: action,
       setDay: action,
-      //day: computed,
     });
   }
 
   get mainTable() {
-    return this._mainTable.getTableOrderedBy(this._orderBy);
+    //return this._mainTableObj.getTableOrderedBy(this._orderBy);
+    return this._mainTable;
   }
 
   get gamesTable() {
@@ -55,6 +61,7 @@ export default class Tables {
   }
 
   setOrderBy(val: Order) {
+    this._mainTable = this._mainTableObj.getTableOrderedBy(val);
     this._orderBy = val;
     //console.log("setOrderBy: ", this.orderBy);
   }
@@ -67,7 +74,8 @@ export default class Tables {
     //console.log("Tables_setDay: ", day);
     this.filterByDay(day);
 
-    this._mainTable.regenerate(this._users, this._games);
+    this._mainTableObj.regenerate(this._users, this._games);
+    this._mainTable = this._mainTableObj.getTableOrderedBy(this._orderBy);
     this._gamesTable.regenerate(this._games, this._users);
 
     this._day = day;
