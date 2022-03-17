@@ -37,21 +37,21 @@ const Layout = observer(function Layout() {
 
   const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
 
-  useEffect(() => {
-    function saveInLocalStorage() {
-      localStorage.setItem(
-        Storage.LIGHT_MODE,
-        JSON.stringify(themeStore.lightStatus)
-      );
+  // useEffect(() => {
+  //   function saveInLocalStorage() {
+  //     localStorage.setItem(
+  //       Storage.LIGHT_MODE,
+  //       JSON.stringify(themeStore.lightStatus)
+  //     );
 
-      localStorage.setItem(Storage.TOKEN, authStore.token);
-    }
-    window.addEventListener("beforeunload", saveInLocalStorage);
+  //     localStorage.setItem(Storage.TOKEN, authStore.token);
+  //   }
+  //   window.addEventListener("beforeunload", saveInLocalStorage);
 
-    return function cleanUp() {
-      window.removeEventListener("beforeunload", saveInLocalStorage);
-    };
-  }, []);
+  //   return function cleanUp() {
+  //     window.removeEventListener("beforeunload", saveInLocalStorage);
+  //   };
+  // }, []);
 
   return (
     <ThemeProvider theme={mainTheme}>

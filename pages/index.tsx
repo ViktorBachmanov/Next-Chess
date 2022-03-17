@@ -86,6 +86,20 @@ function Home({
     if (authToken) {
       rootStore.auth.setToken(authToken);
     }
+
+    function saveInLocalStorage() {
+      localStorage.setItem(
+        Storage.LIGHT_MODE,
+        JSON.stringify(rootStore.theme.lightStatus)
+      );
+
+      localStorage.setItem(Storage.TOKEN, rootStore.auth.token);
+    }
+    window.addEventListener("beforeunload", saveInLocalStorage);
+
+    return function cleanUp() {
+      window.removeEventListener("beforeunload", saveInLocalStorage);
+    };
   }, []);
 
   // useEffect(() => {
