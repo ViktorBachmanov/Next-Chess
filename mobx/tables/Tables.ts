@@ -57,8 +57,6 @@ export default class Tables {
   setOrderBy(val: Order) {
     this._orderBy = val;
     //console.log("setOrderBy: ", this.orderBy);
-
-    //this._mainTable = this._mainTable.getTableOrderedBy(this._orderBy);
   }
 
   get day() {
@@ -66,7 +64,7 @@ export default class Tables {
   }
 
   setDay(day: string) {
-    console.log("Tables_setDay: ", day);
+    //console.log("Tables_setDay: ", day);
     this.filterByDay(day);
 
     this._mainTable.regenerate(this._users, this._games);

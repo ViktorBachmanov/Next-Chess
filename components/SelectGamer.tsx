@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select from "@mui/material/Select";
 import IconKing from "./IconKing";
-import { User } from "../features/db/types";
+import { User } from "../mobx/tables/types";
 
 type Props = {
   label: string;

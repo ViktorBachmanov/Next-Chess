@@ -18,7 +18,6 @@ import { Storage } from "../constants";
 //import { observer } from "mobx-react";
 import RootStore from "../mobx/RootStore";
 import Tables from "../mobx/tables/Tables";
-import Theme from "../mobx/theme/Theme";
 
 //import Timer from "./Timer";
 
@@ -32,7 +31,7 @@ function Home({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   //timer = new Timer();
 
-  console.log("Home");
+  //console.log("Home");
 
   let rootStore: RootStore;
   const allUsers = JSON.parse(users) as Array<User>;
@@ -65,7 +64,7 @@ function Home({
     return function cleanUp() {
       window.removeEventListener("beforeunload", saveInLocalStorage);
     };
-  }, []);
+  }, [rootStore.theme, rootStore.auth]);
 
   return (
     <div className={styles.container}>

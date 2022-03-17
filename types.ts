@@ -1,4 +1,4 @@
-import { User, Game } from "./features/db/types";
+import { User, Game } from "./mobx/tables/types";
 
 export class UserData {
   public readonly id: number;

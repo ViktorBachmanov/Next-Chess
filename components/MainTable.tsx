@@ -56,7 +56,7 @@ const MainTable = observer(function MainTable(props: Props) {
   const mainTable = tables.mainTable;
   const day = tables.day;
 
-  console.log("MainTable orderBy: ", tables.orderBy);
+  //console.log("MainTable orderBy: ", tables.orderBy);
 
   //timer.print("MainTable.tsx");
 

@@ -18,7 +18,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 const Layout = observer(function Layout() {
-  console.log("Layout");
+  //console.log("Layout");
 
   const rootStore = useContext(StoreContext);
   const themeStore = rootStore.theme;

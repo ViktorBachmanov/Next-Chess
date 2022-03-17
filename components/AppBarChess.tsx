@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import MenuChess from "./MenuChess";
 
 //import LightMode from "../features/theme/LightMode";
-import LightMode from "../mobx/theme/LightMode";
+import LightMode from "./LightMode";
 
 export default function AppBarChess() {
   return (
