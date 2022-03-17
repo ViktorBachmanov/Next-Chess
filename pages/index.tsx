@@ -15,7 +15,7 @@ import { Storage } from "../constants";
 
 //import { observer } from "mobx-react";
 import RootStore from "../mobx/RootStore";
-import Tables from "../mobx/tables/Tables";
+import Tables, { filterGamesAndUsersByDay } from "../mobx/tables/Tables";
 import MainTable from "../mobx/tables/MainTable";
 import { User, Game, MainTableRow, Order } from "../mobx/tables/types";
 
@@ -100,7 +100,8 @@ export async function getStaticProps() {
 
   db.end();
 
-  const mainTableObj = new MainTable(allUsers, allGames);
+  const [games, users] = filterGamesAndUsersByDay(allGames, allUsers, "all");
+  const mainTableObj = new MainTable(users, games);
   const initialMainTable = mainTableObj.getTableOrderedBy(Order.RATING);
 
   return {

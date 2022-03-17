@@ -82,33 +82,38 @@ export default class Tables {
   }
 
   private filterByDay(day: string) {
-    this._games =
-      day === "all"
-        ? this._allGames
-        : this._allGames.filter((game) => game.date === day);
-    this._users = this._allUsers.filter((user) => {
-      return this._games.some((game) => {
-        return game.white === user.id || game.black === user.id;
-      });
-    });
+    // this._games =
+    //   day === "all"
+    //     ? this._allGames
+    //     : this._allGames.filter((game) => game.date === day);
+    // this._users = this._allUsers.filter((user) => {
+    //   return this._games.some((game) => {
+    //     return game.white === user.id || game.black === user.id;
+    //   });
+    // });
+    [this._games, this._users] = filterGamesAndUsersByDay(
+      this._allGames,
+      this._allUsers,
+      day
+    );
   }
 }
 
 // helper functions
 
-// export function filterGamesAndUsersByDay(
-//   allGames: Game[],
-//   allUsers: User[],
-//   day: string
-// ) {
-//   const filteredGames: Game[] =
-//     day === "all" ? allGames : allGames.filter((game) => game.date === day);
+export function filterGamesAndUsersByDay(
+  allGames: Game[],
+  allUsers: User[],
+  day: string
+): [Game[], User[]] {
+  const filteredGames: Game[] =
+    day === "all" ? allGames : allGames.filter((game) => game.date === day);
 
-//   const filteredUsers = allUsers.filter((user) => {
-//     return filteredGames.some((game) => {
-//       return game.white === user.id || game.black === user.id;
-//     });
-//   });
+  const filteredUsers: User[] = allUsers.filter((user) => {
+    return filteredGames.some((game) => {
+      return game.white === user.id || game.black === user.id;
+    });
+  });
 
-//   return { games: filteredGames, users: filteredUsers };
-// }
+  return [filteredGames, filteredUsers];
+}
