@@ -36,7 +36,7 @@ interface Props {
   handleClose: () => void;
 }
 
-const GameDeleteForm = observer(function GameDeleteForm(props: Props) {
+function GameDeleteForm(props: Props) {
   const { handleClose } = props;
 
   const rootStore = useContext(StoreContext);
@@ -133,6 +133,6 @@ const GameDeleteForm = observer(function GameDeleteForm(props: Props) {
       <LocalizedDatePicker disabled={true} value={new Date(lastGame.date)} />
     </form>
   );
-});
+}
 
 export default GameDeleteForm;

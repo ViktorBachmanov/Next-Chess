@@ -49,7 +49,7 @@ interface IFormInputs {
   day: Date;
 }
 
-const GameCreateForm = observer(function GameCreateForm(props: Props) {
+function GameCreateForm(props: Props) {
   const { handleClose } = props;
 
   const rootStore = useContext(StoreContext);
@@ -208,6 +208,6 @@ const GameCreateForm = observer(function GameCreateForm(props: Props) {
       />
     </form>
   );
-});
+}
 
 export default GameCreateForm;
