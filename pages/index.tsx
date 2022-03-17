@@ -72,14 +72,20 @@ function Home({
 
   const myTables = new Tables(allUsers, allGames);
   //const myTheme = new Theme(getInitialLightMode());
-  const myTheme = new Theme();
+  //const myTheme = new Theme();
 
-  rootStore = new RootStore(myTables, myTheme);
+  rootStore = new RootStore(myTables);
 
   StoreContext = createContext<RootStore>(rootStore);
 
   useEffect(() => {
-    myTheme.setLightStatus(getInitialLightMode());
+    //myTheme.setLightStatus(getInitialLightMode());
+    rootStore.theme.setLightStatus(getInitialLightMode());
+
+    const authToken = localStorage.getItem(Storage.TOKEN);
+    if (authToken) {
+      rootStore.auth.setLoginStatus(true);
+    }
   }, []);
 
   // useEffect(() => {
