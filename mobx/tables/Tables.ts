@@ -7,7 +7,7 @@ export default class Tables {
   private _allUsers: User[];
   private _allGames: Game[];
   private _mainTableObj: MainTable;
-  private _mainTable: MainTableRow[];
+  private _mainTable: MainTableRow[] | null;
   private _gamesTable: GamesTable;
   private _orderBy: Order = Order.RATING;
   private _users: User[] = [];
@@ -16,12 +16,12 @@ export default class Tables {
 
   constructor(
     allUsers: User[],
-    allGames: Game[],
-    initialMainTable: MainTableRow[]
+    allGames: Game[]
+    //initialMainTable: MainTableRow[]
   ) {
     this._allUsers = allUsers;
     this._allGames = allGames;
-    this._mainTable = initialMainTable;
+    this._mainTable = null;
     this.filterByDay(this._day);
     this._mainTableObj = new MainTable(this._users, this._games);
     this._gamesTable = new GamesTable(this._games, this._users);

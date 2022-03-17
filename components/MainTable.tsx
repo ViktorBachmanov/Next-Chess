@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Radio from "@mui/material/Radio";
 import { MainTableRow, Order } from "../mobx/tables/types";
@@ -44,16 +44,17 @@ const SelfTd = styled("td")(
 
 interface Props {
   isFixed: boolean;
+  initialMainTable: MainTableRow[];
 }
 
 const MainTable = observer(function MainTable(props: Props) {
-  const { isFixed } = props;
+  const { isFixed, initialMainTable } = props;
 
   //console.log("MainTable");
 
   const rootStore = useContext(StoreContext);
   const tables = rootStore.tables;
-  const mainTable = tables.mainTable;
+  let mainTable = tables.mainTable || initialMainTable;
   //const day = tables.day;
 
   //console.log("MainTable orderBy: ", tables.orderBy);

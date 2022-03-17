@@ -26,20 +26,20 @@ import { User, Game, MainTableRow, Order } from "../mobx/tables/types";
 export let StoreContext: Context<RootStore>;
 
 function Home({
+  mainTable,
   users,
   games,
-  mainTable,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   //timer = new Timer();
 
   //console.log("Home");
 
   let rootStore: RootStore;
+  const initialMainTable = JSON.parse(mainTable) as MainTableRow[];
   const allUsers = JSON.parse(users) as User[];
   const allGames = JSON.parse(games) as Game[];
-  const initialMainTable = JSON.parse(mainTable) as MainTableRow[];
 
-  const myTables = new Tables(allUsers, allGames, initialMainTable);
+  const myTables = new Tables(allUsers, allGames);
 
   rootStore = new RootStore(myTables);
 
@@ -77,7 +77,7 @@ function Home({
       </Head>
 
       <StoreContext.Provider value={rootStore}>
-        <Layout />
+        <Layout initialMainTable={initialMainTable} />
       </StoreContext.Provider>
     </div>
   );
@@ -105,9 +105,9 @@ export async function getStaticProps() {
 
   return {
     props: {
+      mainTable: JSON.stringify(initialMainTable),
       users: JSON.stringify(allUsers),
       games: JSON.stringify(allGames),
-      mainTable: JSON.stringify(initialMainTable),
     },
   };
 }

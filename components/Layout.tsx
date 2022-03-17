@@ -17,7 +17,14 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-const Layout = observer(function Layout() {
+import { MainTableRow } from "../mobx/tables/types";
+
+interface Props {
+  initialMainTable: MainTableRow[];
+}
+
+const Layout = observer(function Layout(props: Props) {
+  const { initialMainTable } = props;
   //console.log("Layout");
 
   const rootStore = useContext(StoreContext);
@@ -38,9 +45,9 @@ const Layout = observer(function Layout() {
 
           <div className={styles.smartTable}>
             <div style={{ overflow: "auto" }}>
-              <MainTable isFixed={false} />
+              <MainTable isFixed={false} initialMainTable={initialMainTable} />
             </div>
-            <MainTable isFixed={true} />
+            <MainTable isFixed={true} initialMainTable={initialMainTable} />
           </div>
 
           <GamesTable />
