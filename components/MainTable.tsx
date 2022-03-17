@@ -1,11 +1,7 @@
 import React, { useContext } from "react";
-import { RootState } from "../app/store";
-import { connect, ConnectedProps } from "react-redux";
-import { useAppSelector } from "../app/hooks";
 
 import Radio from "@mui/material/Radio";
-import { setOrder as setOrderAction } from "../features/filter/filterSlice";
-import { MainTableRow, Order } from "../features/filter/types";
+import { MainTableRow, Order } from "../mobx/tables/types";
 import styles from "../styles/MainTable.module.css";
 
 import { styled } from "@mui/material/styles";
@@ -55,11 +51,6 @@ const MainTable = observer(function MainTable(props: Props) {
 
   //console.log("MainTable");
 
-  // const reduxMainTable = useAppSelector(
-  //   (state: RootState) => state.filter.mainTable
-  // );
-
-  //const mainTable = reduxMainTable || props.initialMainTable;
   const rootStore = useContext(StoreContext);
   const tables = rootStore.tables;
   const mainTable = tables.mainTable;
@@ -70,7 +61,6 @@ const MainTable = observer(function MainTable(props: Props) {
   //timer.print("MainTable.tsx");
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //setOrder(parseInt(e.target.value));
     const orderBy = parseInt(e.target.value) as Order;
     tables.setOrderBy(orderBy);
   };

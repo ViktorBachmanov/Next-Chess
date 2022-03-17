@@ -6,31 +6,12 @@ import { useEffect, useMemo, createContext, Context } from "react";
 
 import { db } from "../lib/db";
 
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-
-//import { RootState, store } from "../app/store";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { assignTables } from "../features/db/dbSlice";
-import { User, Game } from "../features/db/types";
-
-import {
-  //setInitialMainTable,
-  filterGamesAndUsersByDay,
-  //mainTableObject,
-  setGamesTable,
-  setDayFilter,
-  resetMainTable as resetMainTableAction,
-} from "../features/filter/filterSlice";
-// import { Order, MainTableRow } from "../features/filter/types";
-// import MainTable from "../features/filter/MainTable";
+import { User, Game } from "../mobx/tables/types";
 
 import Layout from "../components/Layout";
 
 //import createMainTheme from "../features/theme/muiTheme";
-import { LightStatus } from "../features/theme/types";
-import { setLightStatus } from "../features/theme/themeSlice";
-import { setLoginStatus } from "../features/auth/authSlice";
+import { LightStatus } from "../mobx/theme/types";
 
 import { Storage } from "../constants";
 
@@ -46,7 +27,6 @@ import Theme from "../mobx/theme/Theme";
 export let StoreContext: Context<RootStore>;
 
 function Home({
-  //mainTable,
   users,
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -54,32 +34,17 @@ function Home({
 
   console.log("Home");
 
-  const dispatch = useAppDispatch();
-
-  // const initialMainTable: Array<MainTableRow> = useMemo(
-  //   () => JSON.parse(mainTable),
-  //   [mainTable]
-  // );
-
-  // const myTables: Tables = useMemo(
-  //   () => new Tables(allUsers, allGames),
-  //   [allUsers, allGames]
-  // );
-
   let rootStore: RootStore;
   const allUsers = JSON.parse(users) as Array<User>;
   const allGames = JSON.parse(games) as Array<Game>;
 
   const myTables = new Tables(allUsers, allGames);
-  //const myTheme = new Theme(getInitialLightMode());
-  //const myTheme = new Theme();
 
   rootStore = new RootStore(myTables);
 
   StoreContext = createContext<RootStore>(rootStore);
 
   useEffect(() => {
-    //myTheme.setLightStatus(getInitialLightMode());
     rootStore.theme.setLightStatus(getInitialLightMode());
 
     const authToken = localStorage.getItem(Storage.TOKEN);
@@ -101,26 +66,6 @@ function Home({
       window.removeEventListener("beforeunload", saveInLocalStorage);
     };
   }, []);
-
-  // useEffect(() => {
-  //   dispatch(setLightStatus(getInitialLightMode()));
-  //   window.addEventListener("beforeunload", saveInLocalStorage);
-
-  //   const authToken = localStorage.getItem(Storage.TOKEN);
-  //   if (authToken) {
-  //     dispatch(setLoginStatus(true));
-  //   }
-
-  //   return function cleanUp() {
-  //     window.removeEventListener("beforeunload", saveInLocalStorage);
-  //   };
-  // }, [dispatch]);
-
-  // const lightMode = useAppSelector(
-  //   (state: RootState) => state.theme.lightStatus
-  // );
-
-  //const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
 
   return (
     <div className={styles.container}>
@@ -154,15 +99,8 @@ export async function getStaticProps() {
 
   db.end();
 
-  const { games, users } = filterGamesAndUsersByDay(allGames, allUsers, "all");
-
-  // const mainTableObject = new MainTable();
-  // mainTableObject.regenerate(games, users);
-  // const mainTable = mainTableObject.getTableOrderedBy(Order.RATING);
-
   return {
     props: {
-      //mainTable: JSON.stringify(mainTable),
       users: JSON.stringify(allUsers),
       games: JSON.stringify(allGames),
     },
@@ -171,7 +109,7 @@ export async function getStaticProps() {
 
 export default Home;
 
-// // helper functions
+//  helper functions
 
 function getInitialLightMode(): LightStatus {
   const storageStatus = localStorage.getItem(Storage.LIGHT_MODE);

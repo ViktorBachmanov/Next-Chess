@@ -10,8 +10,6 @@ import MainTable from "../components/MainTable";
 import GamesTable from "../components/GamesTable";
 import SelectDay from "../components/SelectDay";
 
-import { MainTableRow } from "../features/filter/types";
-
 import createMainTheme from "../mobx/theme/muiTheme";
 import { StoreContext } from "../pages/index";
 import { observer } from "mobx-react-lite";
@@ -19,16 +17,8 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import { Storage } from "../constants";
-
-// interface Props {
-//   //initialMainTable: MainTableRow[];
-//   tables: Tables;
-// }
-
 const Layout = observer(function Layout() {
   console.log("Layout");
-  //const { initialMainTable } = props;
 
   const rootStore = useContext(StoreContext);
   const themeStore = rootStore.theme;
@@ -36,22 +26,6 @@ const Layout = observer(function Layout() {
   const lightMode = themeStore.lightStatus;
 
   const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
-
-  // useEffect(() => {
-  //   function saveInLocalStorage() {
-  //     localStorage.setItem(
-  //       Storage.LIGHT_MODE,
-  //       JSON.stringify(themeStore.lightStatus)
-  //     );
-
-  //     localStorage.setItem(Storage.TOKEN, authStore.token);
-  //   }
-  //   window.addEventListener("beforeunload", saveInLocalStorage);
-
-  //   return function cleanUp() {
-  //     window.removeEventListener("beforeunload", saveInLocalStorage);
-  //   };
-  // }, []);
 
   return (
     <ThemeProvider theme={mainTheme}>
