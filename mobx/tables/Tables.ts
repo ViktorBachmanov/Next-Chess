@@ -38,6 +38,10 @@ export default class Tables {
     return this._gamesTable;
   }
 
+  get allUsers() {
+    return [...this._allUsers];
+  }
+
   get allGames() {
     return [...this._allGames];
   }
