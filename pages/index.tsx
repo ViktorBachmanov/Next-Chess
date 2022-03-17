@@ -84,7 +84,7 @@ function Home({
 
     const authToken = localStorage.getItem(Storage.TOKEN);
     if (authToken) {
-      rootStore.auth.setLoginStatus(true);
+      rootStore.auth.setToken(authToken);
     }
   }, []);
 

@@ -1,10 +1,10 @@
-import React, { BaseSyntheticEvent } from "react";
+import React, { useContext } from "react";
 import SelectGamer from "./SelectGamer";
 import SelectWinner, { Won } from "./SelectWinner";
 import LocalizedDatePicker from "./LocalizedDatePicker";
 
-import { connect, ConnectedProps } from "react-redux";
-import { RootState } from "../app/store";
+// import { connect, ConnectedProps } from "react-redux";
+// import { RootState } from "../app/store";
 
 import toast from "react-hot-toast";
 
@@ -12,24 +12,37 @@ import { Storage } from "../constants";
 
 import { UserData, DeleteGameData } from "../types";
 
-function mapStateToProps(state: RootState) {
-  return {
-    users: state.db.users,
-    games: state.db.games,
-  };
-}
+import { StoreContext } from "../pages/index";
+import { observer } from "mobx-react-lite";
 
-const connector = connect(mapStateToProps);
+// function mapStateToProps(state: RootState) {
+//   return {
+//     users: state.db.users,
+//     games: state.db.games,
+//   };
+// }
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+// const connector = connect(mapStateToProps);
 
-type Props = PropsFromRedux & {
+// type PropsFromRedux = ConnectedProps<typeof connector>;
+
+// type Props = PropsFromRedux & {
+//   formId: string;
+//   handleClose: () => void;
+// };
+
+interface Props {
   formId: string;
   handleClose: () => void;
-};
+}
 
-function GameDeleteForm(props: Props) {
-  const { users, games, handleClose } = props;
+const GameDeleteForm = observer(function GameDeleteForm(props: Props) {
+  const { handleClose } = props;
+
+  const rootStore = useContext(StoreContext);
+  const users = rootStore.tables.allUsers;
+  const games = rootStore.tables.allGames;
+  const authStore = rootStore.auth;
 
   const lastGame = games[0];
 
@@ -61,7 +74,8 @@ function GameDeleteForm(props: Props) {
 
     const startToastId = toast.loading("Game deleting...");
 
-    const authToken = localStorage.getItem(Storage.TOKEN)!;
+    //const authToken = localStorage.getItem(Storage.TOKEN)!;
+    const authToken = authStore.token;
 
     let sendData: DeleteGameData = {
       id: lastGame.id,
@@ -119,6 +133,6 @@ function GameDeleteForm(props: Props) {
       <LocalizedDatePicker disabled={true} value={new Date(lastGame.date)} />
     </form>
   );
-}
+});
 
-export default connector(GameDeleteForm);
+export default GameDeleteForm;

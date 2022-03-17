@@ -66,9 +66,9 @@ export default function LoginForm(props: Props) {
           toast.error("Authenticating failed");
         } else {
           toast.success("Authenticated successfully");
-          localStorage.setItem(Storage.TOKEN, res);
+          //localStorage.setItem(Storage.TOKEN, res);
           //dispatch(setLoginStatus(true));
-          rootStore.auth.setLoginStatus(true);
+          rootStore.auth.setToken(res);
         }
       });
   };

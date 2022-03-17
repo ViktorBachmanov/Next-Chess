@@ -32,6 +32,7 @@ const Layout = observer(function Layout() {
 
   const rootStore = useContext(StoreContext);
   const themeStore = rootStore.theme;
+  const authStore = rootStore.auth;
   const lightMode = themeStore.lightStatus;
 
   const mainTheme = useMemo(() => createMainTheme(lightMode), [lightMode]);
@@ -42,6 +43,8 @@ const Layout = observer(function Layout() {
         Storage.LIGHT_MODE,
         JSON.stringify(themeStore.lightStatus)
       );
+
+      localStorage.setItem(Storage.TOKEN, authStore.token);
     }
     window.addEventListener("beforeunload", saveInLocalStorage);
 

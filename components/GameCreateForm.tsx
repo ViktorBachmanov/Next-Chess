@@ -55,6 +55,7 @@ const GameCreateForm = observer(function GameCreateForm(props: Props) {
   const rootStore = useContext(StoreContext);
   const users = rootStore.tables.allUsers;
   const games = rootStore.tables.allGames;
+  const authStore = rootStore.auth;
 
   const { handleSubmit, control, watch, getValues, setError } =
     useForm<IFormInputs>({
@@ -109,7 +110,8 @@ const GameCreateForm = observer(function GameCreateForm(props: Props) {
         break;
     }
 
-    const authToken = localStorage.getItem(Storage.TOKEN)!;
+    //const authToken = localStorage.getItem(Storage.TOKEN)!;
+    const authToken = authStore.token;
 
     let sendData: CreateGameData = {
       white: whiteUser,

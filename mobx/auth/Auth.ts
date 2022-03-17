@@ -1,20 +1,20 @@
 import { makeObservable, observable, computed, action, flow } from "mobx";
 
 export default class Auth {
-  private _loginStatus: boolean = false;
+  private _token: string = "";
 
   constructor() {
-    makeObservable<Auth, "_loginStatus">(this, {
-      _loginStatus: observable,
-      setLoginStatus: action,
+    makeObservable<Auth, "_token">(this, {
+      _token: observable,
+      setToken: action,
     });
   }
 
-  public get loginStatus() {
-    return this._loginStatus;
+  public get token() {
+    return this._token;
   }
 
-  public setLoginStatus(val: boolean) {
-    this._loginStatus = val;
+  public setToken(val: string) {
+    this._token = val;
   }
 }
