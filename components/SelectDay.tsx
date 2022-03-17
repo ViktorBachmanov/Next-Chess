@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { RootState } from "../app/store";
+import React, { useContext } from "react";
 
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -8,24 +6,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 //import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import {
-  setDayFilter,
-  setMainTable,
-  setGamesTable,
-} from "../features/filter/filterSlice";
 
-function SelectDay() {
+import { observer } from "mobx-react-lite";
+import { StoreContext } from "../pages/index";
+
+const SelectDay = observer(function SelectDay() {
   const label = "Игровой день";
 
-  const dispatch = useAppDispatch();
+  const rootStore = useContext(StoreContext);
+  const tables = rootStore.tables;
+  const allGames = tables.allGames;
 
   const handleChange = (e: SelectChangeEvent<string>) => {
-    dispatch(setDayFilter(e.target.value));
-    dispatch(setMainTable());
-    dispatch(setGamesTable());
+    tables.setDay(e.target.value);
   };
-
-  const allGames = useAppSelector((state: RootState) => state.db.games);
 
   const days = getDistinctDays(allGames);
 
@@ -44,7 +38,7 @@ function SelectDay() {
       </FormControl>
     </Box>
   );
-}
+});
 
 export default SelectDay;
 

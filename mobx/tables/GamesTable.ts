@@ -1,11 +1,14 @@
-import { GamesTableRow } from "./types";
-import { User, Game } from "../db/types";
+import { User, Game, GamesTableRow } from "./types";
 
 export default class GamesTable {
-  private rows: Array<GamesTableRow> = [];
+  private rows: GamesTableRow[] = [];
   private userIdToName = new Map();
 
-  public regenerate(games: Array<Game>, users: Array<User>) {
+  constructor(games: Game[], users: User[]) {
+    this.regenerate(games, users);
+  }
+
+  public regenerate(games: Game[], users: User[]) {
     this.rows = [];
     this.userIdToName.clear();
 

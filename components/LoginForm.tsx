@@ -1,5 +1,6 @@
-import React, { BaseSyntheticEvent } from "react";
-import { useAppDispatch } from "../app/hooks";
+import React, { BaseSyntheticEvent, useContext } from "react";
+
+import { StoreContext } from "../pages/index";
 
 import {
   useForm,
@@ -11,10 +12,6 @@ import {
 import TextField from "@mui/material/TextField";
 
 import toast from "react-hot-toast";
-
-import { setLoginStatus } from "../features/auth/authSlice";
-
-import { Storage } from "../constants";
 
 interface Props {
   formId: string;
@@ -34,7 +31,8 @@ export default function LoginForm(props: Props) {
     },
   });
 
-  const dispatch = useAppDispatch();
+  //const dispatch = useAppDispatch();
+  const rootStore = useContext(StoreContext);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     props.handleClose();
@@ -62,8 +60,9 @@ export default function LoginForm(props: Props) {
           toast.error("Authenticating failed");
         } else {
           toast.success("Authenticated successfully");
-          localStorage.setItem(Storage.TOKEN, res);
-          dispatch(setLoginStatus(true));
+          //localStorage.setItem(Storage.TOKEN, res);
+          //dispatch(setLoginStatus(true));
+          rootStore.auth.setToken(res);
         }
       });
   };

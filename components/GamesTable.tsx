@@ -1,22 +1,22 @@
-import React from "react";
-import { RootState } from "../app/store";
-import { useAppSelector } from "../app/hooks";
+import React, { useContext } from "react";
 
-import { GamesTableRow } from "../features/filter/types";
-import { gamesTableObject } from "../features/filter/filterSlice";
+import { GamesTableRow } from "../mobx/tables/types";
 
-import { LightStatus } from "../features/theme/types";
+import { LightStatus } from "../mobx/theme/types";
 
-export default function GamesTable() {
-  console.log("GamesTable");
+import { observer } from "mobx-react-lite";
+import { StoreContext } from "../pages/index";
 
-  const gamesTable = useAppSelector(
-    (state: RootState) => state.filter.gamesTable
-  );
+const GamesTable = observer(function GamesTable() {
+  //console.log("GamesTable");
 
-  const lightMode = useAppSelector(
-    (state: RootState) => state.theme.lightStatus
-  );
+  const rootStore = useContext(StoreContext);
+  const tables = rootStore.tables;
+  const gamesTableObject = tables.gamesTable;
+  const gamesTable = gamesTableObject.getRows();
+  const day = tables.day;
+
+  const lightMode = rootStore.theme.lightStatus;
 
   return (
     <table style={{ margin: "2rem 0" }}>
@@ -45,7 +45,9 @@ export default function GamesTable() {
       </tbody>
     </table>
   );
-}
+});
+
+export default GamesTable;
 
 // helper functions
 

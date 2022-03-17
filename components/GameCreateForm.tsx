@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent } from "react";
+import React, { BaseSyntheticEvent, useContext } from "react";
 import {
   useForm,
   Controller,
@@ -9,8 +9,8 @@ import SelectGamer from "./SelectGamer";
 import SelectWinner, { Won } from "./SelectWinner";
 import LocalizedDatePicker from "./LocalizedDatePicker";
 
-import { connect, ConnectedProps } from "react-redux";
-import { RootState } from "../app/store";
+// import { connect, ConnectedProps } from "react-redux";
+// import { RootState } from "../app/store";
 
 import toast from "react-hot-toast";
 
@@ -18,21 +18,29 @@ import { UserData, CreateGameData } from "../types";
 
 import { Storage } from "../constants";
 
-function mapStateToProps(state: RootState) {
-  return {
-    users: state.db.users,
-    games: state.db.games,
-  };
-}
+import { StoreContext } from "../pages/index";
+import { observer } from "mobx-react-lite";
 
-const connector = connect(mapStateToProps);
+// function mapStateToProps(state: RootState) {
+//   return {
+//     users: state.db.users,
+//     games: state.db.games,
+//   };
+// }
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+// const connector = connect(mapStateToProps);
 
-type Props = PropsFromRedux & {
+// type PropsFromRedux = ConnectedProps<typeof connector>;
+
+// type Props = PropsFromRedux & {
+//   formId: string;
+//   handleClose: () => void;
+// };
+
+interface Props {
   formId: string;
   handleClose: () => void;
-};
+}
 
 interface IFormInputs {
   whiteUser: number;
@@ -42,7 +50,12 @@ interface IFormInputs {
 }
 
 function GameCreateForm(props: Props) {
-  const { users, games, handleClose } = props;
+  const { handleClose } = props;
+
+  const rootStore = useContext(StoreContext);
+  const users = rootStore.tables.allUsers;
+  const games = rootStore.tables.allGames;
+  const authStore = rootStore.auth;
 
   const { handleSubmit, control, watch, getValues, setError } =
     useForm<IFormInputs>({
@@ -97,7 +110,8 @@ function GameCreateForm(props: Props) {
         break;
     }
 
-    const authToken = localStorage.getItem(Storage.TOKEN)!;
+    //const authToken = localStorage.getItem(Storage.TOKEN)!;
+    const authToken = authStore.token;
 
     let sendData: CreateGameData = {
       white: whiteUser,
@@ -196,4 +210,4 @@ function GameCreateForm(props: Props) {
   );
 }
 
-export default connector(GameCreateForm);
+export default GameCreateForm;

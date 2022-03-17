@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { RootState } from "../app/store";
+// import { useAppDispatch, useAppSelector } from "../app/hooks";
+// import { RootState } from "../app/store";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,20 +13,26 @@ import { useRouter } from "next/router";
 
 import MenuDialog from "./MenuDialog";
 
-import { setLoginStatus } from "../features/auth/authSlice";
+//import { setLoginStatus } from "../features/auth/authSlice";
 import { Storage } from "../constants";
 
-export default function MenuChess() {
+import { StoreContext } from "../pages/index";
+import { observer } from "mobx-react-lite";
+
+const MenuChess = observer(function MenuChess() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const router = useRouter();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const loginStatus = useAppSelector(
-    (state: RootState) => state.auth.loginStatus
-  );
+  // const loginStatus = useAppSelector(
+  //   (state: RootState) => state.auth.loginStatus
+  // );
+
+  const authStore = useContext(StoreContext).auth;
+  const loginStatus = Boolean(authStore.token);
 
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
@@ -47,7 +53,8 @@ export default function MenuChess() {
 
   function handleLogout() {
     localStorage.removeItem(Storage.TOKEN);
-    dispatch(setLoginStatus(false));
+    //dispatch(setLoginStatus(false));
+    authStore.setToken("");
     handleClose();
   }
 
@@ -114,4 +121,6 @@ export default function MenuChess() {
       />
     </div>
   );
-}
+});
+
+export default MenuChess;
