@@ -9,33 +9,11 @@ import SelectGamer from "./SelectGamer";
 import SelectWinner, { Won } from "./SelectWinner";
 import LocalizedDatePicker from "./LocalizedDatePicker";
 
-// import { connect, ConnectedProps } from "react-redux";
-// import { RootState } from "../app/store";
-
 import toast from "react-hot-toast";
 
 import { UserData, CreateGameData } from "../types";
 
-import { Storage } from "../constants";
-
 import { StoreContext } from "../pages/index";
-import { observer } from "mobx-react-lite";
-
-// function mapStateToProps(state: RootState) {
-//   return {
-//     users: state.db.users,
-//     games: state.db.games,
-//   };
-// }
-
-// const connector = connect(mapStateToProps);
-
-// type PropsFromRedux = ConnectedProps<typeof connector>;
-
-// type Props = PropsFromRedux & {
-//   formId: string;
-//   handleClose: () => void;
-// };
 
 interface Props {
   formId: string;
@@ -110,7 +88,6 @@ function GameCreateForm(props: Props) {
         break;
     }
 
-    //const authToken = localStorage.getItem(Storage.TOKEN)!;
     const authToken = authStore.token;
 
     let sendData: CreateGameData = {

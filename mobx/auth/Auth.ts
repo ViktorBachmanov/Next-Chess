@@ -1,4 +1,4 @@
-import { makeObservable, observable, computed, action, flow } from "mobx";
+import { makeObservable, observable, action } from "mobx";
 
 export default class Auth {
   private _token: string = "";

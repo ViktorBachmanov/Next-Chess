@@ -63,7 +63,6 @@ export default class Tables {
   setOrderBy(val: Order) {
     this._mainTable = this._mainTableObj.getTableOrderedBy(val);
     this._orderBy = val;
-    //console.log("setOrderBy: ", this.orderBy);
   }
 
   get day() {
@@ -71,7 +70,6 @@ export default class Tables {
   }
 
   setDay(day: string) {
-    //console.log("Tables_setDay: ", day);
     this.filterByDay(day);
 
     this._mainTableObj.regenerate(this._users, this._games);
@@ -82,15 +80,6 @@ export default class Tables {
   }
 
   private filterByDay(day: string) {
-    // this._games =
-    //   day === "all"
-    //     ? this._allGames
-    //     : this._allGames.filter((game) => game.date === day);
-    // this._users = this._allUsers.filter((user) => {
-    //   return this._games.some((game) => {
-    //     return game.white === user.id || game.black === user.id;
-    //   });
-    // });
     [this._games, this._users] = filterGamesAndUsersByDay(
       this._allGames,
       this._allUsers,

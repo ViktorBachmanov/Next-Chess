@@ -1,8 +1,5 @@
 import React, { useState, useContext } from "react";
 
-// import { useAppDispatch, useAppSelector } from "../app/hooks";
-// import { RootState } from "../app/store";
-
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -13,7 +10,6 @@ import { useRouter } from "next/router";
 
 import MenuDialog from "./MenuDialog";
 
-//import { setLoginStatus } from "../features/auth/authSlice";
 import { Storage } from "../constants";
 
 import { StoreContext } from "../pages/index";
@@ -24,12 +20,6 @@ const MenuChess = observer(function MenuChess() {
   const open = Boolean(anchorEl);
 
   const router = useRouter();
-
-  // const dispatch = useAppDispatch();
-
-  // const loginStatus = useAppSelector(
-  //   (state: RootState) => state.auth.loginStatus
-  // );
 
   const authStore = useContext(StoreContext).auth;
   const loginStatus = Boolean(authStore.token);
@@ -53,7 +43,6 @@ const MenuChess = observer(function MenuChess() {
 
   function handleLogout() {
     localStorage.removeItem(Storage.TOKEN);
-    //dispatch(setLoginStatus(false));
     authStore.setToken("");
     handleClose();
   }

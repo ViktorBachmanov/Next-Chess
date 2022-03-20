@@ -8,20 +8,14 @@ import { db } from "../lib/db";
 
 import Layout from "../components/Layout";
 
-//import createMainTheme from "../features/theme/muiTheme";
 import { LightStatus } from "../mobx/theme/types";
 
 import { Storage } from "../constants";
 
-//import { observer } from "mobx-react";
 import RootStore from "../mobx/RootStore";
 import Tables, { filterGamesAndUsersByDay } from "../mobx/tables/Tables";
 import MainTable from "../mobx/tables/MainTable";
 import { User, Game, MainTableRow, Order } from "../mobx/tables/types";
-
-//import Timer from "./Timer";
-
-//export let timer: Timer;
 
 export let StoreContext: Context<RootStore>;
 
@@ -30,8 +24,6 @@ function Home({
   users,
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  //timer = new Timer();
-
   //console.log("Home");
 
   let rootStore: RootStore;

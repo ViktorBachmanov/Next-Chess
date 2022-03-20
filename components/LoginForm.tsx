@@ -31,7 +31,6 @@ export default function LoginForm(props: Props) {
     },
   });
 
-  //const dispatch = useAppDispatch();
   const rootStore = useContext(StoreContext);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
@@ -60,8 +59,7 @@ export default function LoginForm(props: Props) {
           toast.error("Authenticating failed");
         } else {
           toast.success("Authenticated successfully");
-          //localStorage.setItem(Storage.TOKEN, res);
-          //dispatch(setLoginStatus(true));
+
           rootStore.auth.setToken(res);
         }
       });

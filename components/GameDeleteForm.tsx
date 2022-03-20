@@ -3,33 +3,11 @@ import SelectGamer from "./SelectGamer";
 import SelectWinner, { Won } from "./SelectWinner";
 import LocalizedDatePicker from "./LocalizedDatePicker";
 
-// import { connect, ConnectedProps } from "react-redux";
-// import { RootState } from "../app/store";
-
 import toast from "react-hot-toast";
-
-import { Storage } from "../constants";
 
 import { UserData, DeleteGameData } from "../types";
 
 import { StoreContext } from "../pages/index";
-import { observer } from "mobx-react-lite";
-
-// function mapStateToProps(state: RootState) {
-//   return {
-//     users: state.db.users,
-//     games: state.db.games,
-//   };
-// }
-
-// const connector = connect(mapStateToProps);
-
-// type PropsFromRedux = ConnectedProps<typeof connector>;
-
-// type Props = PropsFromRedux & {
-//   formId: string;
-//   handleClose: () => void;
-// };
 
 interface Props {
   formId: string;
@@ -74,7 +52,6 @@ function GameDeleteForm(props: Props) {
 
     const startToastId = toast.loading("Game deleting...");
 
-    //const authToken = localStorage.getItem(Storage.TOKEN)!;
     const authToken = authStore.token;
 
     let sendData: DeleteGameData = {

@@ -9,8 +9,6 @@ import { styled } from "@mui/material/styles";
 import { StoreContext } from "../pages/index";
 import { observer } from "mobx-react-lite";
 
-//import { timer } from "../pages/index";
-
 const OpaqueTh = styled("th")(
   ({ theme }) => `
   background: ${theme.palette.background.paper};
@@ -56,10 +54,6 @@ const MainTable = observer(function MainTable(props: Props) {
   const tables = rootStore.tables;
   let mainTable = tables.mainTable || initialMainTable;
   //const day = tables.day;
-
-  //console.log("MainTable orderBy: ", tables.orderBy);
-
-  //timer.print("MainTable.tsx");
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
     const orderBy = parseInt(e.target.value) as Order;
