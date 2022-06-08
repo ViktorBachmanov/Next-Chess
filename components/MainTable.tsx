@@ -42,24 +42,29 @@ const SelfTd = styled("td")(
 
 interface Props {
   isFixed: boolean;
-  initialMainTable: MainTableRow[];
+  //initialMainTable: MainTableRow[];
 }
 
 const MainTable = observer(function MainTable(props: Props) {
-  const { isFixed, initialMainTable } = props;
+  //const { isFixed, initialMainTable } = props;
+  const { isFixed } = props;
 
   console.log("MainTable");
 
   const rootStore = useContext(StoreContext);
   //const tables = rootStore.tables;
 
-  console.log("rootStore: ", rootStore);
+  //console.log("rootStore: ", rootStore);
 
-  let mainTable: MainTableRow[] = [];
-  mainTable = rootStore.tables?.mainTable || initialMainTable;
-  console.log("useEffect tables?.mainTable", rootStore.tables?.mainTable);
-  console.log("useEffect initialMainTable", initialMainTable);
-  console.log("useEffect mainTable", mainTable);
+  let mainTable: MainTableRow[] | null | undefined;
+  //mainTable = rootStore.tables?.mainTable || initialMainTable;
+  mainTable = rootStore.tables?.mainTable;
+  if (!mainTable) {
+    return null;
+  }
+  //console.log("useEffect tables?.mainTable", rootStore.tables?.mainTable);
+  //console.log("useEffect initialMainTable", initialMainTable);
+  //console.log("useEffect mainTable", mainTable);
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
     const orderBy = parseInt(e.target.value) as Order;

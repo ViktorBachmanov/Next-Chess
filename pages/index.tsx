@@ -19,13 +19,13 @@ import SelectDay from "../components/SelectDay";
 import styles from "../styles/MainTable.module.css";
 
 const Home = observer(function Home({
-  mainTable,
+  //mainTable,
   users,
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   console.log("Home");
 
-  const initialMainTable = JSON.parse(mainTable) as MainTableRow[];
+  //const initialMainTable = JSON.parse(mainTable) as MainTableRow[];
   const allUsers = JSON.parse(users) as User[];
   const allGames = JSON.parse(games) as Game[];
 
@@ -50,12 +50,12 @@ const Home = observer(function Home({
         <div style={{ overflow: "auto" }}>
           <MainTableComponent
             isFixed={false}
-            initialMainTable={initialMainTable}
+            //initialMainTable={initialMainTable}
           />
         </div>
         <MainTableComponent
           isFixed={true}
-          initialMainTable={initialMainTable}
+          //initialMainTable={initialMainTable}
         />
       </div>
 
@@ -82,14 +82,14 @@ export async function getStaticProps() {
   db.end();
 
   const [games, users] = filterGamesAndUsersByDay(allGames, allUsers, "all");
-  const mainTableObj = new MainTable(users, games);
-  const initialMainTable = mainTableObj.getTableOrderedBy(Order.RATING);
+  // const mainTableObj = new MainTable(users, games);
+  // const initialMainTable = mainTableObj.getTableOrderedBy(Order.RATING);
 
   //console.log("initialMainTable: ", initialMainTable);
 
   return {
     props: {
-      mainTable: JSON.stringify(initialMainTable),
+      //mainTable: JSON.stringify(initialMainTable),
       users: JSON.stringify(allUsers),
       games: JSON.stringify(allGames),
     },
