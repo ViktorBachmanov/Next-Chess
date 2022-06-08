@@ -5,6 +5,12 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const fio = req.body;
+
+  console.log("fio: ", fio);
+
+  return;
+
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST,

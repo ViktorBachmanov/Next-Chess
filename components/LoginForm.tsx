@@ -28,7 +28,7 @@ interface IFormInputs {
 }
 
 export default function LoginForm(props: Props) {
-  const { handleSubmit, control } = useForm<IFormInputs>({
+  const { handleSubmit, control, setError, getValues } = useForm<IFormInputs>({
     defaultValues: {
       userName: "",
       password: "",
@@ -74,6 +74,26 @@ export default function LoginForm(props: Props) {
     e?: BaseSyntheticEvent
   ) => console.log("Error", errors);
 
+  const changePasswordHandle = async (e: any) => {
+    const [fio] = getValues(["userName"]);
+    if (fio === "") {
+      setError("userName", {
+        type: "manual",
+        message: "Заполните это поле",
+      });
+      //e.preventDefault();
+    } else {
+      const response = await fetch("/api/auth/changePassword", {
+        method: "POST",
+        body: fio,
+      });
+
+      const result = await response.json();
+
+      props.handleClose();
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} id={props.formId}>
       <Controller
@@ -86,6 +106,8 @@ export default function LoginForm(props: Props) {
             label="ФИО"
             {...field}
             style={{ margin: "2rem 0" }}
+            error={Boolean(error)}
+            helperText={error?.message}
           />
         )}
       />
@@ -99,16 +121,18 @@ export default function LoginForm(props: Props) {
         )}
       />
 
-      <Link href="/passwordReset/sendMail">
-        <Typography
-          align="center"
-          variant="body2"
-          component="a"
-          //sx={{ flexGrow: 1 }}
-        >
-          Забыли пароль?
-        </Typography>
-      </Link>
+      {/* <Link href="/passwordReset/sendMail"> */}
+      <Typography
+        //align="center"
+        variant="body2"
+        //component="a"
+        //sx={{ flexGrow: 1 }}
+        style={{ cursor: "pointer", margin: "2em 0 0 1em" }}
+        onClick={changePasswordHandle}
+      >
+        Изменить пароль
+      </Typography>
+      {/* </Link> */}
     </form>
   );
 }

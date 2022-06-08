@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 import { UserData, DeleteGameData } from "../types";
 
-import { StoreContext } from "../pages/index";
+import { StoreContext } from "./Layout";
 
 interface Props {
   formId: string;
@@ -18,6 +18,9 @@ function GameDeleteForm(props: Props) {
   const { handleClose } = props;
 
   const rootStore = useContext(StoreContext);
+  if (!rootStore.tables) {
+    return null;
+  }
   const users = rootStore.tables.allUsers;
   const games = rootStore.tables.allGames;
   const authStore = rootStore.auth;

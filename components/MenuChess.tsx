@@ -19,7 +19,7 @@ const MenuChess = observer(function MenuChess() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const router = useRouter();
+  //const router = useRouter();
 
   const authStore = useContext(StoreContext).auth;
   const loginStatus = Boolean(authStore.token);
@@ -39,6 +39,7 @@ const MenuChess = observer(function MenuChess() {
     setDialogTitle("Аутентификация");
     setDialogSubmitLabel("Ок");
     setDialogOpen(true);
+    handleClose();
   }
 
   function handleLogout() {
