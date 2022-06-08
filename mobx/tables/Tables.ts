@@ -26,6 +26,8 @@ export default class Tables {
     this._mainTableObj = new MainTable(this._users, this._games);
     this._gamesTable = new GamesTable(this._games, this._users);
 
+    this.setOrderBy(this._orderBy);
+
     makeObservable<Tables, "_orderBy" | "_day" | "_mainTable">(this, {
       _orderBy: observable,
       _day: observable,

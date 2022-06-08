@@ -3,12 +3,12 @@ import Theme from "./theme/Theme";
 import Auth from "./auth/Auth";
 
 export default class RootStore {
-  public tables: Tables;
+  public tables: Tables | null = null;
   public theme: Theme;
   public auth: Auth;
 
-  constructor(tables: Tables) {
-    this.tables = tables;
+  constructor() {
+    this.tables;
     this.theme = new Theme();
     this.auth = new Auth();
   }

@@ -1,17 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { GamesTableRow } from "../mobx/tables/types";
 
 import { LightStatus } from "../mobx/theme/types";
 
 import { observer } from "mobx-react-lite";
-import { StoreContext } from "../pages/index";
+import { StoreContext } from "./Layout";
 
 const GamesTable = observer(function GamesTable() {
-  //console.log("GamesTable");
+  console.log("GamesTable");
 
   const rootStore = useContext(StoreContext);
   const tables = rootStore.tables;
+  if (!tables) {
+    return null;
+  }
   const gamesTableObject = tables.gamesTable;
   const gamesTable = gamesTableObject.getRows();
   const day = tables.day;

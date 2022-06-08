@@ -12,7 +12,7 @@ import MenuDialog from "./MenuDialog";
 
 import { Storage } from "../constants";
 
-import { StoreContext } from "../pages/index";
+import { StoreContext } from "./Layout";
 import { observer } from "mobx-react-lite";
 
 const MenuChess = observer(function MenuChess() {

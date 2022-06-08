@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 
 import { LightStatus } from "../mobx/theme/types";
 
-import { StoreContext } from "../pages/index";
+import { StoreContext } from "./Layout";
 import { observer } from "mobx-react-lite";
 
 const LightMode = observer(function LightMode() {
@@ -13,17 +13,22 @@ const LightMode = observer(function LightMode() {
   const themeStore = rootStore.theme;
   const lightMode = themeStore.lightStatus;
 
+  const handleClick = () => {
+    console.log("LightMode handleClick LightStatus: ", lightMode);
+    if (lightMode === LightStatus.DARK) {
+      themeStore.setLightStatus(LightStatus.LIGHT);
+    } else {
+      themeStore.setLightStatus(LightStatus.DARK);
+    }
+  };
+
   return (
     <IconButton
       size="large"
       edge="end"
       color="inherit"
       aria-label="menu"
-      onClick={
-        lightMode === LightStatus.DARK
-          ? () => themeStore.setLightStatus(LightStatus.LIGHT)
-          : () => themeStore.setLightStatus(LightStatus.DARK)
-      }
+      onClick={handleClick}
     >
       {lightMode === LightStatus.DARK ? (
         <LightModeOutlinedIcon />

@@ -6,7 +6,7 @@ import styles from "../styles/MainTable.module.css";
 
 import { styled } from "@mui/material/styles";
 
-import { StoreContext } from "../pages/index";
+import { StoreContext } from "./Layout";
 import { observer } from "mobx-react-lite";
 
 const OpaqueTh = styled("th")(
@@ -48,16 +48,22 @@ interface Props {
 const MainTable = observer(function MainTable(props: Props) {
   const { isFixed, initialMainTable } = props;
 
-  //console.log("MainTable");
+  console.log("MainTable");
 
   const rootStore = useContext(StoreContext);
-  const tables = rootStore.tables;
-  let mainTable = tables.mainTable || initialMainTable;
-  //const day = tables.day;
+  //const tables = rootStore.tables;
+
+  console.log("rootStore: ", rootStore);
+
+  let mainTable: MainTableRow[] = [];
+  mainTable = rootStore.tables?.mainTable || initialMainTable;
+  console.log("useEffect tables?.mainTable", rootStore.tables?.mainTable);
+  console.log("useEffect initialMainTable", initialMainTable);
+  console.log("useEffect mainTable", mainTable);
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
     const orderBy = parseInt(e.target.value) as Order;
-    tables.setOrderBy(orderBy);
+    rootStore.tables!.setOrderBy(orderBy);
   };
 
   const visibility = isFixed ? styles.hidden : "";
@@ -79,7 +85,7 @@ const MainTable = observer(function MainTable(props: Props) {
           <th className={visibility}>
             Очки
             <Radio
-              checked={tables.orderBy === Order.SCORE}
+              checked={rootStore.tables?.orderBy === Order.SCORE}
               onChange={handleChangeOrder}
               value={Order.SCORE}
               name="orderBy"
@@ -90,7 +96,7 @@ const MainTable = observer(function MainTable(props: Props) {
           <th className={visibility}>
             Рейтинг
             <Radio
-              checked={tables.orderBy === Order.RATING}
+              checked={rootStore.tables?.orderBy === Order.RATING}
               onChange={handleChangeOrder}
               value={Order.RATING}
               name="orderBy"

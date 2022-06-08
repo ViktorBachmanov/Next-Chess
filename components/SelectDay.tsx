@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -8,20 +8,28 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { observer } from "mobx-react-lite";
-import { StoreContext } from "../pages/index";
+import { StoreContext } from "./Layout";
 
 const SelectDay = observer(function SelectDay() {
+  console.log("SelectDay");
+
   const label = "Игровой день";
 
   const rootStore = useContext(StoreContext);
   const tables = rootStore.tables;
+  if (!tables) {
+    return null;
+  }
   const allGames = tables.allGames;
 
   const handleChange = (e: SelectChangeEvent<string>) => {
     tables.setDay(e.target.value);
   };
 
+  //let days: string[] = [];
+  //useEffect(() => {
   const days = getDistinctDays(allGames);
+  //}, [getDistinctDays, allGames]);
 
   return (
     <Box style={{ width: "9rem", margin: "2rem auto" }}>

@@ -1,6 +1,10 @@
 import React, { BaseSyntheticEvent, useContext } from "react";
 
-import { StoreContext } from "../pages/index";
+import Link from "next/link";
+
+import Typography from "@mui/material/Typography";
+
+import { StoreContext } from "./Layout";
 
 import {
   useForm,
@@ -94,6 +98,17 @@ export default function LoginForm(props: Props) {
           <TextField label="Пароль" type="password" {...field} />
         )}
       />
+
+      <Link href="/passwordReset/sendMail">
+        <Typography
+          align="center"
+          variant="body2"
+          component="a"
+          //sx={{ flexGrow: 1 }}
+        >
+          Забыли пароль?
+        </Typography>
+      </Link>
     </form>
   );
 }
