@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { NextApiRequest, NextApiResponse } from "next";
+import bcrypt from "bcrypt";
 
 import { db } from "../../../lib/db";
 
@@ -12,6 +13,7 @@ export default async function handle(
   console.log("fio: ", fio);
 
   let email: string = "";
+  let token: string = "";
 
   try {
     const queryResult: Array<any> = await db.query(
@@ -19,20 +21,34 @@ export default async function handle(
       [fio]
     );
 
-    db.end();
-
     email = queryResult[0]?.email;
 
     if (!email) {
+      db.end();
       res.status(404).send("Email not found");
     }
+
+    await db.query("DELETE FROM password_resets WHERE email = ?", [email]);
+
+    token = bcrypt.hashSync(String(Math.random() * 5), 10);
+
+    console.log("token: ", token);
+
+    await db.query("INSERT password_resets (email, token) VALUES(?, ?)", [
+      email,
+      token,
+    ]);
+
+    db.end();
   } catch (err: any) {
+    db.end();
     res.status(500).send("Database error");
+    return;
   }
 
   console.log("email: ", email);
 
-  const uri = `https://df55-46-138-22-112.eu.ngrok.io/api/auth/resetPassword`;
+  const uri = `https://df55-46-138-22-112.eu.ngrok.io/api/auth/resetPassword?token=${token}`;
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
