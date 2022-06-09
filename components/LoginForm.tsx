@@ -90,6 +90,7 @@ export default function LoginForm(props: Props) {
 
       if (response.ok) {
         props.handleClose();
+        toast.success("Вам на почту отправлена ссылка");
       } else {
         const message = await response.text();
         toast.error(message);

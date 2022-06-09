@@ -52,7 +52,7 @@ export default async function handle(
 
   console.log("email: ", email);
 
-  const uri = `https://df55-46-138-22-112.eu.ngrok.io/api/auth/resetPassword?token=${token}`;
+  const uri = `https://df55-46-138-22-112.eu.ngrok.io/resetPassword/${token}`;
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
