@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import { NextApiRequest, NextApiResponse } from "next";
 
+import { db } from "../../../lib/db";
+
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -9,7 +11,28 @@ export default async function handle(
 
   console.log("fio: ", fio);
 
-  return;
+  let email: string = "";
+
+  try {
+    const queryResult: Array<any> = await db.query(
+      `SELECT email FROM users WHERE name = ?`,
+      [fio]
+    );
+
+    db.end();
+
+    email = queryResult[0]?.email;
+
+    if (!email) {
+      res.status(404).send("Email not found");
+    }
+  } catch (err: any) {
+    res.status(500).send("Database error");
+  }
+
+  console.log("email: ", email);
+
+  const uri = `https://df55-46-138-22-112.eu.ngrok.io/api/auth/resetPassword`;
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
@@ -27,7 +50,10 @@ export default async function handle(
     from: `"Шахматный турнир" ${process.env.MAIL_FROM_ADDRESS}`, // sender address
     to: "vbachmanov@mail.ru", // list of receivers
     subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    //text: "Для смены пароля пройдите по ссылке:", // plain text body
+    html: `Для смены пароля пройдите по ссылке:<br><p>
+            <a href="${uri}">${uri}</a>`, // html body
   });
+
+  res.status(200).send("Ok");
 }

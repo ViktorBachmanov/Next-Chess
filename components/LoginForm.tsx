@@ -83,14 +83,17 @@ export default function LoginForm(props: Props) {
       });
       //e.preventDefault();
     } else {
-      const response = await fetch("/api/auth/changePassword", {
+      const response = await fetch("/api/auth/sendPasswordChangeLink", {
         method: "POST",
         body: fio,
       });
 
-      const result = await response.json();
-
-      props.handleClose();
+      if (response.ok) {
+        props.handleClose();
+      } else {
+        const message = await response.text();
+        toast.error(message);
+      }
     }
   };
 
