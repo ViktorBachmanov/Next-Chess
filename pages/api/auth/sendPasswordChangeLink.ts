@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
 
 import { db } from "../../../lib/db";
+import { encrypt, makeHash } from "../../../lib/utils";
 
 export default async function handle(
   req: NextApiRequest,
@@ -30,13 +31,16 @@ export default async function handle(
 
     await db.query("DELETE FROM password_resets WHERE email = ?", [email]);
 
-    token = bcrypt.hashSync(String(Math.random() * 5), 10);
+    token = encrypt(String(Math.random() * 5));
+
+    const tokenHash = await makeHash(token);
 
     console.log("token: ", token);
+    console.log("tokenHash: ", tokenHash);
 
     await db.query("INSERT password_resets (email, token) VALUES(?, ?)", [
       email,
-      token,
+      tokenHash,
     ]);
 
     db.end();
