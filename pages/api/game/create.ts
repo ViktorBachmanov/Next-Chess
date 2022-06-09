@@ -31,11 +31,13 @@ export default async function handle(
       sendData.winner,
       sendData.day,
     ])
-    .query(`UPDATE users SET rating = ? WHERE id=${sendData.white.id}`, [
+    .query(`UPDATE users SET rating = ? WHERE id = ?`, [
       sendData.white.rating,
+      sendData.white.id,
     ])
-    .query(`UPDATE users SET rating = ? WHERE id=${sendData.black.id}`, [
+    .query(`UPDATE users SET rating = ? WHERE id = ?`, [
       sendData.black.rating,
+      sendData.black.id,
     ])
     .rollback((e: any) => {
       /* do something with the error */

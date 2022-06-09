@@ -3,7 +3,9 @@ import { scryptSync, createDecipher } from "crypto";
 
 export async function verifyPassword(name: string, password: string, db: any) {
   const queryResult: Array<any> = await db.query(
-    `SELECT password FROM users WHERE name="${name}"`
+    //`SELECT password FROM users WHERE name="${name}"`
+    `SELECT password FROM users WHERE name = ?`,
+    [name]
   );
   const dbPassword = queryResult[0].password;
 
