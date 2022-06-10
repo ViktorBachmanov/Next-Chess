@@ -9,6 +9,9 @@ import {
 } from "react-hook-form";
 
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
+import toast from "react-hot-toast";
 
 interface IFormInputs {
   password: string;
@@ -24,32 +27,25 @@ function ResetPassword() {
     },
   });
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    // const authToastId = toast.loading("Authenticating...");
-    // const rslt = fetch("/api/auth/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     userName: data.userName,
-    //     password: data.password,
-    //   }),
-    // });
-    // rslt
-    //   .then((res) => {
-    //     const prms = res.text();
-    //     return prms;
-    //   })
-    //   .then((res) => {
-    //     toast.dismiss(authToastId);
-    //     if (res === "fail") {
-    //       toast.error("Authenticating failed");
-    //     } else {
-    //       toast.success("Authenticated successfully");
-    //       rootStore.auth.setToken(res);
-    //     }
-    //   });
+  const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
+    const passwordToastId = toast.loading("Изменение пароля...");
+    const rslt = await fetch("/api/auth/resetPassword", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password: data.password,
+      }),
+    });
+
+    toast.dismiss(passwordToastId);
+
+    if (rslt.ok) {
+      toast.success("Пароль изменён");
+    } else {
+      toast.error("Ошибка");
+    }
   };
 
   const onError: SubmitErrorHandler<IFormInputs> = (
@@ -68,6 +64,10 @@ function ResetPassword() {
           <TextField label="Новый пароль" type="password" {...field} />
         )}
       />
+
+      <Button type="submit" variant="contained" color="secondary">
+        Ок
+      </Button>
     </form>
   );
 }

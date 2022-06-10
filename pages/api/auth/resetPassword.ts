@@ -6,5 +6,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  res.redirect("/resetPassword");
+  //res.redirect("/resetPassword");
+
+  res.send("Ok");
 }
