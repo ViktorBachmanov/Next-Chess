@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 
 interface IFormInputs {
+  userName: string;
   password: string;
 }
 
@@ -21,8 +22,15 @@ function ResetPassword() {
   const router = useRouter();
   const { token } = router.query;
 
-  const { handleSubmit, control, setError, getValues } = useForm<IFormInputs>({
+  const {
+    handleSubmit,
+    control,
+    //formState: { errors },
+    setError,
+    getValues,
+  } = useForm<IFormInputs>({
     defaultValues: {
+      userName: "",
       password: "",
     },
   });
@@ -54,18 +62,47 @@ function ResetPassword() {
   ) => console.log("Error", errors);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)}>
-      <h2>{token}</h2>
+    <form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <Controller
-        name="password"
+        name="userName"
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error } }) => (
-          <TextField label="Новый пароль" type="password" {...field} />
+          <TextField
+            //required
+            label="ФИО"
+            {...field}
+            style={{ margin: "2rem 0" }}
+            error={Boolean(error)}
+            helperText={Boolean(error) ? "заполните это поле" : ""}
+          />
         )}
       />
 
-      <Button type="submit" variant="contained" color="secondary">
+      <Controller
+        name="password"
+        control={control}
+        rules={{ required: true, minLength: 6 }}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            label="Новый пароль"
+            type="password"
+            {...field}
+            helperText={Boolean(error) ? "минимум 6 символов" : ""}
+            error={Boolean(error)}
+          />
+        )}
+      />
+
+      <Button
+        type="submit"
+        variant="outlined"
+        color="secondary"
+        style={{ width: "3em", margin: "2em" }}
+      >
         Ок
       </Button>
     </form>
