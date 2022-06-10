@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent } from "react";
+import React, { BaseSyntheticEvent, useState } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -22,6 +22,8 @@ function ResetPassword() {
   const router = useRouter();
   const { token } = router.query;
 
+  //const [passwordChanged, setPasswordChanged] = useState(false);
+
   const {
     handleSubmit,
     control,
@@ -43,16 +45,22 @@ function ResetPassword() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        userName: data.userName,
         password: data.password,
+        token,
       }),
     });
 
     toast.dismiss(passwordToastId);
 
+    const message = await rslt.text();
+
     if (rslt.ok) {
-      toast.success("Пароль изменён");
+      toast.success(message);
+      //setPasswordChanged(true);
+      router.push("/");
     } else {
-      toast.error("Ошибка");
+      toast.error(message);
     }
   };
 
@@ -62,9 +70,19 @@ function ResetPassword() {
   ) => console.log("Error", errors);
 
   return (
+    // <>
+    //   {passwordChanged ? (
+    //     <Button href="/" variant="outlined" style={{ marginTop: "5em" }}>
+    //       На главную
+    //     </Button>
+    //   ) : (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <Controller
         name="userName"
@@ -100,12 +118,14 @@ function ResetPassword() {
       <Button
         type="submit"
         variant="outlined"
-        color="secondary"
+        //color="secondary"
         style={{ width: "3em", margin: "2em" }}
       >
         Ок
       </Button>
     </form>
+    //   )}
+    // </>
   );
 }
 

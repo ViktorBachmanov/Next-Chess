@@ -27,6 +27,7 @@ export default async function handle(
     if (!email) {
       db.end();
       res.status(404).send("Email not found");
+      return;
     }
 
     await db.query("DELETE FROM password_resets WHERE email = ?", [email]);
@@ -52,7 +53,7 @@ export default async function handle(
 
   console.log("email: ", email);
 
-  const uri = `https://df55-46-138-22-112.eu.ngrok.io/resetPassword/${token}`;
+  const uri = `https://9e17-46-138-22-112.eu.ngrok.io/resetPassword/${token}`;
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
