@@ -36,8 +36,8 @@ export default async function handle(
 
     const tokenHash = await makeHash(token);
 
-    console.log("token: ", token);
-    console.log("tokenHash: ", tokenHash);
+    //console.log("token: ", token);
+    //console.log("tokenHash: ", tokenHash);
 
     await db.query("INSERT password_resets (email, token) VALUES(?, ?)", [
       email,
@@ -51,9 +51,9 @@ export default async function handle(
     return;
   }
 
-  console.log("email: ", email);
+  //console.log("email: ", email);
 
-  const uri = `https://9e17-46-138-22-112.eu.ngrok.io/resetPassword/${token}`;
+  const uri = `https://c2f2-46-138-22-112.eu.ngrok.io/resetPassword/${token}`;
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
@@ -69,8 +69,8 @@ export default async function handle(
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: `"Шахматный турнир" ${process.env.MAIL_FROM_ADDRESS}`, // sender address
-    to: "vbachmanov@mail.ru", // list of receivers
-    subject: "Hello ✔", // Subject line
+    to: `"${email}"`, // list of receivers
+    subject: "Изменение пароля", // Subject line
     //text: "Для смены пароля пройдите по ссылке:", // plain text body
     html: `Для смены пароля пройдите по ссылке:<br><p>
             <a href="${uri}">${uri}</a>`, // html body
