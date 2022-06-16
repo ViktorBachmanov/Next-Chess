@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 import { StoreContext } from "./Layout";
 
 const SelectDay = observer(function SelectDay() {
-  console.log("SelectDay");
+  //console.log("SelectDay");
 
   const label = "Игровой день";
 

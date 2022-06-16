@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useContext } from "react";
+import React, { BaseSyntheticEvent, useContext, useEffect } from "react";
 
 import Link from "next/link";
 
@@ -28,12 +28,20 @@ interface IFormInputs {
 }
 
 export default function LoginForm(props: Props) {
-  const { handleSubmit, control, setError, getValues } = useForm<IFormInputs>({
-    defaultValues: {
-      userName: "",
-      password: "",
-    },
-  });
+  const { handleSubmit, control, setError, clearErrors, getValues, watch } =
+    useForm<IFormInputs>({
+      defaultValues: {
+        userName: "",
+        password: "",
+      },
+    });
+
+  const watchUserName = watch("userName");
+  useEffect(() => {
+    if (watchUserName) {
+      clearErrors("userName");
+    }
+  }, [watchUserName]);
 
   const rootStore = useContext(StoreContext);
 
@@ -81,16 +89,19 @@ export default function LoginForm(props: Props) {
         type: "manual",
         message: "Заполните это поле",
       });
-      //e.preventDefault();
     } else {
-      const response = await fetch("/api/auth/changePassword", {
+      const response = await fetch("/api/auth/sendPasswordChangeLink", {
         method: "POST",
         body: fio,
       });
 
-      const result = await response.json();
-
-      props.handleClose();
+      if (response.ok) {
+        props.handleClose();
+        toast.success("Вам на почту отправлена ссылка");
+      } else {
+        const message = await response.text();
+        toast.error(message);
+      }
     }
   };
 
@@ -102,12 +113,13 @@ export default function LoginForm(props: Props) {
         rules={{ required: true }}
         render={({ field, fieldState: { error } }) => (
           <TextField
-            required
+            //required
             label="ФИО"
             {...field}
             style={{ margin: "2rem 0" }}
             error={Boolean(error)}
-            helperText={error?.message}
+            //helperText={error?.message}
+            helperText={Boolean(error) ? "заполните это поле" : ""}
           />
         )}
       />
@@ -117,7 +129,13 @@ export default function LoginForm(props: Props) {
         control={control}
         rules={{ required: true }}
         render={({ field, fieldState: { error } }) => (
-          <TextField label="Пароль" type="password" {...field} />
+          <TextField
+            label="Пароль"
+            type="password"
+            {...field}
+            error={Boolean(error)}
+            helperText={Boolean(error) ? "заполните это поле" : ""}
+          />
         )}
       />
 

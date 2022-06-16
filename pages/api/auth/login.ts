@@ -1,11 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../../lib/db";
-import { verifyPassword } from "../../../lib/utils";
-
-import { scrypt, createCipher } from "crypto";
-
-const algorithm = "aes-192-cbc";
-const cryptoPassword = "Password used to generate key";
+import { verifyPassword, encrypt } from "../../../lib/utils";
 
 export default async function handle(
   req: NextApiRequest,
@@ -30,16 +25,8 @@ export default async function handle(
       password: formData.password,
     };
 
-    scrypt(cryptoPassword, "salt", 24, (err: any, key: any) => {
-      if (err) throw err;
-
-      const cipher = createCipher(algorithm, key);
-
-      let encrypted = cipher.update(JSON.stringify(tokenObj), "utf8", "hex");
-      encrypted += cipher.final("hex");
-
-      res.send(encrypted);
-    });
+    const encryptedTokenObj = encrypt(JSON.stringify(tokenObj));
+    res.send(encryptedTokenObj);
   } else {
     res.json("fail");
   }

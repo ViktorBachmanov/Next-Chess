@@ -28,11 +28,13 @@ export default async function handle(
   let results = await db
     .transaction()
     .query("DELETE FROM games WHERE id = ?", [lastGameId])
-    .query(`UPDATE users SET rating = ? WHERE id=${whiteUser.id}`, [
+    .query(`UPDATE users SET rating = ? WHERE id = ?`, [
       whiteUser.rating,
+      whiteUser.id,
     ])
-    .query(`UPDATE users SET rating = ? WHERE id=${blackUser.id}`, [
+    .query(`UPDATE users SET rating = ? WHERE id = ?`, [
       blackUser.rating,
+      blackUser.id,
     ])
     .rollback((e: any) => {
       /* do something with the error */

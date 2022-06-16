@@ -49,12 +49,9 @@ const MainTable = observer(function MainTable(props: Props) {
   //const { isFixed, initialMainTable } = props;
   const { isFixed } = props;
 
-  console.log("MainTable");
+  //console.log("MainTable");
 
   const rootStore = useContext(StoreContext);
-  //const tables = rootStore.tables;
-
-  //console.log("rootStore: ", rootStore);
 
   let mainTable: MainTableRow[] | null | undefined;
   //mainTable = rootStore.tables?.mainTable || initialMainTable;
@@ -62,9 +59,6 @@ const MainTable = observer(function MainTable(props: Props) {
   if (!mainTable) {
     return null;
   }
-  //console.log("useEffect tables?.mainTable", rootStore.tables?.mainTable);
-  //console.log("useEffect initialMainTable", initialMainTable);
-  //console.log("useEffect mainTable", mainTable);
 
   const handleChangeOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
     const orderBy = parseInt(e.target.value) as Order;
