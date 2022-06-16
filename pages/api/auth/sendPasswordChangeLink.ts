@@ -53,7 +53,7 @@ export default async function handle(
 
   //console.log("email: ", email);
 
-  const uri = `https://c2f2-46-138-22-112.eu.ngrok.io/resetPassword/${token}`;
+  const uri = `https://next-chess.vercel.app/resetPassword/${token}`;
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({

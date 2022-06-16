@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite";
 import { StoreContext } from "./Layout";
 
 const GamesTable = observer(function GamesTable() {
-  console.log("GamesTable");
+  //console.log("GamesTable");
 
   const rootStore = useContext(StoreContext);
   const tables = rootStore.tables;

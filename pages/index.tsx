@@ -1,15 +1,14 @@
 import type { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 
 import { db } from "../lib/db";
 
 import { observer } from "mobx-react-lite";
 
 import Tables, { filterGamesAndUsersByDay } from "../mobx/tables/Tables";
-import MainTable from "../mobx/tables/MainTable";
-import { User, Game, MainTableRow, Order } from "../mobx/tables/types";
+import { User, Game } from "../mobx/tables/types";
 import { StoreContext } from "../components/Layout";
 
 import MainTableComponent from "../components/MainTable";
@@ -23,7 +22,7 @@ const Home = observer(function Home({
   users,
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  console.log("Home");
+  //console.log("Home");
 
   //const initialMainTable = JSON.parse(mainTable) as MainTableRow[];
   const allUsers = JSON.parse(users) as User[];

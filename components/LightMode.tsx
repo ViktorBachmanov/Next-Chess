@@ -14,7 +14,7 @@ const LightMode = observer(function LightMode() {
   const lightMode = themeStore.lightStatus;
 
   const handleClick = () => {
-    console.log("LightMode handleClick LightStatus: ", lightMode);
+    //console.log("LightMode handleClick LightStatus: ", lightMode);
     if (lightMode === LightStatus.DARK) {
       themeStore.setLightStatus(LightStatus.LIGHT);
     } else {

@@ -33,7 +33,7 @@ interface Props {
 }
 
 const Layout = observer(function Layout(props: Props) {
-  console.log("Layout");
+  //console.log("Layout");
 
   StoreContext = useMemo(
     () => createContext<RootStore>(rootStore),
@@ -41,7 +41,7 @@ const Layout = observer(function Layout(props: Props) {
   );
 
   useEffect(() => {
-    console.log("Layout useEffect");
+    //console.log("Layout useEffect");
 
     rootStore.theme.setLightStatus(getInitialLightMode());
 

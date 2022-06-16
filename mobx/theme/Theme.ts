@@ -19,7 +19,7 @@ export default class Theme {
   }
 
   public setLightStatus(val: LightStatus) {
-    console.log("MobX setLightStatus: ", val);
+    //console.log("MobX setLightStatus: ", val);
     this._lightStatus = val;
   }
 }
