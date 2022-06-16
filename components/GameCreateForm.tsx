@@ -31,11 +31,9 @@ function GameCreateForm(props: Props) {
   const { handleClose } = props;
 
   const rootStore = useContext(StoreContext);
-  if (!rootStore.tables) {
-    return null;
-  }
-  const users = rootStore.tables.allUsers;
-  const games = rootStore.tables.allGames;
+
+  const users = rootStore.tables!.allUsers;
+  const games = rootStore.tables!.allGames;
   const authStore = rootStore.auth;
 
   const { handleSubmit, control, watch, getValues, setError } =

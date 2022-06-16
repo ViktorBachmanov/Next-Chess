@@ -35,10 +35,7 @@ interface Props {
 const Layout = observer(function Layout(props: Props) {
   //console.log("Layout");
 
-  StoreContext = useMemo(
-    () => createContext<RootStore>(rootStore),
-    [rootStore]
-  );
+  StoreContext = useMemo(() => createContext<RootStore>(rootStore), []);
 
   useEffect(() => {
     //console.log("Layout useEffect");
@@ -63,7 +60,7 @@ const Layout = observer(function Layout(props: Props) {
     return function cleanUp() {
       window.removeEventListener("beforeunload", saveInLocalStorage);
     };
-  }, [rootStore.theme, rootStore.auth]);
+  }, []);
 
   const themeStore = rootStore.theme;
   const lightMode = themeStore.lightStatus;

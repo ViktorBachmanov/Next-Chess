@@ -41,7 +41,7 @@ export default function LoginForm(props: Props) {
     if (watchUserName) {
       clearErrors("userName");
     }
-  }, [watchUserName]);
+  }, [watchUserName, clearErrors]);
 
   const rootStore = useContext(StoreContext);
 
