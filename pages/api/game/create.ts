@@ -46,7 +46,7 @@ export default async function handle(
 
   db.end();
 
-  await res.unstable_revalidate("/");
+  await res.revalidate("/");
 
   res.json(results);
 }
